@@ -1,0 +1,82 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: rootDir.toString() + '/config.gradle'
+apply from: rootDir.toString() + '/build_module.gradle'
+
+buildscript {
+    repositories {
+        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
+        maven { url "https://mirrors.tencent.com/repository/maven/thirdparty-snapshots/" }
+        maven { url "https://dl.bintray.com/bihe0832/android" }
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath "com.bihe0832.android:GradleDependenciesCheck:1.1.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50"
+        classpath 'com.novoda:bintray-release:0.9.1'
+    }
+}
+
+task clean(type: Delete) {
+    println("clean " + rootProject.buildDir)
+    delete rootProject.buildDir
+}
+
+allprojects {
+    repositories {
+        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
+        maven { url "https://mirrors.tencent.com/repository/maven/thirdparty-snapshots/" }
+        maven { url "https://dl.bintray.com/bihe0832/android" }
+        jcenter()
+        flatDir {
+            dirs './../libs/'
+        }
+    }
+
+    afterEvaluate { Project subproject ->
+        if (subproject.name == rootProject.name) {
+
+            rootProject.getTasks().create("showInfo") {
+                group = "zixieDev"
+                doLast {
+                    System.err.println("\n\n >>>>>>>>>>>>>>>>>>>>>>>>>>>> AndroidAPPFactory <<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+                    System.err.println("|\n|  Android 构建已基于组件化重构，详细信息可以参考文档")
+                    System.err.println("|\n|  https://android.bihe0832.com/#!doc/dev.md")
+                    System.err.println("|\n >>>>>>>>>>>>>>>>>>>>>>>>>>> AndroidAPPFactory <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+                }
+            }
+        }
+    }
+}
+
+
+subprojects {
+//    apply plugin: 'com.bihe0832.gradleDependenciesCheck'
+//
+//    GradleDependenciesCheckConfig {
+//        showResultType = 1
+//        excludePackage = "com.android.support;org.jetbrains.kotlin;android.arch.lifecycle"
+//    }
+
+    afterEvaluate { Project subproject ->
+        if (zixieIsDebug) println("subprojects afterEvaluate : " + subproject.name)
+
+        zixieAutoDependencies(subproject.name)
+        zixieLocalDependencies(subproject.name, subproject.getProjectDir().absolutePath + "/libs")
+
+        subproject.getTasks().getByName('clean').doFirst {
+            delete "build"
+        }
+
+        if (!subproject.name.startsWith("Pub") || subproject.name != "APPTest") {
+            subproject.getTasks().create("copyAAR", Copy.class) {
+                group = "zixieDev"
+                from 'build/outputs/aar/' + module.name + '-release.aar'
+                into "./../libs/"
+            }
+
+            subproject.getTasks().getByName('copyAAR').dependsOn("assembleRelease")
+        }
+    }
+}

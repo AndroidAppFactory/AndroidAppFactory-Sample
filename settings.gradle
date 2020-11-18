@@ -1,0 +1,50 @@
+apply from: rootDir.toString() + '/build_module.gradle'
+System.err.println("MainProjectList: " + zixieMainProject)
+System.err.println("DevProjectList: " + zixieDevelopModule)
+
+zixieMainProject.split(",").each { projectName ->
+    addInclude(projectName)
+}
+
+zixieDevelopModule.replaceAll("\\s*", "").split(",").each { projectName ->
+    addInclude(projectName)
+}
+
+
+if (zixieIncludeALL) {
+    zixieDepenciesList.each { projectName, subModuleList ->
+        autoAddInclude(projectName)
+    }
+} else {
+    zixieMainProject.split(",").each { projectName ->
+        zixieDepenciesList[projectName].each { dependenciesModule ->
+            autoAddInclude(dependenciesModule)
+        }
+    }
+}
+
+System.err.println("\n\n========================================\n\n")
+System.err.println("当前工程导入组件如下：\n\n\t" + zixieIncludeList)
+System.err.println("\n\n========================================\n\n")
+
+def addInclude(projectName) {
+    if (null == projectName || projectName.trim().length() == 0) {
+        if (zixieIsDebug) System.out.println("Add Include: " + projectName + " is bad !")
+    } else if (zixieIncludeList.contains(projectName)) {
+        if (zixieIsDebug) System.out.println("Add Include: " + projectName + " has bad !")
+    } else{
+        String finalProjectName = ':' + projectName
+        System.out.println("include " + finalProjectName)
+        zixieIncludeList.add(projectName)
+        include finalProjectName
+    }
+}
+
+def autoAddInclude(dependenciesModule) {
+    if (zixieIsDebug) println("autoAddInclude Depenciese of dependenciesModule " + dependenciesModule + " " + zixieCheckModuleIsDev(dependenciesModule))
+    if(zixieCheckModuleIsDev(dependenciesModule)){
+        addInclude(dependenciesModule)
+    }
+}
+
+
