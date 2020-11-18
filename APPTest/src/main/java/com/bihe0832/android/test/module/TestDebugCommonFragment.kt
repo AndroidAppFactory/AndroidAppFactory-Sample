@@ -4,6 +4,7 @@ import android.os.Build
 import android.view.View
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
+import com.bihe0832.android.base.card.tips.TipsData
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.ZixieContext.getDeviceId
 import com.bihe0832.android.framework.ZixieContext.getVersionCode
@@ -14,17 +15,16 @@ import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.test.base.BaseTestFragment
 import com.bihe0832.android.test.base.item.TestItemData
-import com.bihe0832.android.test.base.item.TestTipsData
 
 open class TestDebugCommonFragment : BaseTestFragment() {
 
     override fun getDataList(): ArrayList<CardBaseModule> {
         return ArrayList<CardBaseModule>().apply {
-            add(TestTipsData("APPFactory的通用组件和工具"))
+            add(TipsData("APPFactory的通用组件和工具"))
             add(TestItemData("查看应用版本及环境", View.OnClickListener { showAPPInfo() }))
             add(TestItemData("查看设备信息", View.OnClickListener { showMobileInfo() }))
             add(TestItemData("查看第三方应用信息", View.OnClickListener { showOtherAPPInfo() }))
-            add(TestTipsData("APPFactory支持的应用"))
+            add(TipsData("APPFactory支持的应用"))
             add(TestItemData("应用信息获取", View.OnClickListener { RouterHelper.openPageByRouter(RouterConstants.ROUTRT_NAME_APK_LIST) }))
         }
     }

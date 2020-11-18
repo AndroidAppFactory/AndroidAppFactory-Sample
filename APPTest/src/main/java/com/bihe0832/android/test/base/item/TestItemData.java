@@ -2,6 +2,7 @@ package com.bihe0832.android.test.base.item;
 
 import android.view.View;
 
+import com.bihe0832.android.base.card.tips.TipsData;
 import com.bihe0832.android.lib.adapter.CardBaseHolder;
 import com.bihe0832.android.lib.adapter.CardBaseModule;
 import com.bihe0832.android.test.R;
@@ -11,19 +12,15 @@ import com.bihe0832.android.test.R;
  * Created on 2019-11-21.
  * Description: Description
  */
-public class TestItemData extends CardBaseModule {
+public class TestItemData extends TipsData {
 
-    public TestItemData() {
-        super();
-    }
 
-    public TestItemData(String netType) {
-        mContentText = netType;
+    public TestItemData(String tips) {
+        super(tips);
     }
 
     public TestItemData(String netType, View.OnClickListener listener) {
-        mContentText = netType;
-        mListener = listener;
+        super(netType, listener);
     }
 
     public int getResID() {
@@ -33,9 +30,6 @@ public class TestItemData extends CardBaseModule {
     public Class<? extends CardBaseHolder> getViewHolderClass() {
         return TestItemHolder.class;
     }
-
-    public String mContentText = "";
-    public View.OnClickListener mListener = null;
 
 
 }

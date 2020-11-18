@@ -28,7 +28,7 @@ class APPItemData : CardBaseModule() {
     var app_md5 = ""
     var signature_md5 = ""
     override fun toString(): String {
-        return "$app_name 信息：\n\n当前版本号：$app_version\n包名：$app_package\n安装于：$app_install_time\n更新于：$app_update_time \nAPK MD5：$app_md5\n签名 MD5：$signature_md5"
+        return "应用：$app_name\n版本号：$app_version\n包名：$app_package\n安装于：$app_install_time\n更新于：$app_update_time \nAPK MD5：$app_md5\n签名 MD5：$signature_md5"
     }
 
 

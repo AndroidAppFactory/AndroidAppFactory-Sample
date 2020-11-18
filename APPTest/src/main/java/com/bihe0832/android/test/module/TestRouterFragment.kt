@@ -1,11 +1,11 @@
 package com.bihe0832.android.test.module
 
 import android.view.View
+import com.bihe0832.android.base.card.tips.TipsData
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.router.Routers
 import com.bihe0832.android.test.base.BaseTestFragment
 import com.bihe0832.android.test.base.item.TestItemData
-import com.bihe0832.android.test.base.item.TestTipsData
 
 class TestRouterFragment : BaseTestFragment() {
 
@@ -13,7 +13,7 @@ class TestRouterFragment : BaseTestFragment() {
 
     override fun getDataList(): ArrayList<CardBaseModule> {
         return ArrayList<CardBaseModule>().apply {
-            add(TestTipsData(
+            add(TipsData(
                     "可以在PC打开下面链接生成二维码后测试：<small>https://microdemo.bihe0832.com/MyJS/router/</small> ",
                     View.OnClickListener {
                         showInfo("路由测试工具链接分享", "路由测试工具链接：\n https://microdemo.bihe0832.com/MyJS/router/")

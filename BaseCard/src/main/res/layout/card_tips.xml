@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bihe0832_common_toast_background_color"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/test_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:lineHeight="24dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:textSize="14dp"
+        tools:text="这是一个提示消息，这是一个提示消息这是一个提示消息这是一个提示消息这是一个提示消息这是一个提示消息" />
+
+</RelativeLayout>
