@@ -4,24 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
     android:layout_marginTop="4dp"
     android:background="@color/bihe0832_common_toast_background_color"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="8dp">
 
     <ImageView
         android:id="@+id/app_icon"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        tools:src="@mipmap/icon"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/uninstall"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        tools:src="@mipmap/icon" />
+
+    <TextView
+        android:id="@+id/uninstall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:text="卸载"
+        android:background="@drawable/card_apk_corner"
+        android:textSize="12dp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/app_icon"
+        app:layout_constraintEnd_toEndOf="@+id/app_icon"
+        app:layout_constraintTop_toBottomOf="@+id/app_icon" />
 
     <TextView
         android:id="@+id/app_name"
@@ -41,25 +55,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginRight="8dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textSize="10dp"
-        android:layout_marginLeft="8dp"
+        android:textSize="12dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/app_name"
-        app:layout_constraintBaseline_toBaselineOf="@+id/app_name"
         tools:text="版本号：1.1.1.1" />
 
     <TextView
         android:id="@+id/app_package"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textSize="12dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/app_version"
         app:layout_constraintStart_toStartOf="@+id/app_name"
         app:layout_constraintTop_toBottomOf="@+id/app_name"
         tools:text="包名：com.bihe0832.aaa" />
@@ -68,38 +83,54 @@
         android:id="@+id/app_install"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textSize="12dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/app_version"
         app:layout_constraintStart_toStartOf="@+id/app_name"
         app:layout_constraintTop_toBottomOf="@+id/app_package"
-        tools:text="安装：2020年9月15日，最后更新：2020年9月15日" />
+        tools:text="安装：2020年9月15日" />
+
+    <TextView
+        android:id="@+id/app_update"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/app_version"
+        app:layout_constraintStart_toStartOf="@+id/app_name"
+        app:layout_constraintTop_toBottomOf="@+id/app_install"
+        tools:text="最后更新：2020年9月15日" />
 
     <TextView
         android:id="@+id/app_md5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textSize="12dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/app_version"
         app:layout_constraintStart_toStartOf="@+id/app_name"
-        app:layout_constraintTop_toBottomOf="@+id/app_install"
+        app:layout_constraintTop_toBottomOf="@+id/app_update"
         tools:text="安装包MD5：f7312bf1113af189cba98bbddcd4affe" />
+
     <TextView
         android:id="@+id/signature_md5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textSize="12dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/app_version"
         app:layout_constraintStart_toStartOf="@+id/app_name"
         app:layout_constraintTop_toBottomOf="@+id/app_md5"
         tools:text="签名MD5：f7312bf1113af189cba98bbddcd4affe" />
+
+
 
 </android.support.constraint.ConstraintLayout>

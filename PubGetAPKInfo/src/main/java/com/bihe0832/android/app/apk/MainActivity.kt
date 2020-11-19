@@ -1,7 +1,9 @@
 package com.bihe0832.android.app.apk
 
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import com.bihe0832.android.app.getapk.R
@@ -96,11 +98,12 @@ class MainActivity : CommonListActivity() {
 
             setOnItemLongClickListener { adapter, view, position ->
                 var temp = adapter.data[position] as APPItemData
-                DebugTools.showInfo(this@MainActivity, temp.app_name + " 信息", temp.toString(), "分享")
+                DebugTools.showInfo(this@MainActivity, temp.app_name + "基础信息", temp.toString(), "分享")
                 return@setOnItemLongClickListener true
             }
         }
     }
+
 
     private fun showTips() {
         if (ZixieContext.isFirstStart() > INSTALL_TYPE_NOT_FIRST) {
@@ -140,7 +143,7 @@ class MainActivity : CommonListActivity() {
     private fun getTempData(): List<CardBaseModule> {
         return mutableListOf<CardBaseModule>().apply {
             add(TipsData().apply {
-                this.mContentText = "<big>使用说明：</big><BR>" + getTipsContent("#182B37")
+                this.mContentText = "<big><b>使用说明：</b></big><BR>" + getTipsContent("#182B37")
 
             })
             var appList = packageManager.getInstalledApplications(PackageManager.GET_SIGNATURES)
