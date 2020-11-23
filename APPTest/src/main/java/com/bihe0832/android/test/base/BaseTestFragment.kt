@@ -2,10 +2,8 @@ package com.bihe0832.android.test.base
 
 import android.content.Intent
 import android.widget.TextView
-import com.bihe0832.android.app.router.RouterHelper
-import com.bihe0832.android.app.router.openWebPage
-import com.bihe0832.android.framework.ui.list.easyrefresh.CommonListFragment
 import com.bihe0832.android.framework.ui.list.CommonListLiveData
+import com.bihe0832.android.framework.ui.list.easyrefresh.CommonListFragment
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.debug.DebugTools
 import com.bihe0832.android.lib.debug.InputDialogCompletedCallback
@@ -24,7 +22,6 @@ open class BaseTestFragment : CommonListFragment() {
 
     val mDataList by lazy {
         ArrayList<CardBaseModule>().apply {
-            addAll(getDataList())
         }
     }
 
@@ -32,6 +29,7 @@ open class BaseTestFragment : CommonListFragment() {
     override fun getDataLiveData(): CommonListLiveData {
         return object : CommonListLiveData() {
             override fun fetchData() {
+                mDataList.addAll(getDataList())
                 postValue(mDataList)
             }
 
@@ -68,10 +66,6 @@ open class BaseTestFragment : CommonListFragment() {
 
     fun showInputDialog(titleName: String, msg: String, defaultValue: String, listener: InputDialogCompletedCallback) {
         DebugTools.showInputDialog(context, titleName, msg, defaultValue, listener)
-    }
-
-    protected fun openWeb(url: String) {
-        RouterHelper.openWebPage(url)
     }
 
     protected fun startActivity(cls: Class<*>) {

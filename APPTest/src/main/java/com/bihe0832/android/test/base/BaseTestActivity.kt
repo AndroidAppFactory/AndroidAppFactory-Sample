@@ -4,10 +4,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.os.StrictMode
-import com.bihe0832.android.app.router.RouterHelper
-import com.bihe0832.android.app.router.openWebPage
-import com.bihe0832.android.framework.ui.list.easyrefresh.CommonListActivity
 import com.bihe0832.android.framework.ui.list.CommonListLiveData
+import com.bihe0832.android.framework.ui.list.easyrefresh.CommonListActivity
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.debug.DebugTools
 import com.bihe0832.android.lib.debug.InputDialogCompletedCallback
@@ -43,6 +41,7 @@ abstract class BaseTestActivity : CommonListActivity() {
     override fun getDataLiveData(): CommonListLiveData {
         return object : CommonListLiveData() {
             override fun fetchData() {
+                mDataList.addAll(getDataList())
                 postValue(mDataList)
             }
 
@@ -71,9 +70,4 @@ abstract class BaseTestActivity : CommonListActivity() {
     fun showInputDialog(titleName: String, msg: String, defaultValue: String, listener: InputDialogCompletedCallback) {
         DebugTools.showInputDialog(this, titleName, msg, defaultValue, listener)
     }
-
-    protected fun openWeb(url: String) {
-        RouterHelper.openWebPage(url)
-    }
-
 }
