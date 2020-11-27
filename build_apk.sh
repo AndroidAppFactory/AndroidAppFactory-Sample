@@ -277,56 +277,56 @@ if [ "$isOfficial"x = "true"x ]; then
 fi
 
 
-if [ "$isOfficial"x = "true"x ]; then
-  # 提交各种修改
+#if [ "$isOfficial"x = "true"x ]; then
+#  # 提交各种修改
 
-  echo "********APK build start check app.ini *******"
-  cd $localPath
-  git add Application/src/main/assets/app.ini
-  git commit Application/src/main/assets/app.ini -m"auto update new app.ini to svn by build.sh, author:hardy"
+#  echo "********APK build start check app.ini *******"
+#  cd $localPath
+#  git add Application/src/main/assets/app.ini
+#  git commit Application/src/main/assets/app.ini -m"auto update new app.ini to svn by build.sh, author:hardy"
+#
+#  echo "********APK build start check mapping_resource *******"
+#  cd $localPath
+#  cp -r $localPath/bin/temp/official/mapping/${tag}_mapping_resource.txt $localPath/mapping_resource.txt
+#  a=$(git diff mapping_resource.txt | wc -l)
+#  echo "mapping_resource:"$a
+#  if [ $a -gt 0 ]; then
+#    echo "********APK build start git commit mapping resource*******"
+#    git diff mapping_resource.txt >$localPath/bin/mapping-resource-diff.log
+#    git add mapping_resource.txt
+#    git commit mapping_resource.txt -m"auto add new mapping resouce to svn by build.sh, author:hardy"
+#    checkResult
+#  fi
+#  git status
 
-  echo "********APK build start check mapping_resource *******"
-  cd $localPath
-  cp -r $localPath/bin/temp/official/mapping/${tag}_mapping_resource.txt $localPath/mapping_resource.txt
-  a=$(git diff mapping_resource.txt | wc -l)
-  echo "mapping_resource:"$a
-  if [ $a -gt 0 ]; then
-    echo "********APK build start git commit mapping resource*******"
-    git diff mapping_resource.txt >$localPath/bin/mapping-resource-diff.log
-    git add mapping_resource.txt
-    git commit mapping_resource.txt -m"auto add new mapping resouce to svn by build.sh, author:hardy"
-    checkResult
-  fi
-  git status
-
-  echo "********APK build start check mapping *******"
-  cd $localPath
-  cp -r $localPath/bin/temp/official/mapping/${tag}_mapping.txt $localPath/mapping.txt
-  a=$(git diff mapping.txt | wc -l)
-  echo "mapping:"$a
-  if [ $a -gt 0 ]; then
-    echo "********APK build start svn ci mapping *******"
-    git diff mapping.txt >$localPath/bin/mapping-diff.log
-    git add mapping.txt
-    git commit mapping.txt -m"auto add new mapping resouce to svn by build.sh, author:hardy"
-    checkResult
-  fi
-  git status
-
-  echo "********APK build start add tag*******"
-  git tag -a $tag --file=$localPath/bin/${tag}
-  checkResult
-  git status
-  git show $tag | head
-  checkResult
-  echo "********APK build start push code*******"
-  git config push.default simple
-  git push
-  checkResult
-  echo "********APK build start push tag*******"
-  git push origin $tag
-  checkResult
-fi
-git status
-rm -fr $localPath/bin/temp
+#  echo "********APK build start check mapping *******"
+#  cd $localPath
+#  cp -r $localPath/bin/temp/official/mapping/${tag}_mapping.txt $localPath/mapping.txt
+#  a=$(git diff mapping.txt | wc -l)
+#  echo "mapping:"$a
+#  if [ $a -gt 0 ]; then
+#    echo "********APK build start svn ci mapping *******"
+#    git diff mapping.txt >$localPath/bin/mapping-diff.log
+#    git add mapping.txt
+#    git commit mapping.txt -m"auto add new mapping resouce to svn by build.sh, author:hardy"
+#    checkResult
+#  fi
+#  git status
+#
+#  echo "********APK build start add tag*******"
+#  git tag -a $tag --file=$localPath/bin/${tag}
+#  checkResult
+#  git status
+#  git show $tag | head
+#  checkResult
+#  echo "********APK build start push code*******"
+#  git config push.default simple
+#  git push
+#  checkResult
+#  echo "********APK build start push tag*******"
+#  git push origin $tag
+#  checkResult
+#fi
+#git status
+#rm -fr $localPath/bin/temp
 checkResult
