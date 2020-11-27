@@ -35,7 +35,7 @@ ext.moduleInfo = [
 
         "APPTest"      : [
                 "apidependenciesList"    : ["",
-                                            "Application","BaseCard"
+                                            "Application", "BaseCard"
 
                 ],
                 "specialdependenciesList": [
@@ -43,10 +43,10 @@ ext.moduleInfo = [
                 ]
         ],
         "Application"  : [
-                "apidependenciesList": [
-                        'com.bihe0832.android:framework:'+ ext.moduleVersionName,
-                        'com.bihe0832.android:common-webview:'+ ext.moduleVersionName,
-                        'com.bihe0832.android:common-feedback:'+ ext.moduleVersionName,
+                "apidependenciesList"    : [
+                        'com.bihe0832.android:framework:3.3.4',
+                        'com.bihe0832.android:common-webview:3.3.4',
+                        'com.bihe0832.android:common-feedback:3.3.4',
                         'com.squareup.okhttp3:okhttp:3.9.1',
                         'com.squareup.okhttp3:logging-interceptor:3.8.0',
                         'com.squareup.retrofit2:retrofit:2.4.0',
@@ -62,7 +62,7 @@ ext.moduleInfo = [
                 ]
         ],
         "PubGetAPKInfo": [
-                "apidependenciesList": [
+                "apidependenciesList"    : [
                         "BaseCard"
                 ],
                 "specialdependenciesList": [
