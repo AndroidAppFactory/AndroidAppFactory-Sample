@@ -1,19 +1,20 @@
 package com.bihe0832.android.app.apk
 
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import com.bihe0832.android.app.getapk.R
+import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterConstants.ROUTRT_NAME_APK_LIST
+import com.bihe0832.android.app.router.RouterHelper
+import com.bihe0832.android.app.update.UpdateManager
 import com.bihe0832.android.base.card.apk.APPItemData
 import com.bihe0832.android.base.card.tips.TipsData
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.ui.list.CardItemForCommonList
 import com.bihe0832.android.framework.ui.list.CommonListLiveData
-import com.bihe0832.android.framework.ui.list.easyrefresh.swiperefresh.CommonListActivity
+import com.bihe0832.android.framework.ui.list.swiperefresh.CommonListActivity
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.debug.DebugTools
 import com.bihe0832.android.lib.lifecycle.INSTALL_TYPE_NOT_FIRST
@@ -32,9 +33,15 @@ class MainActivity : CommonListActivity() {
     var hasShowTips = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mToolbar?.navigationIcon = resources.getDrawable(R.mipmap.ic_menu_white)
+        mToolbar?.apply {
+            navigationIcon = resources.getDrawable(R.mipmap.ic_menu_white)
+            setNavigationOnClickListener {
+                RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_BASE_ABOUT)
+            }
+        }
         initAdapter()
         showTips()
+        UpdateManager.checkUpdateAndShowDialog(this, false)
     }
 
     override fun getLayoutManagerForList(): RecyclerView.LayoutManager {

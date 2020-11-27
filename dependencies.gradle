@@ -28,7 +28,7 @@ ext.includeALLDependOnDevelopModule = false
 /**
  * 组件所有模块的最新版本
  */
-ext.moduleVersionName = "3.3.0"
+ext.moduleVersionName = "3.3.2"
 /************************************ 组件化开发常用配置 ************************************/
 
 ext.moduleInfo = [
@@ -46,6 +46,14 @@ ext.moduleInfo = [
                 "apidependenciesList": [
                         'com.bihe0832.android:framework:'+ ext.moduleVersionName,
                         'com.bihe0832.android:common-webview:'+ ext.moduleVersionName,
+                        'com.bihe0832.android:common-feedback:'+ ext.moduleVersionName,
+                        'com.squareup.okhttp3:okhttp:3.9.1',
+                        'com.squareup.okhttp3:logging-interceptor:3.8.0',
+                        'com.squareup.retrofit2:retrofit:2.4.0',
+                        'com.squareup.retrofit2:converter-gson:2.4.0'
+                ],
+                "specialdependenciesList": [
+                        "kapt": ["com.bihe0832.android:lib-router-compiler:2.7.2"]
                 ]
         ],
         "BaseCard"     : [

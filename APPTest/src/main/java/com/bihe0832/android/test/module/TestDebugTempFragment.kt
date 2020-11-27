@@ -1,6 +1,7 @@
 package com.bihe0832.android.test.module
 
 import android.view.View
+import com.bihe0832.android.app.about.AboutActivity
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.test.base.BaseTestFragment
@@ -14,6 +15,7 @@ class TestDebugTempFragment : BaseTestFragment() {
             add(TestItemData("简单测试函数", View.OnClickListener { testFunc() }))
             add(TestItemData("通用测试预处理", View.OnClickListener { preTest() }))
             add(TestItemData("测试自定义请求", View.OnClickListener { testOneRequest() }))
+            add(TestItemData("默认关于页", View.OnClickListener { startActivity(AboutActivity::class.java) }))
         }
     }
 
