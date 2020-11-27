@@ -44,9 +44,7 @@ ext.moduleInfo = [
         ],
         "Application"  : [
                 "apidependenciesList"    : [
-                        'com.bihe0832.android:framework:3.3.4',
-                        'com.bihe0832.android:common-webview:3.3.4',
-                        'com.bihe0832.android:common-feedback:3.3.4',
+                        'com.bihe0832.android:common-feedback:3.3.5',
                         'com.squareup.okhttp3:okhttp:3.9.1',
                         'com.squareup.okhttp3:logging-interceptor:3.8.0',
                         'com.squareup.retrofit2:retrofit:2.4.0',
