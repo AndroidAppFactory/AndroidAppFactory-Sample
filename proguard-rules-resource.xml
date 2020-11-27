@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resproguard>
+    <issue id="property">
+        
+        <!-- 是否保留资源文件夹目录名称，如果选false，例如res/drawable 会被压缩为 r/s-->
+        <keeproot value="false" />
+        <!-- V1版本的签名信息保存位置，建议不修改-->
+        <metaname value="META-INF" />
+        <!--是否开启7zip压缩，由于Android的V2签名的关系，建议关闭，不开启-->
+        <seventzip value="false" />
+    </issue>
+
+    <!-- 白名单，所有使用反射获取的资源都不能被混淆-->
+    <issue id="whitelist" isactive="true">
+    </issue>
+
+    <!-- mapping文件，类似代码混淆的mapping，保证不同版本混淆结果的一致性 -->
+    <issue id="keepmapping" isactive="false">
+        <path value="mapping_resource.txt" />
+    </issue>
+
+    <!-- 是否开启进一步压缩，建议开启 -->
+    <issue id="compress" isactive="true">
+        <path value="*.png" />
+        <path value="*.jpg" />
+        <path value="*.jpeg" />
+        <path value="*.gif" />
+        <path value="resources.arsc" />
+    </issue>
+
+    <!-- 签名相关的信息，因为涉及到安全，因此建议这部分内容不集成在混淆中，可以在混淆完成以后用命令行重新签名 -->
+    <issue id="sign" isactive="false"></issue>
+
+</resproguard>

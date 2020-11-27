@@ -44,3 +44,4 @@ gradle.properties
 # mac
 ######################
 .DS_Store
+bin
