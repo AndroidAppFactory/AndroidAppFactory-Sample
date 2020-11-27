@@ -1,5 +1,6 @@
 package com.bihe0832.android.test.module
 
+import android.content.Intent
 import android.os.Build
 import android.view.View
 import com.bihe0832.android.app.router.RouterConstants
@@ -25,7 +26,9 @@ open class TestDebugCommonFragment : BaseTestFragment() {
             add(TestItemData("查看设备信息", View.OnClickListener { showMobileInfo() }))
             add(TestItemData("查看第三方应用信息", View.OnClickListener { showOtherAPPInfo() }))
             add(TipsData("APPFactory支持的应用"))
-            add(TestItemData("应用信息获取", View.OnClickListener { RouterHelper.openPageByRouter(RouterConstants.ROUTRT_NAME_APK_LIST) }))
+            add(TestItemData("应用信息获取") {
+                startActivity("com.bihe0832.android.app.apk.MainActivity")
+            })
         }
     }
 
@@ -55,6 +58,19 @@ open class TestDebugCommonFragment : BaseTestFragment() {
         builder.append("Version: ${getVersionName()}.${getVersionCode()}\n")
         builder.append("Tag: ${ZixieContext.getVersionTag()}\n")
         showInfo("${APKUtils.getAppName(context)} $version 信息", builder.toString())
+    }
+
+    private fun startActivity(activityName: String) {
+        try {
+            val threadClazz = Class.forName(activityName)
+            val intent = Intent(context, threadClazz)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ZixieContext.showToast("请确认当前运行的测试模块是否包含该应用")
+        }
     }
 
     private fun showOtherAPPInfo() {

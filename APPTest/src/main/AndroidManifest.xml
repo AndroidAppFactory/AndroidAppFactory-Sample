@@ -16,6 +16,7 @@
         <activity
             android:name="com.bihe0832.android.test.TestMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/test_activity_name"
             android:screenOrientation="portrait"
             android:theme="@style/activityTheme">
             <intent-filter>

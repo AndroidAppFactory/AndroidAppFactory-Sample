@@ -2,14 +2,14 @@ package com.bihe0832.android.test.module
 
 import android.view.View
 import com.bihe0832.android.base.card.tips.TipsData
+import com.bihe0832.android.framework.router.RouterAction
 import com.bihe0832.android.lib.adapter.CardBaseModule
-import com.bihe0832.android.lib.router.Routers
 import com.bihe0832.android.test.base.BaseTestFragment
 import com.bihe0832.android.test.base.item.TestItemData
 
 class TestRouterFragment : BaseTestFragment() {
 
-    private inner class RouterItem(url: String) : TestItemData(url, View.OnClickListener { Routers.open(context, url) })
+    private inner class RouterItem(url: String) : TestItemData(url, View.OnClickListener { RouterAction.openFinalURL(url) })
 
     override fun getDataList(): ArrayList<CardBaseModule> {
         return ArrayList<CardBaseModule>().apply {
