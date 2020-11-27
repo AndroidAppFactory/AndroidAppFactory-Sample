@@ -110,7 +110,6 @@ mkdir $localPath/bin/temp
 echo "********APK build touch tag *******"
 echo -e "${version} info：\n-----------------------------\n\nVERSION_NAME=${version}\nVERSION_CODE=${version_code}\nTAG=${tag}\nDATETIME=${timeinfo}\nCOMMIT=${commitId}\nisCompletedBuild=${isCompletedBuild}\nisOfficial=${isOfficial}\n\n-----------------------------" >$localPath/bin/${tag}
 echo -e "${version} info：\n-----------------------------\n\nVERSION_NAME=${version}\nVERSION_CODE=${version_code}\nTAG=${tag}\nDATETIME=${timeinfo}\nCOMMIT=${commitId}\nisCompletedBuild=${isCompletedBuild}\nisOfficial=${isOfficial}\n\n-----------------------------" >$localPath/Application/src/main/assets/app.ini
-echo -e ${tag} >$localPath/TAG
 echo "********APK build modify version *******"
 
 # 修改版本号
