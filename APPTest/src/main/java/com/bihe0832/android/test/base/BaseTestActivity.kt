@@ -26,45 +26,21 @@ abstract class BaseTestActivity : CommonListActivity() {
         }
     }
 
-    val mDataList by lazy {
-        ArrayList<CardBaseModule>().apply {
-            addAll(getDataList())
+    private val mTestDataLiveData by lazy {
+        object : TestListLiveData() {
+            override fun fetchData() {
+                postValue(getDataList())
+            }
         }
     }
 
+    override fun getDataLiveData(): CommonListLiveData {
+        return mTestDataLiveData
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.decorView.setBackgroundColor(resources.getColor(R.color.white))
-    }
-
-    override fun getDataLiveData(): CommonListLiveData {
-        return object : CommonListLiveData() {
-            override fun fetchData() {
-                mDataList.addAll(getDataList())
-                postValue(mDataList)
-            }
-
-            override fun clearData() {
-                mDataList.clear()
-            }
-
-            override fun loadMore() {
-
-            }
-
-            override fun hasMore(): Boolean {
-                return false
-            }
-
-            override fun canRefresh(): Boolean {
-                return false
-            }
-
-            override fun getEmptyText(): String {
-                return ""
-            }
-        }
     }
 
     fun showInputDialog(titleName: String, msg: String, defaultValue: String, listener: InputDialogCompletedCallback) {
