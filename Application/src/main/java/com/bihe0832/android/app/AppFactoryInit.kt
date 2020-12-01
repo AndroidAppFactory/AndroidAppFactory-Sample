@@ -1,7 +1,9 @@
 package com.bihe0832.android.app
 
+import android.Manifest
 import android.content.Context
 import com.bihe0832.android.app.router.RouterHelper
+import com.bihe0832.android.lib.permission.PermissionManager
 
 /**
  *
@@ -21,6 +23,27 @@ object AppFactoryInit {
         if (!hasInit) {
             hasInit = true
             RouterHelper.initRouter()
+            initPermission()
         }
     }
+
+    fun initUserLoginRetBeforeGetUser(openid: String) {
+    }
+
+    private fun initPermission() {
+        PermissionManager.addPermissionDesc(
+                HashMap<String, String>().apply {
+                    put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "访问存储卡")
+                    put(Manifest.permission.READ_PHONE_STATE, "读取手机状态")
+                }
+        )
+
+        PermissionManager.addPermissionScene(
+                HashMap<String, String>().apply {
+                    put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "获取应用信息")
+                    put(Manifest.permission.READ_PHONE_STATE, "获取应用安装时间等")
+                }
+        )
+    }
+
 }

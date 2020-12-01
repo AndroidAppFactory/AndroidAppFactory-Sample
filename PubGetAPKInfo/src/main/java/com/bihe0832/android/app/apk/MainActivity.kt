@@ -1,5 +1,6 @@
 package com.bihe0832.android.app.apk
 
+import android.Manifest
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -42,6 +43,13 @@ class MainActivity : CommonListActivity() {
         initAdapter()
         showTips()
         UpdateManager.checkUpdateAndShowDialog(this, false)
+    }
+
+    override fun getPermissionList(): List<String> {
+        return mutableListOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_PHONE_STATE
+        )
     }
 
     override fun getLayoutManagerForList(): RecyclerView.LayoutManager {
@@ -128,8 +136,7 @@ class MainActivity : CommonListActivity() {
                         dismiss()
                     }
 
-                    override fun onCloseClick() {
-                        dismiss()
+                    override fun onCancel() {
                     }
                 })
                 setShouldCanceled(true)

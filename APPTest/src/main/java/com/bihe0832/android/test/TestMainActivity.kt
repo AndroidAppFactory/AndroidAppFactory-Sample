@@ -1,9 +1,12 @@
 package com.bihe0832.android.test
 
+import android.Manifest
 import android.os.Bundle
 import com.bihe0832.android.app.update.UpdateManager
+import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.ui.main.CommonActivity
 import com.bihe0832.android.lib.adapter.CardInfoHelper
+import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
 
@@ -15,6 +18,20 @@ class TestMainActivity : CommonActivity() {
         super.onCreate(savedInstanceState)
         initToolbar("AndroidAPPFactory", false)
         CardInfoHelper.getInstance().setAutoAddItem(true)
+
+        PermissionManager.addPermissionDesc(HashMap<String, String>().apply {
+            put(Manifest.permission.CAMERA, "相机")
+        })
+
+        PermissionManager.addPermissionScene(HashMap<String, String>().apply {
+            put(Manifest.permission.CAMERA, "扫描二维码")
+        })
+    }
+
+    override fun getPermissionList(): List<String> {
+        return ArrayList<String>().apply {
+            add(Manifest.permission.CAMERA)
+        }
     }
 
     override fun onResume() {
