@@ -34,6 +34,9 @@ open class AboutFragment : CommonListFragment() {
             add(getUpdate())
             add(getFeedback())
             add(getZixie())
+            if (!ZixieContext.isOfficial()) {
+                add(getDebug())
+            }
         }
     }
 
@@ -131,6 +134,16 @@ open class AboutFragment : CommonListFragment() {
                 if (!res) {
                     ZixieContext.showToastJustAPPFront(getString(R.string.contact_QQ_join_failed))
                 }
+            }
+        }
+    }
+
+    protected fun getDebug(): SettingsData {
+        return SettingsData("调试").apply {
+            mItemIconRes = R.mipmap.icon_author
+            mShowDriver = true
+            mHeaderListener = View.OnClickListener {
+                RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_DEBUG)
             }
         }
     }

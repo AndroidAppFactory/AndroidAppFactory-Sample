@@ -2,8 +2,8 @@ package com.bihe0832.android.test
 
 import android.Manifest
 import android.os.Bundle
+import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.update.UpdateManager
-import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.ui.main.CommonActivity
 import com.bihe0832.android.lib.adapter.CardInfoHelper
 import com.bihe0832.android.lib.permission.PermissionManager
@@ -11,7 +11,7 @@ import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
 
 @APPMain
-@Module("test")
+@Module(RouterConstants.MODULE_NAME_DEBUG)
 class TestMainActivity : CommonActivity() {
     val LOG_TAG = "TestHttpActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
