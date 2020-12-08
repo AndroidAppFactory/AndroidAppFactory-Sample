@@ -9,7 +9,10 @@ import com.bihe0832.android.test.base.item.TestItemData
 
 class TestRouterFragment : BaseTestFragment() {
 
-    private inner class RouterItem(url: String) : TestItemData(url, View.OnClickListener { RouterAction.openFinalURL(url) })
+    private inner class RouterItem(url: String) : TestItemData(url, View.OnClickListener {
+        RouterAction.openFinalURL(url)
+        showResult(url)
+    })
 
     override fun getDataList(): ArrayList<CardBaseModule> {
         return ArrayList<CardBaseModule>().apply {
