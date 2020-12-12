@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import com.bihe0832.android.app.getapk.R
 import com.bihe0832.android.app.router.RouterConstants
@@ -18,6 +19,7 @@ import com.bihe0832.android.framework.ui.list.CommonListLiveData
 import com.bihe0832.android.framework.ui.list.swiperefresh.CommonListActivity
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.debug.DebugTools
+import com.bihe0832.android.lib.immersion.hideBottomUIMenu
 import com.bihe0832.android.lib.lifecycle.INSTALL_TYPE_NOT_FIRST
 import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
@@ -43,6 +45,10 @@ class MainActivity : CommonListActivity() {
         initAdapter()
         showTips()
         UpdateManager.checkUpdateAndShowDialog(this, false)
+    }
+
+    override fun getStatusBarColor(): Int {
+        return ContextCompat.getColor(this, R.color.colorPrimary)
     }
 
     override fun getPermissionList(): List<String> {
@@ -132,7 +138,7 @@ class MainActivity : CommonListActivity() {
                         dismiss()
                     }
 
-                    override fun onNegtiveClick() {
+                    override fun onNegativeClick() {
                         dismiss()
                     }
 

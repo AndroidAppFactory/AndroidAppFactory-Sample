@@ -49,4 +49,6 @@ ext {
     android_arch_lifecycle_version = '1.1.1'
     android_arch_persistence_version = '1.1.1'
     robolectricVersion = '3.3.2'
+
+    aaf_version ='3.6.7'
 }

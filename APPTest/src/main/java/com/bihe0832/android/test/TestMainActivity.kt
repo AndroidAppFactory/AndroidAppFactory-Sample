@@ -2,10 +2,12 @@ package com.bihe0832.android.test
 
 import android.Manifest
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.update.UpdateManager
 import com.bihe0832.android.framework.ui.main.CommonActivity
 import com.bihe0832.android.lib.adapter.CardInfoHelper
+import com.bihe0832.android.lib.immersion.hideBottomUIMenu
 import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
@@ -26,6 +28,16 @@ class TestMainActivity : CommonActivity() {
         PermissionManager.addPermissionScene(HashMap<String, String>().apply {
             put(Manifest.permission.CAMERA, "扫描二维码")
         })
+        hideBottomUIMenu()
+    }
+
+    override fun getStatusBarColor(): Int {
+        return ContextCompat.getColor(this, R.color.colorPrimary)
+    }
+
+
+    override fun getNavigationBarColor(): Int {
+        return ContextCompat.getColor(this, R.color.transparent)
     }
 
     override fun getPermissionList(): List<String> {
