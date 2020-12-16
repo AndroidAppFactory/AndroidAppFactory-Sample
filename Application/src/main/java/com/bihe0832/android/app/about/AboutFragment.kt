@@ -57,12 +57,12 @@ open class AboutFragment : CommonListFragment() {
     open fun updateRedPoint(cloud: UpdateDataFromCloud?) {
         if (mDataList.size > 0) {
             (mDataList[0] as SettingsData).apply {
-                mItemIsNew = null != cloud && cloud.updateType > UpdateDataFromCloud.UPDATE_TYPE_HAS_NEW_JUMP
-                mShowGo = mItemIsNew
-                mTipsText = if (mItemIsNew) {
-                    "发现新版本"
-                } else {
-                    "当前已是最新版"
+                if(null != cloud && cloud.updateType > UpdateDataFromCloud.UPDATE_TYPE_HAS_NEW_JUMP){
+                    mTipsText = "发现新版本"
+                    mItemIsNew = true
+                }else{
+                    mTipsText = ""
+                    mItemIsNew = false
                 }
             }
             getAdapter().notifyDataSetChanged()
