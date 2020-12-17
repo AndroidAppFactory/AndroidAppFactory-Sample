@@ -21,7 +21,7 @@
             android:id="@+id/settings_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:src="@mipmap/icon"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/settings_title"
