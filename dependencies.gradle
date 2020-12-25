@@ -39,7 +39,7 @@ ext.moduleInfo = [
 
                 ],
                 "specialdependenciesList": [
-                        "kapt": ["com.bihe0832.android:lib-router-compiler:2.7.2"]
+                        "kapt": ["com.bihe0832.android:lib-router-compiler:${project.aaf_router_version}"]
                 ]
         ],
         "Application"  : [
@@ -49,10 +49,12 @@ ext.moduleInfo = [
                         'com.squareup.okhttp3:okhttp:3.9.1',
                         'com.squareup.okhttp3:logging-interceptor:3.8.0',
                         'com.squareup.retrofit2:retrofit:2.4.0',
-                        'com.squareup.retrofit2:converter-gson:2.4.0'
+                        'com.squareup.retrofit2:converter-gson:2.4.0',
+                        "org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}"
+
                 ],
                 "specialdependenciesList": [
-                        "kapt": ["com.bihe0832.android:lib-router-compiler:2.7.2"]
+                        "kapt": ["com.bihe0832.android:lib-router-compiler:${project.aaf_router_version}"]
                 ]
         ],
         "BaseCard"     : [
@@ -65,7 +67,7 @@ ext.moduleInfo = [
                         "BaseCard"
                 ],
                 "specialdependenciesList": [
-                        "kapt": ["com.bihe0832.android:lib-router-compiler:2.7.2"]
+                        "kapt": ["com.bihe0832.android:lib-router-compiler:${project.aaf_router_version}"]
                 ]
         ]
 ]

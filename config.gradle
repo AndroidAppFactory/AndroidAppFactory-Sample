@@ -50,5 +50,7 @@ ext {
     android_arch_persistence_version = '1.1.1'
     robolectricVersion = '3.3.2'
 
-    aaf_version ='3.6.7'
+    aaf_version ='3.7.9'
+    aaf_router_version = '3.7.9'
+
 }
