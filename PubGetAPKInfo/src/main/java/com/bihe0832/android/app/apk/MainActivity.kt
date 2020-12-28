@@ -19,7 +19,7 @@ import com.bihe0832.android.framework.ui.list.CommonListLiveData
 import com.bihe0832.android.framework.ui.list.swiperefresh.CommonListActivity
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.debug.DebugTools
-import com.bihe0832.android.lib.immersion.hideBottomUIMenu
+import com.bihe0832.android.lib.install.InstallUtils
 import com.bihe0832.android.lib.lifecycle.INSTALL_TYPE_NOT_FIRST
 import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
@@ -98,20 +98,29 @@ class MainActivity : CommonListActivity() {
 
     private fun initAdapter() {
         mAdapter.apply {
-            setOnItemClickListener { adapter, view, position ->
+            setOnItemChildClickListener { adapter, view, position ->
                 var temp = adapter.data[position] as APPItemData
-                if (temp.app_md5.isNullOrEmpty()) {
-                    ThreadManager.getInstance().start {
-                        try {
-
-                            packageManager.getApplicationInfo(temp.app_package, PackageManager.GET_SIGNATURES)?.let {
-                                temp.app_md5 = MD5.getFileMD5(it.sourceDir)
-                                view.post {
-                                    mAdapter.notifyDataSetChanged()
+                when (view.id) {
+                    R.id.app_layout -> {
+                        if (temp.app_md5.isNullOrEmpty()) {
+                            ThreadManager.getInstance().start {
+                                try {
+                                    packageManager.getApplicationInfo(temp.app_package, PackageManager.GET_SIGNATURES)?.let {
+                                        temp.app_md5 = MD5.getFileMD5(it.sourceDir)
+                                        view.post {
+                                            mAdapter.notifyDataSetChanged()
+                                        }
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
                                 }
                             }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+                        }
+                    }
+                    R.id.uninstall -> {
+                        InstallUtils.uninstallAPP(applicationContext, temp.app_package)
+                        view.post {
+                            mAdapter.notifyDataSetChanged()
                         }
                     }
                 }
