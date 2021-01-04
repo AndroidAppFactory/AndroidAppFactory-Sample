@@ -83,7 +83,7 @@ object UpdateManager {
                 }
             }
         }.let {
-            HTTPServer.getInstance().doRequest(it)
+            HTTPServer.getInstance().doRequestAsync(it)
         }
     }
 }

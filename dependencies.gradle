@@ -45,6 +45,7 @@ ext.moduleInfo = [
         "Application"  : [
                 "apidependenciesList"    : [
                         "com.bihe0832.android:common-feedback:${project.aaf_version}",
+                        "com.bihe0832.android:common-photos:${project.aaf_version}",
                         "com.bihe0832.android:framework:${project.aaf_version}",
                         'com.squareup.okhttp3:okhttp:3.9.1',
                         'com.squareup.okhttp3:logging-interceptor:3.8.0',
