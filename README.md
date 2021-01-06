@@ -8,13 +8,16 @@ AAF 是在开发过程中，基于组件化方案，逐渐积累的一套 Androi
 
 #### 相关链接
 
-- 主页：[https://android.bihe0832.com](https://android.bihe0832.com)
+- AAF 主页：[https://android.bihe0832.com](https://android.bihe0832.com)
+
+- AAF 项目事例：[https://android.bihe0832.com/samples/](https://android.bihe0832.com/samples/)
+
 
 - AAF 源码：[https://github.com/bihe0832/AndroidAppFactory](https://github.com/bihe0832/AndroidAppFactory)
 	
 	目前包含了所有公共的基础组件的源码。
 	
-- 方案介绍：[https://blog.bihe0832.com/android-dev-summary.html](https://blog.bihe0832.com/android-dev-summary.html)
+- AAF 方案介绍：[https://blog.bihe0832.com/android-dev-summary.html](https://blog.bihe0832.com/android-dev-summary.html)
 
 	完整的介绍了整个基于组件化的AAF开发方案。
 	
@@ -65,16 +68,3 @@ AndroidAppFactory Sample 是所有基于AAF开发的应用的集合。用于日�
 
 - 运行 `PubGetAPKInfo` 模块
 
-#### Demo 列表
-
-- PubGetAPKInfo
-
-	- 下载地址：
-		
-		https://github.com/bihe0832/AndroidAppFactory-Sample/releases/download/V1.0.0.1/ZAPK_V1.0.0_1_release.apk
-
-		<img alt="" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fmicrodemo.bihe0832.com%2FMyJS%2Frouter%2Fjump.html%3Fvalue%3Dhttps%253A%252F%252Fgithub.com%252Fbihe0832%252FAndroidAppFactory-Sample%252Freleases%252Fdownload%252FV1.0.0.1%252FZAPK_V1.0.0_1_release.apk" >
-
-	- UI 截图
-
-		<img alt="" src="./demo/getapkinfo.png" width="60%">
