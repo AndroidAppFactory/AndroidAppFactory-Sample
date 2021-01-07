@@ -60,14 +60,14 @@ ext.moduleInfo = [
                         "Application"
                 ]
         ],
-        "BasePuzzleGame"     : [
-                "apidependenciesList": [
-                        "BasePhotos"
-                ]
-        ],
         "BasePhotos"     : [
                 "apidependenciesList": [
                         "BaseCard"
+                ]
+        ],
+        "BasePuzzleGame"     : [
+                "apidependenciesList": [
+                        "BasePhotos"
                 ]
         ],
         "PubGetAPKInfo": [

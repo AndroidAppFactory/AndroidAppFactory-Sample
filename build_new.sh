@@ -24,3 +24,10 @@ if [ "$appNo"x = "1"x ];then
   /bin/bash ./build_apk.sh ZAPK PubGetAPKInfo com.bihe0832.getsignature com.bihe0832.android.app.Application
   checkResult
 fi
+
+
+#拼图APP
+if [ "$appNo"x = "2"x ];then
+  /bin/bash ./build_apk.sh ZPUZZLE PubPuzzleGame com.bihe0832.puzzle com.bihe0832.android.app.Application
+  checkResult
+fi
