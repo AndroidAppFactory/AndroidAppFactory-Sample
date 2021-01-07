@@ -1,0 +1,4 @@
+<resources>
+    <color name="puzzle_game_bg_color">#E2E2E4</color>
+    <color name="puzzle_game_bg_btn_color">#0099CC</color>
+</resources>

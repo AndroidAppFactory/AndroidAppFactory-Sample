@@ -39,20 +39,5 @@ TestDebugTempFragment : BaseTestFragment() {
 
     private fun testFunc() {
         ZLog.d("test")
-        try {
-            activity?.showPhotoChooser()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        ZLog.d("PhotoChooser", "in PhotoChooser onResult, $this, $requestCode, $resultCode, ${data?.data}")
-        if (requestCode == ZixieActivityRequestCode.TAKE_PHOTO) {
-            Photos.addPicToPhotos(context, activity!!.getDefaultPhoto().absolutePath)
-            activity?.cropPhoto(activity!!.getDefaultPhoto().absolutePath, activity!!.getPhotosFolder() + "a.jpg", 2)
-        }
     }
 }

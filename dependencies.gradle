@@ -4,9 +4,9 @@ def project = ext
 /************************************ 组件化开发常用配置 ************************************/
 /**
  * 当前开发中，最终运行的主工程，多个用 "," 分隔
- * 当前如果全量填"APPTest,PubGetAPKInfo"
+ * 当前如果全量填"APPTest,PubGetAPKInfo,PubPuzzleGame"
  */
-ext.mainProject = "APPTest,PubGetAPKInfo"
+ext.mainProject = "APPTest,PubGetAPKInfo,PubPuzzleGame"
 /**
  * 当前开发中，涉及到修改的工程（仅填写直接修改的即可，依赖他的会自动添加），多个用 "," 分隔。
  * 当前如果全量填"Application"
@@ -35,17 +35,14 @@ ext.moduleInfo = [
 
         "APPTest"      : [
                 "apidependenciesList"    : ["",
-                                            "Application", "BaseCard"
+                                            "Application", "BaseCard","BasePuzzleGame","BasePhotos"
 
-                ],
-                "specialdependenciesList": [
-                        "kapt": ["com.bihe0832.android:lib-router-compiler:${project.aaf_router_version}"]
                 ]
         ],
         "Application"  : [
                 "apidependenciesList"    : [
                         "com.bihe0832.android:common-feedback:${project.aaf_version}",
-                        "com.bihe0832.android:common-photos:${project.aaf_version}",
+                        "com.bihe0832.android:common-photos:3.8.6",
                         "com.bihe0832.android:framework:${project.aaf_version}",
                         'com.squareup.okhttp3:okhttp:3.9.1',
                         'com.squareup.okhttp3:logging-interceptor:3.8.0',
@@ -63,14 +60,28 @@ ext.moduleInfo = [
                         "Application"
                 ]
         ],
+        "BasePuzzleGame"     : [
+                "apidependenciesList": [
+                        "BasePhotos"
+                ]
+        ],
+        "BasePhotos"     : [
+                "apidependenciesList": [
+                        "BaseCard"
+                ]
+        ],
         "PubGetAPKInfo": [
                 "apidependenciesList"    : [
                         "BaseCard"
-                ],
-                "specialdependenciesList": [
-                        "kapt": ["com.bihe0832.android:lib-router-compiler:${project.aaf_router_version}"]
+                ]
+        ],
+        "PubPuzzleGame": [
+                "apidependenciesList"    : [
+                        "BasePuzzleGame","BaseCard"
                 ]
         ]
+
+
 ]
 
 

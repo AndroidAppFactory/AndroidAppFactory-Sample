@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp">
+
+        <TextView
+                android:id="@+id/game_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginLeft="32dp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                tools:text="当前模式：交换模式" />
+
+        <TextView
+                android:id="@+id/game_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/game_mode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/game_mode"
+                app:layout_constraintBottom_toBottomOf="@+id/game_mode"
+                android:layout_marginRight="32dp"
+                tools:text="当前难度：7级" />
+
+        <ImageView
+                android:id="@+id/image_preview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/game_mode"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="32dp"
+                tools:src="@mipmap/btn_restart" />
+
+
+        <com.bihe0832.android.base.puzzle.view.PuzzleLayout
+                android:id="@+id/puzzleLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/puzzle_game_bg_color"
+                android:padding="3dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_preview"
+                android:layout_marginTop="32dp" />
+
+        <Button
+                android:id="@+id/changeMode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/game_button_bg"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                app:layout_constraintTop_toBottomOf="@+id/puzzleLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/reduceLevel"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:text="切换模式" />
+
+        <Button
+                android:id="@+id/reduceLevel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/game_button_bg"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                app:layout_constraintStart_toEndOf="@+id/changeMode"
+                app:layout_constraintTop_toTopOf="@+id/changeMode"
+                app:layout_constraintBottom_toBottomOf="@+id/changeMode"
+                app:layout_constraintEnd_toStartOf="@id/addLevel"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+
+                android:text="降低难度" />
+
+        <Button
+                android:id="@+id/addLevel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/game_button_bg"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                app:layout_constraintStart_toEndOf="@+id/reduceLevel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/changeMode"
+                app:layout_constraintBottom_toBottomOf="@+id/changeMode"
+                android:layout_marginRight="32dp"
+                android:text="增加难度" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
