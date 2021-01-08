@@ -18,7 +18,7 @@ ext.developModule = "Application"
  * true 表示以 application 模式运行
  * false 表示以 Android Library 模式运行
  */
-ext.pubModuleIsApplication = true
+ext.pubModuleIsApplication = false
 /**
  * 是否将所有依赖了 developModule 的模块都加载进来。
  *  true 全都加载，
@@ -35,7 +35,7 @@ ext.moduleInfo = [
 
         "APPTest"      : [
                 "apidependenciesList"    : ["",
-                                            "Application", "BaseCard","BasePuzzleGame","BasePhotos"
+                                            "Application", "BaseCard","PubGetAPKInfo","PubGetAPKInfo"
 
                 ]
         ],

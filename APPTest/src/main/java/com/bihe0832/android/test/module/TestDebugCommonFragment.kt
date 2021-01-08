@@ -30,6 +30,10 @@ open class TestDebugCommonFragment : BaseTestFragment() {
             add(TestItemData("应用信息获取") {
                 startActivity("com.bihe0832.android.app.apk.MainActivity")
             })
+
+            add(TestItemData("来拼图") {
+                startActivity("com.bihe0832.android.app.puzzle.MainActivity")
+            })
         }
     }
 

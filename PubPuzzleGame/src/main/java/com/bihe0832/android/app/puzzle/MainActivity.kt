@@ -1,6 +1,5 @@
 package com.bihe0832.android.app.puzzle
 
-import android.Manifest
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Html
