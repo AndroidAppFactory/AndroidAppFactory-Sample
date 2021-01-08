@@ -55,12 +55,13 @@ class PuzzleGameMainFragment : BaseFragment() {
             }
 
             override fun onGameSuccess(level: Int, gameMode: GameMode) {
-                ThreadManager.getInstance().runOnUIThread{
+                ThreadManager.getInstance().runOnUIThread {
                     CommonDialog(context).apply {
                         title = "挑战成功"
-                        setHtmlContent("你已完成<b><font color='#38ADFF'" + gameMode.desc + "></font>的 $level 级</b>挑战，还要继续么？")
-                        negative = "提升难度"
+                        setHtmlContent("你已完成<b><font color='#38ADFF'> " + gameMode.desc + " </font>的 $level 级</b>挑战，要换张图继续么？")
+                        negative = "继续当前"
                         positive = "换张图"
+                        setShouldCanceled(true)
                         setOnClickBottomListener(object : OnDialogListener {
                             override fun onPositiveClick() {
                                 try {
@@ -73,7 +74,6 @@ class PuzzleGameMainFragment : BaseFragment() {
 
                             override fun onNegativeClick() {
                                 try {
-                                    PuzzleGameManager.addLevel()
                                     dismiss()
                                 } catch (e: Exception) {
                                     e.printStackTrace()
