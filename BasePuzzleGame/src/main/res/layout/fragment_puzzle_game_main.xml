@@ -59,7 +59,7 @@
 
         <Button
                 android:id="@+id/changeMode"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/game_button_bg"
                 android:textColor="@color/white"
@@ -74,7 +74,7 @@
 
         <Button
                 android:id="@+id/reduceLevel"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/game_button_bg"
                 android:textColor="@color/white"
@@ -84,14 +84,11 @@
                 app:layout_constraintTop_toTopOf="@+id/changeMode"
                 app:layout_constraintBottom_toBottomOf="@+id/changeMode"
                 app:layout_constraintEnd_toStartOf="@id/addLevel"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-
                 android:text="降低难度" />
 
         <Button
                 android:id="@+id/addLevel"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/game_button_bg"
                 android:textColor="@color/white"

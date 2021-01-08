@@ -57,10 +57,10 @@ class PuzzleGameMainFragment : BaseFragment() {
             override fun onGameSuccess(level: Int, gameMode: GameMode) {
                 ThreadManager.getInstance().runOnUIThread {
                     CommonDialog(context).apply {
-                        title = "挑战成功"
+                        title = getString(R.string.success_title)
                         setHtmlContent("你已完成<b><font color='#38ADFF'> " + gameMode.desc + " </font>的 $level 级</b>挑战，要换张图继续么？")
-                        negative = "继续当前"
-                        positive = "换张图"
+                        negative = getString(R.string.success_negative)
+                        positive = getString(R.string.success_positive)
                         setShouldCanceled(true)
                         setOnClickBottomListener(object : OnDialogListener {
                             override fun onPositiveClick() {
@@ -89,13 +89,13 @@ class PuzzleGameMainFragment : BaseFragment() {
             }
         })
         PuzzleGameManager.changeGameMode(GameMode.getGameMode(Config.readConfig(CONFIG_PUZZLE_MODE, GameMode.NORMAL.ordinal)))
-        PuzzleGameManager.changeGameLevel(Config.readConfig(CONFIG_PUZZLE_LEVEL, 3))
+        PuzzleGameManager.changeGameLevel(Config.readConfig(CONFIG_PUZZLE_LEVEL, 1))
         updateLevetText()
         updateGameModeText()
         updatePreviewImg()
         addLevel.setOnClickListener {
             if (PuzzleGameManager.getLevel() == PuzzleGameManager.getMaxLevel()) {
-                ZixieContext.showLongToastJustAPPFront("已到达最高等级")
+                ZixieContext.showLongToastJustAPPFront(getString(R.string.top_level))
                 it.isEnabled = false
             } else {
                 PuzzleGameManager.addLevel()
@@ -105,7 +105,7 @@ class PuzzleGameMainFragment : BaseFragment() {
 
         reduceLevel.setOnClickListener {
             if (PuzzleGameManager.getLevel() == PuzzleGameManager.getMinLevel()) {
-                ZixieContext.showLongToastJustAPPFront("已到达最低等级")
+                ZixieContext.showLongToastJustAPPFront(getString(R.string.bottom_level))
                 it.isEnabled = false
             } else {
                 PuzzleGameManager.reduceLevel()
@@ -128,10 +128,10 @@ class PuzzleGameMainFragment : BaseFragment() {
     }
 
     private fun updateLevetText() {
-        game_level.text = "难度等级：" + PuzzleGameManager.getLevel()
+        game_level.text = String.format(getString(R.string.game_level), PuzzleGameManager.getLevel())
     }
 
     private fun updateGameModeText() {
-        game_mode.text = "游戏模式：" + PuzzleGameManager.getGameMode().desc
+        game_mode.text = String.format(getString(R.string.game_mode), PuzzleGameManager.getGameMode().desc)
     }
 }
