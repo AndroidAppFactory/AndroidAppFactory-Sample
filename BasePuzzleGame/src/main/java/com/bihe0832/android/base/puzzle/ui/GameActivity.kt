@@ -2,6 +2,7 @@ package com.bihe0832.android.base.puzzle.ui
 
 import android.os.Bundle
 import com.bihe0832.android.app.router.RouterConstants
+import com.bihe0832.android.base.puzzle.PuzzleGameManager
 import com.bihe0832.android.base.puzzle.R
 import com.bihe0832.android.framework.ui.main.CommonActivity
 import com.bihe0832.android.lib.router.annotation.Module
@@ -10,7 +11,7 @@ import com.bihe0832.android.lib.router.annotation.Module
 class GameActivity : CommonActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar("游戏中", true)
+        initToolbar("拼图游戏中", true)
     }
 
     override fun onResume() {

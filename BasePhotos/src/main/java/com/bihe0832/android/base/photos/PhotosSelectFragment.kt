@@ -69,51 +69,68 @@ open class PhotosSelectFragment : CommonListFragment() {
             if (position < mDataList.size && mDataList.get(position) is IconTextData) {
                 when ((mDataList[position] as IconTextData).mIconID) {
                     ID_CAMERA -> {
-                        PermissionManager.checkPermission(context, false, object : PermissionManager.OnPermissionResult {
-                            override fun onFailed(msg: String) {
-                            }
-
-                            override fun onSuccess() {
-                                activity!!.takePhoto(activity!!.getDefaultPhoto())
-                            }
-
-                            override fun onUserCancel() {
-                            }
-
-                            override fun onUserDeny() {
-                            }
-
-                        }, *takePhotoPermission)
+                        takePhoto()
                     }
 
                     ID_PHOTO -> {
-                        PermissionManager.checkPermission(context, false, object : PermissionManager.OnPermissionResult {
-                            override fun onFailed(msg: String) {
-                            }
-
-                            override fun onSuccess() {
-                                activity!!.choosePhoto()
-                            }
-
-                            override fun onUserCancel() {
-                            }
-
-                            override fun onUserDeny() {
-                            }
-
-                        }, *selectPhotoPermission)
+                        choosePhoto()
                     }
 
                     ID_CLOUD -> {
-                        ZixieContext.showWaiting()
+                        cloudPhoto()
                     }
 
                     ID_CUSTOM -> {
-                        ZixieContext.showWaiting()
+                        customPhoto()
                     }
                 }
             }
         }
+    }
+
+    open fun takePhoto() {
+        PermissionManager.checkPermission(context, false, object : PermissionManager.OnPermissionResult {
+            override fun onFailed(msg: String) {
+            }
+
+            override fun onSuccess() {
+                activity!!.takePhoto(activity!!.getDefaultPhoto())
+            }
+
+            override fun onUserCancel() {
+            }
+
+            override fun onUserDeny() {
+            }
+
+        }, *takePhotoPermission)
+    }
+
+    open fun choosePhoto() {
+        PermissionManager.checkPermission(context, false, object : PermissionManager.OnPermissionResult {
+            override fun onFailed(msg: String) {
+            }
+
+            override fun onSuccess() {
+                activity!!.choosePhoto()
+            }
+
+            override fun onUserCancel() {
+            }
+
+            override fun onUserDeny() {
+            }
+
+        }, *selectPhotoPermission)
+    }
+
+    open fun cloudPhoto() {
+        ZixieContext.showWaiting()
+    }
+
+
+    open fun customPhoto() {
+        ZixieContext.showWaiting()
     }
 
     override fun getLayoutManagerForList(): RecyclerView.LayoutManager {

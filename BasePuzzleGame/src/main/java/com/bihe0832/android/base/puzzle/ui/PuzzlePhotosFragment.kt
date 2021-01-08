@@ -39,6 +39,10 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
         }
     }
 
+    override fun customPhoto() {
+        RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_PUZZLE_GAME)
+    }
+
     override fun getHorizontalFix(): Int {
         return 64
     }

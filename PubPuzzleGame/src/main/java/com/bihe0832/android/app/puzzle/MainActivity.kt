@@ -8,7 +8,9 @@ import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
 import com.bihe0832.android.base.puzzle.ui.PuzzlePhotosFragment
+import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.ui.BaseActivity
+import com.bihe0832.android.lib.lifecycle.INSTALL_TYPE_NOT_FIRST
 import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
 import kotlinx.android.synthetic.main.activity_puzzle_main.*
@@ -47,7 +49,9 @@ class MainActivity : BaseActivity() {
         if (findFragment(PuzzlePhotosFragment::class.java) == null) {
             loadRootFragment(R.id.common_fragment_content, PuzzlePhotosFragment())
         }
-        UpdateManager.checkUpdateAndShowDialog(this, false)
+        if(ZixieContext.isFirstStart() == INSTALL_TYPE_NOT_FIRST){
+            UpdateManager.checkUpdateAndShowDialog(this, false)
+        }
     }
 
 
