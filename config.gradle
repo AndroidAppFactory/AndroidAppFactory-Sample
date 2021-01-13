@@ -52,7 +52,7 @@ ext {
 
 
     aaf_router_version = '3.7.9'
-    aaf_version ='3.8.5'
+    aaf_version ='3.9.1'
 
     excludeList = [
             'META-INF/*.kotlin_module',

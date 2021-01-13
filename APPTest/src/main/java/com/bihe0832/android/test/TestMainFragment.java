@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bihe0832.android.base.photos.PhotosSelectFragment;
-import com.bihe0832.android.base.puzzle.ui.PuzzleGameMainFragment;
 import com.bihe0832.android.base.puzzle.ui.PuzzlePhotosFragment;
 import com.bihe0832.android.framework.ui.BaseFragment;
 import com.bihe0832.android.lib.utils.ConvertUtils;

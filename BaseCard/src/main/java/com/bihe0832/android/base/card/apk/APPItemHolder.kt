@@ -10,6 +10,7 @@ import com.bihe0832.android.base.card.R
 import com.bihe0832.android.lib.adapter.CardBaseHolder
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.install.InstallUtils
+import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.utils.DateUtil
 import com.bihe0832.android.lib.utils.encypt.MD5
@@ -52,8 +53,8 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
         app_package?.text = "应用包名：${data.app_package}"
         app_install?.text = "安装时间：${DateUtil.getDateEN(data.app_install_time)}"
         app_update?.text = "最后更新：${DateUtil.getDateEN(data.app_update_time)}"
-        app_md5?.text = Html.fromHtml("<B> APK MD5</B>：${data.app_md5}")
-        signature_md5?.text = Html.fromHtml("<B> 签名 MD5</B>：${data.signature_md5}")
+        app_md5?.text = TextFactoryUtils.getSpannedTextByHtml("<B> APK MD5</B>：${data.app_md5}")
+        signature_md5?.text = TextFactoryUtils.getSpannedTextByHtml("<B> 签名 MD5</B>：${data.signature_md5}")
     }
 
 }

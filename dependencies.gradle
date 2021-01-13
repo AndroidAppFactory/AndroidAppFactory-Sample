@@ -18,7 +18,7 @@ ext.developModule = "Application"
  * true 表示以 application 模式运行
  * false 表示以 Android Library 模式运行
  */
-ext.pubModuleIsApplication = false
+ext.pubModuleIsApplication = true
 /**
  * 是否将所有依赖了 developModule 的模块都加载进来。
  *  true 全都加载，
@@ -35,14 +35,15 @@ ext.moduleInfo = [
 
         "APPTest"      : [
                 "apidependenciesList"    : ["",
-                                            "Application", "BaseCard","PubGetAPKInfo","PubGetAPKInfo"
+                                            "Application", "BaseCard","BasePuzzleGame"
 
                 ]
         ],
         "Application"  : [
                 "apidependenciesList"    : [
                         "com.bihe0832.android:common-feedback:${project.aaf_version}",
-                        "com.bihe0832.android:common-photos:3.8.6",
+                        "com.bihe0832.android:common-photos:${project.aaf_version}",
+                        "com.bihe0832.android:common-splash:${project.aaf_version}",
                         "com.bihe0832.android:framework:${project.aaf_version}",
                         'com.squareup.okhttp3:okhttp:3.9.1',
                         'com.squareup.okhttp3:logging-interceptor:3.8.0',

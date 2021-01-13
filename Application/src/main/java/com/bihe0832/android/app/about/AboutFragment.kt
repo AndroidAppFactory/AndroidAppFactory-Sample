@@ -32,6 +32,7 @@ open class AboutFragment : CommonListFragment() {
     open fun getDataList(): ArrayList<CardBaseModule> {
         return ArrayList<CardBaseModule>().apply {
             add(getUpdate())
+            add(getVersionList())
             add(getFeedback())
             add(getZixie())
             if (!ZixieContext.isOfficial()) {
@@ -98,6 +99,27 @@ open class AboutFragment : CommonListFragment() {
         }
     }
 
+    protected fun getVersionList(): SettingsData {
+        return SettingsData("版本介绍").apply {
+            mItemIconRes = R.mipmap.icon_help
+            mHeaderTextBold = true
+            mShowDriver = true
+            mShowGo = true
+            mHeaderListener = View.OnClickListener {
+                getString(R.string.version_url).let {url->
+                    if(url.isNullOrEmpty()){
+                        ZixieContext.showWaiting()
+                    }else{
+                        val map = HashMap<String, String>()
+                        map[RouterConstants.INTENT_EXTRA_KEY_WEB_URL] = Uri.encode(url)
+                        RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_WEB_PAGE, map)
+                    }
+                }
+            }
+        }
+    }
+
+
     protected fun getUpdate(): SettingsData {
         return SettingsData("版本更新").apply {
             mItemIconRes = R.mipmap.icon_update
@@ -121,7 +143,7 @@ open class AboutFragment : CommonListFragment() {
             mHeaderListener = View.OnClickListener {
                 val map = HashMap<String, String>()
                 map[RouterConstants.INTENT_EXTRA_KEY_WEB_URL] = Uri.encode(getString(R.string.feedback_url))
-                RouterHelper.openPageRouter(RouterConstants.MODULE_NAME_FEEDBACK, map)
+                RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_FEEDBACK, map)
             }
         }
     }

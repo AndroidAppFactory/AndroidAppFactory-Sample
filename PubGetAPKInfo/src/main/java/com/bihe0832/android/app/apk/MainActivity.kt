@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import com.bihe0832.android.app.getapk.R
 import com.bihe0832.android.app.router.RouterConstants
-import com.bihe0832.android.app.router.RouterConstants.ROUTRT_NAME_APK_LIST
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
 import com.bihe0832.android.base.card.apk.APPItemData
@@ -31,7 +30,7 @@ import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.encypt.MD5
 
 @APPMain
-@Module(ROUTRT_NAME_APK_LIST)
+@Module(RouterConstants.ROUTRT_NAME_APK_LIST)
 class MainActivity : CommonListActivity() {
     var hasShowTips = false
     override fun onCreate(savedInstanceState: Bundle?) {
