@@ -1,5 +1,5 @@
 <resources>
-
+    <string name="app_desc">努力学技术，潜心做精品</string>
     <string name="about">关于我们</string>
     <string name="feedback_qq">2217661422</string>
     <string name="feedback_url">https://support.qq.com/product/290858</string>

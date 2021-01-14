@@ -1,6 +1,4 @@
 <resources>
-
-    <string name="app_desc">消磨时间的利器，锻炼脑力的神器</string>
     <string name="update_url">https://cdn.bihe0832.com/app/update/get_puzzle.json</string>
     <string name="version_url">https://cdn.bihe0832.com/app/help/zpuzzle.html</string>
 </resources>
