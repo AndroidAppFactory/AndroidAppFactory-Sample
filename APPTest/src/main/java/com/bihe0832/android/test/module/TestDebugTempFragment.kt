@@ -1,19 +1,12 @@
 package com.bihe0832.android.test.module
 
-import android.content.Intent
 import android.view.View
 import com.bihe0832.android.app.about.AboutActivity
-import com.bihe0832.android.common.photos.cropPhoto
-import com.bihe0832.android.common.photos.getDefaultPhoto
-import com.bihe0832.android.common.photos.getPhotosFolder
-import com.bihe0832.android.common.photos.showPhotoChooser
-import com.bihe0832.android.framework.constant.ZixieActivityRequestCode
+import com.bihe0832.android.common.test.base.BaseTestFragment
+import com.bihe0832.android.common.test.item.TestItemData
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.log.ZLog
-import com.bihe0832.android.lib.ui.photos.Photos
 import com.bihe0832.android.lib.utils.intent.IntentUtils
-import com.bihe0832.android.test.base.BaseTestFragment
-import com.bihe0832.android.test.base.item.TestItemData
 
 
 class

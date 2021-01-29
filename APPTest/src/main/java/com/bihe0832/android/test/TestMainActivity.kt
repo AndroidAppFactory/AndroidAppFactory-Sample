@@ -49,7 +49,7 @@ class TestMainActivity : CommonActivity() {
     override fun onResume() {
         super.onResume()
         if (findFragment(TestMainFragment::class.java) == null) {
-            loadRootFragment(R.id.common_fragment_content, TestMainFragment.newInstance(0))
+            loadRootFragment(R.id.common_fragment_content, TestMainFragment())
         }
         UpdateManager.checkUpdateAndShowDialog(this, false)
 //        hideBottomUIMenu()

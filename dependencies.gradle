@@ -35,7 +35,8 @@ ext.moduleInfo = [
 
         "APPTest"      : [
                 "apidependenciesList"    : ["",
-                                            "Application", "BaseCard","BasePuzzleGame"
+                                            "com.bihe0832.android:common-test:3.10.2",
+                                            "Application","BaseCard",
 
                 ]
         ],
