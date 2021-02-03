@@ -6,7 +6,10 @@ import com.bihe0832.android.common.test.base.BaseTestFragment
 import com.bihe0832.android.common.test.item.TestItemData
 import com.bihe0832.android.framework.router.RouterAction
 import com.bihe0832.android.lib.adapter.CardBaseModule
+<<<<<<< HEAD
 
+=======
+>>>>>>> AAF更新
 
 class TestRouterFragment : BaseTestFragment() {
 

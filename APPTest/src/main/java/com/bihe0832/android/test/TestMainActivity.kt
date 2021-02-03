@@ -15,7 +15,6 @@ import com.bihe0832.android.lib.router.annotation.Module
 @APPMain
 @Module(RouterConstants.MODULE_NAME_DEBUG)
 class TestMainActivity : CommonActivity() {
-    val LOG_TAG = "TestHttpActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar("TestMainActivity", false)

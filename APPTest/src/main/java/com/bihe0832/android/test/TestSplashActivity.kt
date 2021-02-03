@@ -9,7 +9,6 @@ import com.bihe0832.android.lib.router.annotation.Module
 @Module(RouterConstants.MODULE_NAME_SPLASH)
 class TestSplashActivity : SplashActivity() {
 
-
     override fun getMainRouter(): String {
         return RouterConstants.MODULE_NAME_DEBUG
     }

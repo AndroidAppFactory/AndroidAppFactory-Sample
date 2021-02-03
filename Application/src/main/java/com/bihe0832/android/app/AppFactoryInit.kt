@@ -3,6 +3,8 @@ package com.bihe0832.android.app
 import android.Manifest
 import android.content.Context
 import com.bihe0832.android.app.router.RouterHelper
+import com.bihe0832.android.framework.ZixieContext
+import com.bihe0832.android.lib.download.wrapper.DownloadUtils
 import com.bihe0832.android.lib.permission.PermissionManager
 
 /**
@@ -24,6 +26,7 @@ object AppFactoryInit {
             hasInit = true
             RouterHelper.initRouter()
             initPermission()
+            DownloadUtils.init(ctx, 5, null, ZixieContext.isDebug())
         }
     }
 
