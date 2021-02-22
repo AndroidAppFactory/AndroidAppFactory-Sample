@@ -36,7 +36,7 @@ ext.moduleInfo = [
         "APPTest"       : [
                 "apidependenciesList": ["",
                                         "com.bihe0832.android:common-test:${project.aaf_version}",
-                                        "Application", "BaseCard", "PubM3U8"
+                                        "Application", "BaseCard"
                 ]
         ],
         "Application"   : [
