@@ -30,7 +30,7 @@ import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.encypt.MD5
 
 @APPMain
-@Module(RouterConstants.ROUTRT_NAME_APK_LIST)
+@Module(RouterConstants.MODULE_NAME_APK_LIST)
 class MainActivity : CommonListActivity() {
     var hasShowTips = false
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/common_toolbar"
+            style="@style/frameWorkAppTheme.Toolbar.Light"
+            app:title="HTTP Request" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:background="@color/windowBackground">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/titleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:lineHeight="24dp"
+                    android:text="M3U8文件下载：" />
+
+            <EditText
+                    android:id="@+id/urlText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:ems="10"
+                    android:hint="请输入需要下载的视频的m3u8文件"
+                    android:inputType="textPersonName" />
+
+            <Button
+                    android:id="@+id/parseIndex"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/abc_action_button_min_height_material"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="解析M3U8" />
+
+            <Button
+                    android:id="@+id/downloadPart"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/abc_action_button_min_height_material"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="下载分片" />
+
+            <Button
+                    android:id="@+id/mergePart"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/abc_action_button_min_height_material"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="合并视频 " />
+
+            <Button
+                    android:id="@+id/openVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/abc_action_button_min_height_material"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="打开视频" />
+
+            <Button
+                    android:id="@+id/addToPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/abc_action_button_min_height_material"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="添加到相册" />
+
+            <TextView
+                    android:id="@+id/tips"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="10dp"
+                    android:lineSpacingMultiplier="1.25"
+                    android:maxLines="10"
+                    android:text="下载提示："
+                    android:textColor="@color/colorPrimaryText" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

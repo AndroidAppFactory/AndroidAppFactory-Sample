@@ -1,4 +1,4 @@
-package com.bihe0832.android.base.test;
+package com.bihe0832.android.base.m3u8.bean;
 
 import com.bihe0832.android.lib.file.FileUtils;
 
@@ -70,14 +70,10 @@ public class M3U8Info {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("m3u8URL: " + m3u8URL);
-        sb.append("\nbaseURL: " + baseURL);
-        sb.append("\nfileSize: " + getFileSize());
-        sb.append("\ntotalTime: " + totalTime);
-
-        for (M3U8TSInfo ts : tsList) {
-            sb.append("\nts: " + ts);
-        }
+        sb.append("待下载视频信息: \n");
+        sb.append("m3u8URL: ").append(m3u8URL).append("\n");
+        sb.append("baseURL: ").append(baseURL).append("\n");
+        sb.append("分片数量: ").append(tsList.size());
         return sb.toString();
     }
 

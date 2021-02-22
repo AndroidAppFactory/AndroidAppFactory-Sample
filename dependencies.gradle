@@ -4,9 +4,9 @@ def project = ext
 /************************************ 组件化开发常用配置 ************************************/
 /**
  * 当前开发中，最终运行的主工程，多个用 "," 分隔
- * 当前如果全量填"APPTest,PubGetAPKInfo,PubPuzzleGame"
+ * 当前如果全量填"APPTest"
  */
-ext.mainProject = "APPTest,PubGetAPKInfo,PubPuzzleGame"
+ext.mainProject = "APPTest,PubGetAPKInfo,PubM3U8"
 /**
  * 当前开发中，涉及到修改的工程（仅填写直接修改的即可，依赖他的会自动添加），多个用 "," 分隔。
  * 当前如果全量填"Application"
@@ -36,7 +36,7 @@ ext.moduleInfo = [
         "APPTest"       : [
                 "apidependenciesList": ["",
                                         "com.bihe0832.android:common-test:${project.aaf_version}",
-                                        "Application", "BaseCard", "BaseTest"
+                                        "Application", "BaseCard", "BaseM3U8"
                 ]
         ],
         "Application"   : [
@@ -67,6 +67,11 @@ ext.moduleInfo = [
                         "Application"
                 ]
         ],
+        "BaseM3U8"      : [
+                "apidependenciesList": [
+                        "Application"
+                ]
+        ],
         "BasePhotos"    : [
                 "apidependenciesList": [
                         "BaseCard"
@@ -85,6 +90,11 @@ ext.moduleInfo = [
         "PubPuzzleGame" : [
                 "apidependenciesList": [
                         "BasePuzzleGame", "BaseCard"
+                ]
+        ],
+        "PubM3U8" : [
+                "apidependenciesList": [
+                        "BaseM3U8"
                 ]
         ]
 

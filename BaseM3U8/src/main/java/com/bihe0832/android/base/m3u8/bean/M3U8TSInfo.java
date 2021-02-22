@@ -1,4 +1,4 @@
-package com.bihe0832.android.base.test;
+package com.bihe0832.android.base.m3u8.bean;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -21,7 +21,6 @@ public class M3U8TSInfo implements Comparable<M3U8TSInfo> {
         this.m3u8TSURL = m3u8TSURL;
         this.m3u8TSKeyURL = key;
         this.seconds = seconds;
-
     }
 
     public String getM3u8TSURL() {
