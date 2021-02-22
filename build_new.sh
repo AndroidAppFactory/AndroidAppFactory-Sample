@@ -31,3 +31,9 @@ if [ "$appNo"x = "2"x ];then
   /bin/bash ./build_apk.sh ZPUZZLE PubPuzzleGame com.bihe0832.puzzle com.bihe0832.android.app.Application
   checkResult
 fi
+
+#M3u8 APP
+if [ "$appNo"x = "3"x ];then
+  /bin/bash ./build_apk.sh ZM3U8 PubM3U8 com.bihe0832.m3u8 com.bihe0832.android.app.Application
+  checkResult
+fi

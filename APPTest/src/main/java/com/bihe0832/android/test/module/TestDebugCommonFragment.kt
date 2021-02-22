@@ -22,6 +22,11 @@ open class TestDebugCommonFragment : com.bihe0832.android.common.test.module.Tes
             add(TestItemData("来拼图") {
                 startActivity("com.bihe0832.android.app.puzzle.MainActivity")
             })
+
+            add(TestItemData("M3U8下载器") {
+                startActivity("com.bihe0832.android.app.m3u8.MainActivity")
+            })
+
         }
     }
 }
