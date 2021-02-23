@@ -48,13 +48,6 @@ class MainActivity : BaseActivity() {
         if (findFragment(PuzzlePhotosFragment::class.java) == null) {
             loadRootFragment(R.id.common_fragment_content, PuzzlePhotosFragment())
         }
-        if(ZixieContext.isFirstStart() == INSTALL_TYPE_NOT_FIRST){
-            UpdateManager.checkUpdateAndShowDialog(this, false)
-        }
-    }
-
-
-    override fun onBackPressedSupport() {
-        super.onBackPressedSupport()
+        UpdateManager.checkUpdateAndShowDialog(this, false)
     }
 }
