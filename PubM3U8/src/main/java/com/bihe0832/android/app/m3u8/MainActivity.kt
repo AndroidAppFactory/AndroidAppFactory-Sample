@@ -25,5 +25,4 @@ class MainActivity : com.bihe0832.android.base.m3u8.M3u8DownloadActivity() {
             }
         }
     }
-
 }

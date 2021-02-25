@@ -19,12 +19,9 @@
             android:paddingRight="8dp"
             android:background="@color/windowBackground">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
                 android:orientation="vertical">
 
             <TextView
@@ -35,18 +32,60 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="16dp"
                     android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:lineHeight="24dp"
                     android:text="M3U8文件下载：" />
 
+
+            <TextView
+                    android:id="@+id/urlTextTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/titleText"
+                    android:lineHeight="24dp"
+                    android:text="M3U8：" />
+
             <EditText
                     android:id="@+id/urlText"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:ems="10"
+                    android:hint="请输入需要下载的视频的m3u8文件"
+                    app:layout_constraintStart_toStartOf="@+id/baseURl"
+                    app:layout_constraintTop_toBottomOf="@+id/titleText"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                    android:id="@+id/baseURlTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/urlText"
+                    android:lineHeight="24dp"
+                    android:text="BaseURL：" />
+
+            <EditText
+                    android:id="@+id/baseURl"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:ems="10"
-                    android:hint="请输入需要下载的视频的m3u8文件"
-                    android:inputType="textPersonName" />
+                    android:hint="请输入需要下载的视频前缀"
+                    app:layout_constraintStart_toEndOf="@+id/baseURlTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/urlText"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
             <Button
                     android:id="@+id/parseIndex"
@@ -54,7 +93,10 @@
                     android:layout_height="@dimen/abc_action_button_min_height_material"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="解析M3U8" />
+                    android:layout_marginTop="32dp"
+                    android:text="解析M3U8"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/baseURl"/>
 
             <Button
                     android:id="@+id/downloadPart"
@@ -62,7 +104,9 @@
                     android:layout_height="@dimen/abc_action_button_min_height_material"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="下载分片" />
+                    android:text="下载分片"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/parseIndex"/>
 
             <Button
                     android:id="@+id/mergePart"
@@ -70,7 +114,9 @@
                     android:layout_height="@dimen/abc_action_button_min_height_material"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="合并视频 " />
+                    android:text="合并视频 "
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/downloadPart"/>
 
             <Button
                     android:id="@+id/openVideo"
@@ -78,7 +124,9 @@
                     android:layout_height="@dimen/abc_action_button_min_height_material"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="打开视频" />
+                    android:text="打开视频"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mergePart"/>
 
             <Button
                     android:id="@+id/addToPhoto"
@@ -86,7 +134,9 @@
                     android:layout_height="@dimen/abc_action_button_min_height_material"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="添加到相册" />
+                    android:text="添加到相册"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/openVideo"/>
 
             <TextView
                     android:id="@+id/tips"
@@ -98,8 +148,10 @@
                     android:lineSpacingMultiplier="1.25"
                     android:maxLines="10"
                     android:text="下载提示："
-                    android:textColor="@color/colorPrimaryText" />
+                    android:textColor="@color/colorPrimaryText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/addToPhoto"/>
 
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </LinearLayout>

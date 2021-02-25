@@ -73,7 +73,10 @@ public class M3U8Info {
         sb.append("待下载视频信息: \n");
         sb.append("m3u8URL: ").append(m3u8URL).append("\n");
         sb.append("baseURL: ").append(baseURL).append("\n");
-        sb.append("分片数量: ").append(tsList.size());
+        sb.append("分片数量: ").append(tsList.size()).append("\n");
+        if(tsList.size() > 0 ){
+            sb.append("第一分片信息: ").append(tsList.get(0).toString());
+        }
         return sb.toString();
     }
 

@@ -11,6 +11,7 @@ import android.text.TextWatcher
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.framework.ui.BaseActivity
+import com.bihe0832.android.lib.config.Config
 import com.bihe0832.android.lib.download.DownloadItem
 import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
@@ -39,6 +40,7 @@ open class M3u8DownloadActivity : BaseActivity() {
         initGuide()
         reset()
         initM3u8URL()
+        updateBaseURL()
         initActionView()
     }
 
@@ -68,7 +70,7 @@ open class M3u8DownloadActivity : BaseActivity() {
             val m3u8URL = if (intent?.extras?.containsKey(RouterConstants.INTENT_EXTRA_KEY_WEB_URL) == true) {
                 intent.extras.getString(RouterConstants.INTENT_EXTRA_KEY_WEB_URL)
             } else {
-                ""
+                Config.readConfig(this@M3u8DownloadActivity.javaClass.name + "URL", "")
             }
             setText(m3u8URL)
             setSingleLine()
@@ -82,22 +84,34 @@ open class M3u8DownloadActivity : BaseActivity() {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     reset()
+                    updateBaseURL()
+
                 }
 
                 override fun afterTextChanged(s: Editable?) {
+                    Config.writeConfig(this@M3u8DownloadActivity.javaClass.name + "URL", getM3U8URL())
                 }
             })
         }
 
+
+    }
+
+    private fun updateBaseURL() {
+        baseURl.apply {
+            setText(getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1))
+        }
     }
 
     private fun initGuide() {
         titleText.apply {
             this.text = TextFactoryUtils.getSpannedTextByHtml(
                     "<big><b>使用说明：</b></big><BR>" +
-                            "1. 在下方<b>输入框<font color='#182B37'>输入</font>视频m3u8文件</b>对应链接<BR>" +
-                            "2. 逐步<b><font color='#182B37'>点击</font> 解析M3U8、下载分片、合并视频</b>，完成视频下载与合并<BR>" +
-                            "3. 即使没有下载完成所有分片，也可执行合并操作，此时会将已下载分片合并"
+                            "1. 在下方<b>M3U8 输入框<font color='#182B37'>输入</font>视频m3u8文件</b>对应链接<BR>" +
+                            "2. 在下方<b>BaseURL 输入框<font color='#182B37'>输入</font>视频分片</b>的公共链接<BR>" +
+                            "3. 逐步<b><font color='#182B37'>点击</font> 解析M3U8、下载分片、合并视频</b>，完成视频下载与合并<BR>" +
+                            "4. 即使没有下载完成所有分片，也可执行合并操作，此时会暂停下载并将已下载分片合并" +
+                            "5. 如果下载过程中出现异常，可以在下载结束以后再次点击<b><font color='#182B37'>点击</font>下载分片</b>"
             )
         }
     }
@@ -228,7 +242,7 @@ open class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun getBaseURL(): String {
-        return getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1)
+        return baseURl.text.toString()
     }
 
     private fun getBasePath(): String {
