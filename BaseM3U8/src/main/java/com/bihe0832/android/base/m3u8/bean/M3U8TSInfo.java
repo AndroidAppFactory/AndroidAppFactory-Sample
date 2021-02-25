@@ -52,22 +52,6 @@ public class M3U8TSInfo implements Comparable<M3U8TSInfo> {
     }
 
 
-    public String getFullUrl(String baseURL, String path) {
-        if (TextUtils.isEmpty(path)) {
-            return "";
-        }
-        if (path.startsWith("http")) {
-            return path;
-        } else if (path.startsWith("//")) {
-            return "http:".concat(path);
-        } else {
-            if (baseURL.endsWith("/")) {
-                return baseURL + path;
-            } else {
-                return baseURL + "/" + path;
-            }
-        }
-    }
 
     @Override
     public int compareTo(@NonNull M3U8TSInfo o) {

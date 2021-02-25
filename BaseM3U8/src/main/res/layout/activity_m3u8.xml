@@ -88,15 +88,26 @@
                     app:layout_constraintEnd_toEndOf="parent"/>
 
             <Button
+                android:id="@+id/downloadIndex"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/abc_action_button_min_height_material"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="32dp"
+                android:text="下载M3U8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/baseURl"/>
+
+
+            <Button
                     android:id="@+id/parseIndex"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/abc_action_button_min_height_material"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="32dp"
                     android:text="解析M3U8"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/baseURl"/>
+                    app:layout_constraintTop_toBottomOf="@+id/downloadIndex"/>
 
             <Button
                     android:id="@+id/downloadPart"

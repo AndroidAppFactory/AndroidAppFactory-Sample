@@ -26,6 +26,7 @@ import com.bihe0832.android.lib.ui.media.Media
 import com.bihe0832.android.lib.utils.encypt.MD5
 import kotlinx.android.synthetic.main.activity_m3u8.*
 import java.io.File
+import java.io.InputStream
 
 
 open class M3u8DownloadActivity : BaseActivity() {
@@ -118,8 +119,9 @@ open class M3u8DownloadActivity : BaseActivity() {
 
 
     private fun initActionView() {
-        parseIndex.setOnClickListener {
-            if (!TextUtils.isEmpty(getM3U8URL()) && URLUtils.isHTTPUrl(getM3U8URL()) && getM3U8URL().endsWith("m3u8")) {
+
+        downloadIndex.setOnClickListener {
+            if (!TextUtils.isEmpty(getM3U8URL()) && URLUtils.isHTTPUrl(getM3U8URL())) {
                 var finalPath = getDownloadPath() + FileUtils.getFileName(getM3U8URL())
                 if (File(finalPath).exists()) {
                     File(finalPath).delete()
@@ -127,13 +129,23 @@ open class M3u8DownloadActivity : BaseActivity() {
                 showResult("开始解析:${getM3U8URL()}")
                 DownloadFile.startDownload(this, getM3U8URL(), finalPath, object : SimpleDownloadListener() {
                     override fun onComplete(filePath: String, item: DownloadItem) {
-                        m3u8Info = M3U8Tools.parseIndex(getM3U8URL(), getBaseURL(), filePath)
-                        M3U8Tools.generateLocalM3U8(getDownloadPath(), m3u8Info)
-                        ThreadManager.getInstance().runOnUIThread {
-                            showResult("解析成功\n$m3u8Info")
-                            downloadPart.isEnabled = true
-                            mergePart.isEnabled = true
+                        try {
+                            val inputStream: InputStream = File(filePath).inputStream()
+                            inputStream.bufferedReader().useLines { lines ->
+                                lines.forEach {
+                                    var line = it
+                                    if (line.contains("m3u8")) {
+                                        showResult("下载失败，M3U8地址已发生变化，请再次点击下载。原M3U8内容为${FileUtils.getFileContent(filePath)}")
+                                        urlText.setText(M3U8Tools.getFullUrl(getBaseURL(), line))
+                                    } else {
+                                        showResult("下载成功，点击解析M3U8开始解析：$filePath")
+                                    }
+                                }
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
+
                     }
 
                     override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
@@ -146,6 +158,19 @@ open class M3u8DownloadActivity : BaseActivity() {
 
                 })
             }
+        }
+
+        parseIndex.setOnClickListener {
+            var finalPath = getDownloadPath() + FileUtils.getFileName(getM3U8URL())
+            if (File(finalPath).exists()) {
+                File(finalPath).delete()
+            }
+            showResult("开始解析:${getM3U8URL()}")
+            m3u8Info = M3U8Tools.parseIndex(getM3U8URL(), getBaseURL(), finalPath)
+            M3U8Tools.generateLocalM3U8(getDownloadPath(), m3u8Info)
+            showResult("解析成功\n$m3u8Info")
+            downloadPart.isEnabled = true
+            mergePart.isEnabled = true
         }
 
         downloadPart.setOnClickListener {
@@ -259,7 +284,7 @@ open class M3u8DownloadActivity : BaseActivity() {
 
     private fun getFinalFilePath(): String {
         val finalOutPutFile = Environment.getExternalStorageDirectory().absolutePath + File.separator + "zixie" + File.separator + "pictures" + File.separator + "m3u8" + File.separator + MD5.getMd5(getM3U8URL()) + ".mp4"
-        FileUtils.checkAndCreateFolder(finalOutPutFile)
+        FileUtils.checkAndCreateFolder(File(finalOutPutFile).parentFile.absolutePath)
         return finalOutPutFile
     }
 

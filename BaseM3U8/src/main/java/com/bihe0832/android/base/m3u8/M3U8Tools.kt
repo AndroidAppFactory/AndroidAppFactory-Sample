@@ -102,10 +102,10 @@ object M3U8Tools {
         DownloadUtils.addDownloadListener(downItem)
         info.tsList.forEach {
             downItem.addNewItem(it.localFileName)
-            DownloadFile.startDownload(context!!, it.getFullUrl(baseURL, it.m3u8TSURL), fileDir + it.localFileName, null)
+            DownloadFile.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSURL), fileDir + it.localFileName, null)
             if (!TextUtils.isEmpty(it.m3u8TSKeyURL)) {
                 downItem.addNewItem(it.localFileName)
-                DownloadFile.startDownload(context!!, it.getFullUrl(baseURL, it.m3u8TSKeyURL), fileDir + it.localKeyName, null)
+                DownloadFile.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSKeyURL), fileDir + it.localKeyName, null)
 
             }
         }
@@ -216,5 +216,22 @@ object M3U8Tools {
             return
         }
         return listener.onComplete()
+    }
+
+    fun getFullUrl(baseURL: String, path: String): String {
+        if (TextUtils.isEmpty(path)) {
+            return ""
+        }
+        return if (path.startsWith("http")) {
+            path
+        } else if (path.startsWith("//")) {
+            "http:$path"
+        } else {
+            if (baseURL.endsWith("/")) {
+                baseURL + path
+            } else {
+                "$baseURL/$path"
+            }
+        }
     }
 }
