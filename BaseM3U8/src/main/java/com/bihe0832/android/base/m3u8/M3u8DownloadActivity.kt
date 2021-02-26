@@ -135,7 +135,7 @@ open class M3u8DownloadActivity : BaseActivity() {
                                 lines.forEach {
                                     var line = it
                                     if (line.contains("m3u8")) {
-                                        showResult("<b>下载失败，M3U8地址已发生变化，请再次<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${FileUtils.getFileContent(filePath)}")
+                                        showResult("<b>下载失败，M3U8地址已发生变化，请再次点击<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${FileUtils.getFileContent(filePath)}")
                                         urlText.setText(M3U8Tools.getFullUrl(getBaseURL(), line))
                                         return
                                     }
