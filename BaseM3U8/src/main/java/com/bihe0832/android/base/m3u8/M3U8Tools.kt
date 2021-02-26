@@ -9,6 +9,7 @@ import com.bihe0832.android.lib.download.DownloadItem
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.FileUtils
+import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.timer.BaseTask
 import com.bihe0832.android.lib.timer.TaskManager
@@ -184,26 +185,32 @@ object M3U8Tools {
             for (i in 0 until a.tsList.size) {
                 try {
                     var ts = a.tsList[i]
-                    val fileInputStream = FileInputStream(File(m3u8Dir + ts.m3u8TSURL))
-                    val b = ByteArray(4096)
-                    var size = -1
-                    val byteArrayOutputStream = ByteArrayOutputStream()
-                    while (fileInputStream.read(b, 0, b.size)?.also { size = it } != -1) {
-                        byteArrayOutputStream.write(b, 0, size)
-                    }
-                    fileInputStream.close()
-                    val bytes: ByteArray = byteArrayOutputStream.toByteArray()
-                    byteArrayOutputStream.close()
+                    File(m3u8Dir + ts.m3u8TSURL).let { file->
+                        ZLog.d("分片信息：$ts")
+                        if(file.exists()){
+                            val fileInputStream = FileInputStream(file)
+                            val b = ByteArray(4096)
+                            var size = -1
+                            val byteArrayOutputStream = ByteArrayOutputStream()
+                            while (fileInputStream.read(b, 0, b.size)?.also { size = it } != -1) {
+                                byteArrayOutputStream.write(b, 0, size)
+                            }
+                            fileInputStream.close()
+                            val bytes: ByteArray = byteArrayOutputStream.toByteArray()
+                            byteArrayOutputStream.close()
 
-                    var newbyte = if (!TextUtils.isEmpty(ts.m3u8TSKeyURL)) {
-                        AESUtils.decryptWithoutIV(FileUtils.getFileContent(m3u8Dir + ts.m3u8TSKeyURL).toByteArray(), bytes)
-                    } else {
-                        bytes
+                            var newbyte = if (!TextUtils.isEmpty(ts.m3u8TSKeyURL)) {
+                                AESUtils.decryptWithoutIV(FileUtils.getFileContent(m3u8Dir + ts.m3u8TSKeyURL).toByteArray(), bytes)
+                            } else {
+                                bytes
+                            }
+                            if (newbyte != null) {
+                                fileOutputStream.write(newbyte)
+                            }
+                            listener.onProcess(i, a.tsList.size)
+                        }
                     }
-                    if (newbyte != null) {
-                        fileOutputStream.write(newbyte)
-                    }
-                    listener.onProcess(i, a.tsList.size)
+
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
                 }
