@@ -108,11 +108,11 @@ open class M3u8DownloadActivity : BaseActivity() {
         titleText.apply {
             this.text = TextFactoryUtils.getSpannedTextByHtml(
                     "<big><b>使用说明：</b></big><BR>" +
-                            "1. 在下方<b>M3U8 输入框<font color='#182B37'>输入</font>视频m3u8文件</b>对应链接<BR>" +
-                            "2. 在下方<b>BaseURL 输入框<font color='#182B37'>输入</font>视频分片</b>的公共链接<BR>" +
-                            "3. 逐步<b><font color='#182B37'>点击</font> 解析M3U8、下载分片、合并视频</b>，完成视频下载与合并<BR>" +
+                            "1. 在下方<b>M3U8 输入框<font color='#8e44ad'>输入</font>视频m3u8文件</b>对应链接<BR>" +
+                            "2. 在下方<b>BaseURL 输入框<font color='#8e44ad'>输入</font>视频分片</b>的公共链接<BR>" +
+                            "3. 逐步<b><font color='#8e44ad'>点击</font> 解析M3U8、下载分片、合并视频</b>，完成视频下载与合并<BR>" +
                             "4. 即使没有下载完成所有分片，也可执行合并操作，此时会暂停下载并将已下载分片合并" +
-                            "5. 如果下载过程中出现异常，可以在下载结束以后再次点击<b><font color='#182B37'>点击</font>下载分片</b>"
+                            "5. 如果下载过程中出现异常，可以在下载结束以后再次点击<b><font color='#8e44ad'>点击</font>下载分片</b>"
             )
         }
     }
@@ -126,7 +126,7 @@ open class M3u8DownloadActivity : BaseActivity() {
                 if (File(finalPath).exists()) {
                     File(finalPath).delete()
                 }
-                showResult("开始解析:${getM3U8URL()}")
+                showResult("<b><font color='#8e44ad'>开始下载</font></b>：${getM3U8URL()}")
                 DownloadFile.startDownload(this, getM3U8URL(), finalPath, object : SimpleDownloadListener() {
                     override fun onComplete(filePath: String, item: DownloadItem) {
                         try {
@@ -135,13 +135,13 @@ open class M3u8DownloadActivity : BaseActivity() {
                                 lines.forEach {
                                     var line = it
                                     if (line.contains("m3u8")) {
-                                        showResult("下载失败，M3U8地址已发生变化，请再次点击下载。原M3U8内容为${FileUtils.getFileContent(filePath)}")
+                                        showResult("<b>下载失败，M3U8地址已发生变化，请再次<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${FileUtils.getFileContent(filePath)}")
                                         urlText.setText(M3U8Tools.getFullUrl(getBaseURL(), line))
-                                    } else {
-                                        showResult("下载成功，点击解析M3U8开始解析：$filePath")
+                                        return
                                     }
                                 }
                             }
+                            showResult("<b>下载成功，点击<font color='#8e44ad'>解析M3U8</font></b> 开始解析 $filePath<BR>：${FileUtils.getFileContent(filePath)} ")
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -149,7 +149,7 @@ open class M3u8DownloadActivity : BaseActivity() {
                     }
 
                     override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
-                        showResult("解析失败（$errorCode）：$msg")
+                        showResult("<b>下载失败</b>（$errorCode）：$msg")
                     }
 
                     override fun onProgress(item: DownloadItem) {
@@ -162,13 +162,10 @@ open class M3u8DownloadActivity : BaseActivity() {
 
         parseIndex.setOnClickListener {
             var finalPath = getDownloadPath() + FileUtils.getFileName(getM3U8URL())
-            if (File(finalPath).exists()) {
-                File(finalPath).delete()
-            }
-            showResult("开始解析:${getM3U8URL()}")
+            showResult("<b>开始解析</b>：${getM3U8URL()} $finalPath")
             m3u8Info = M3U8Tools.parseIndex(getM3U8URL(), getBaseURL(), finalPath)
             M3U8Tools.generateLocalM3U8(getDownloadPath(), m3u8Info)
-            showResult("解析成功\n$m3u8Info")
+            showResult("<b>解析成功</b><BR>$m3u8Info")
             downloadPart.isEnabled = true
             mergePart.isEnabled = true
         }
@@ -179,7 +176,7 @@ open class M3u8DownloadActivity : BaseActivity() {
                 override fun onFail(errorCode: Int, msg: String) {
 
                     ThreadManager.getInstance().runOnUIThread {
-                        showResult("下载异常（$errorCode）：$msg")
+                        showResult("<b>下载异常</b>（$errorCode）：$msg")
                     }
                 }
 
@@ -189,7 +186,7 @@ open class M3u8DownloadActivity : BaseActivity() {
 
                 override fun onProcess(finished: Int, total: Int) {
                     ThreadManager.getInstance().runOnUIThread {
-                        showResult("分片下载中，共 $total 分片，当前已完成：$finished 分片")
+                        showResult("<b>分片下载</b>中，共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
                     }
                 }
             })
@@ -211,9 +208,9 @@ open class M3u8DownloadActivity : BaseActivity() {
                 override fun onComplete() {
                     ThreadManager.getInstance().runOnUIThread {
                         if (!TextUtils.isEmpty(getFinalFilePath())) {
-                            showResult("视频合并已经完成，保存地址为：${getFinalFilePath()}")
+                            showResult("<b>视频合并已经完成</b>，保存地址为：${getFinalFilePath()}")
                         } else {
-                            showResult("合并失败")
+                            showResult("<b>合并失败</b>")
                         }
                         mergePart.isEnabled = true
                         openVideo.isEnabled = true
@@ -223,7 +220,7 @@ open class M3u8DownloadActivity : BaseActivity() {
 
                 override fun onProcess(finished: Int, total: Int) {
                     ThreadManager.getInstance().runOnUIThread {
-                        showResult("共 $total 分片，当前已完成：$finished 分片")
+                        showResult("共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
                     }
                 }
             })
@@ -289,6 +286,6 @@ open class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun showResult(tipsText: String) {
-        runOnUiThread { tips.text = "下载提示：\n$tipsText" }
+        runOnUiThread { tips.text = TextFactoryUtils.getSpannedTextByHtml("下载提示：<BR> $tipsText")}
     }
 }
