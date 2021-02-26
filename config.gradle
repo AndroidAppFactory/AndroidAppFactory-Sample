@@ -52,7 +52,7 @@ ext {
 
 
     aaf_router_version = '3.7.9'
-    aaf_version ='3.11.17'
+    aaf_version ='3.11.18'
 
 
     excludeList = [

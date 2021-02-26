@@ -6,10 +6,10 @@ import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.download.DownloadItem
-import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.FileUtils
+import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.timer.BaseTask
 import com.bihe0832.android.lib.timer.TaskManager
 import com.bihe0832.android.lib.utils.encypt.AESUtils
@@ -100,44 +100,47 @@ object M3U8Tools {
             }
         }
         DownloadUtils.addDownloadListener(downItem)
-        info.tsList.forEach {
-            downItem.addNewItem(it.localFileName)
-            DownloadFile.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSURL), fileDir + it.localFileName, null)
-            if (!TextUtils.isEmpty(it.m3u8TSKeyURL)) {
+        ThreadManager.getInstance().start {
+            info.tsList.forEach {
                 downItem.addNewItem(it.localFileName)
-                DownloadFile.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSKeyURL), fileDir + it.localKeyName, null)
+                startDownload(context!!, getFullUrl(baseURL, it.m3u8TSURL), fileDir + it.localFileName)
+                if (!TextUtils.isEmpty(it.m3u8TSKeyURL)) {
+                    downItem.addNewItem(it.localFileName)
+                    startDownload(context!!, getFullUrl(baseURL, it.m3u8TSKeyURL), fileDir + it.localKeyName)
 
+                }
             }
-        }
-        TaskManager.getInstance().addTask(object : BaseTask() {
+            TaskManager.getInstance().addTask(object : BaseTask() {
 
-            override fun getMyInterval(): Int {
-                return 2 * 1
-            }
+                override fun getMyInterval(): Int {
+                    return 2 * 1
+                }
 
-            override fun getNextEarlyRunTime(): Int {
-                return 0
-            }
+                override fun getNextEarlyRunTime(): Int {
+                    return 0
+                }
 
-            override fun run() {
-                var finished = 0
-                downItem.downloadItemList().values.forEach {
-                    if (it) {
-                        finished++
+                override fun run() {
+                    var finished = 0
+                    downItem.downloadItemList().values.forEach {
+                        if (it) {
+                            finished++
+                        }
+                    }
+                    listener.onProcess(finished, downItem.downloadItemList().size)
+                    if (finished == downItem.downloadItemList().size) {
+                        ZixieContext.showToast("下载完成")
+                        listener.onComplete()
+                        TaskManager.getInstance().removeTask(NAME)
                     }
                 }
-                listener.onProcess(finished, downItem.downloadItemList().size)
-                if (finished == downItem.downloadItemList().size) {
-                    ZixieContext.showToast("下载完成")
-                    listener.onComplete()
-                    TaskManager.getInstance().removeTask(NAME)
-                }
-            }
 
-            override fun getTaskName(): String {
-                return NAME
-            }
-        })
+                override fun getTaskName(): String {
+                    return NAME
+                }
+            })
+        }
+
     }
 
     fun cancleDownload() {
@@ -233,5 +236,16 @@ object M3U8Tools {
                 "$baseURL/$path"
             }
         }
+    }
+
+    private fun startDownload(context: Context, url: String, filePath: String) {
+        DownloadUtils.startDownload(context, DownloadItem().apply {
+            downloadURL = url
+            if (!TextUtils.isEmpty(filePath)) {
+                fileNameWithPath = filePath
+            }
+            isDownloadWhenUseMobile = true
+            setCanDownloadByPart(false)
+        }, false)
     }
 }

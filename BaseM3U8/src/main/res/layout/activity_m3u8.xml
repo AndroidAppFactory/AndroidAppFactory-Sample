@@ -158,10 +158,10 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginRight="10dp"
                     android:lineSpacingMultiplier="1.25"
-                    android:maxLines="10"
                     android:text="下载提示："
                     android:textColor="@color/colorPrimaryText"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/addToPhoto"/>
 
         </android.support.constraint.ConstraintLayout>
