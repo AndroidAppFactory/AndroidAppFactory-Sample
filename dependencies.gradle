@@ -6,7 +6,7 @@ def project = ext
  * 当前开发中，最终运行的主工程，多个用 "," 分隔
  * 当前如果全量填"APPTest"
  */
-ext.mainProject = "APPTest,PubGetAPKInfo,PubM3U8"
+ext.mainProject = "APPTest"
 /**
  * 当前开发中，涉及到修改的工程（仅填写直接修改的即可，依赖他的会自动添加），多个用 "," 分隔。
  * 当前如果全量填"Application"
@@ -24,7 +24,7 @@ ext.pubModuleIsApplication = true
  *  true 全都加载，
  *  false 仅加载与 mainProject 相关的模块
  */
-ext.includeALLDependOnDevelopModule = false
+ext.includeALLDependOnDevelopModule = true
 /**
  * 组件所有模块的最新版本
  */

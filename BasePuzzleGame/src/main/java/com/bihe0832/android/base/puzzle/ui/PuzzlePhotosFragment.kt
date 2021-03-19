@@ -12,7 +12,6 @@ import com.bihe0832.android.common.photos.getPhotosFolder
 import com.bihe0832.android.framework.constant.ZixieActivityRequestCode
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.ui.image.BitmapUtil
-import com.bihe0832.android.lib.ui.photos.Photos
 
 /**
  * Created by hardyshi on 16/6/30.
@@ -21,7 +20,7 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(RESULT_OK == resultCode){
+        if (RESULT_OK == resultCode) {
             ZLog.d("PhotoChooser", "in PhotoChooser onResult, $this, $requestCode, $resultCode, ${data?.data}")
             val finalPic = activity!!.getPhotosFolder() + "crop_puzzle.jpg"
             when (requestCode) {
