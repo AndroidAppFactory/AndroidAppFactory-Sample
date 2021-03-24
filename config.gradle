@@ -51,8 +51,8 @@ ext {
     robolectricVersion = '3.3.2'
 
 
-    aaf_router_version = '3.7.9'
-    aaf_version ='3.11.24'
+    aaf_router_version = '4.1.0'
+    aaf_version ='4.1.0'
 
 
     excludeList = [
