@@ -17,12 +17,12 @@
             android:layout_height="match_parent"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
+            android:paddingBottom="32dp"
             android:background="@color/windowBackground">
 
         <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="32dp"
                 android:orientation="vertical">
 
             <TextView

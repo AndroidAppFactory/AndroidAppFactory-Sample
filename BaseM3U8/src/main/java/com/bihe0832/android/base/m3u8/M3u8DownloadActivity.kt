@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
+import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.ui.BaseActivity
 import com.bihe0832.android.lib.config.Config
 import com.bihe0832.android.lib.download.DownloadItem
@@ -286,6 +287,8 @@ open class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun showResult(tipsText: String) {
-        runOnUiThread { tips.text = TextFactoryUtils.getSpannedTextByHtml("下载提示：<BR> $tipsText")}
+        runOnUiThread {
+            tips.text = TextFactoryUtils.getSpannedTextByHtml("下载提示：<BR> $tipsText <BR><BR>")
+        }
     }
 }
