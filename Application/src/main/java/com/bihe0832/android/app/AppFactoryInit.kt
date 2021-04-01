@@ -28,7 +28,6 @@ object AppFactoryInit {
             RouterHelper.initRouter()
             initPermission()
             DownloadUtils.init(ctx, 5, null, ZixieContext.isDebug())
-            CommonDBManager.init(ctx)
         }
     }
 
