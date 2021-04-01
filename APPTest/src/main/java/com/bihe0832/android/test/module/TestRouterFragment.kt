@@ -25,6 +25,8 @@ class TestRouterFragment : BaseTestFragment() {
             add(RouterItem("zixie://feedback?url=https%3A%2F%2Fsupport.qq.com%2Fproduct%2F290858"))
             add(RouterItem("zixie://babout"))
             add(RouterItem("zixie://m3u8"))
+            add(RouterItem("zixie://m3u8list"))
+
         }
     }
 
