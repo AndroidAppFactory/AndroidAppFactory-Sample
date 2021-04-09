@@ -14,6 +14,7 @@ open class TestDebugCommonFragment : com.bihe0832.android.common.test.module.Tes
             add(TestItemData("查看使用情况", View.OnClickListener { showUsedInfo() }))
             add(TestItemData("查看设备信息", View.OnClickListener { showMobileInfo() }))
             add(TestItemData("查看第三方应用信息", View.OnClickListener { showOtherAPPInfo() }))
+            add(TestItemData("选择并发送日志文件", View.OnClickListener { sendLog() }))
             add(TestTipsData("APPFactory支持的应用"))
             add(TestItemData("应用信息获取") {
                 startActivity("com.bihe0832.android.app.apk.MainActivity")
