@@ -10,7 +10,7 @@ import com.bihe0832.android.lib.sqlite.BaseDBHelper;
 class M3U8InfoDBHelper extends BaseDBHelper {
     private static final String DB_NAME = "zixie_m3u8";
 
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     M3U8InfoDBHelper(Context ctx) {
         super(ctx, DB_NAME, DB_VERSION);

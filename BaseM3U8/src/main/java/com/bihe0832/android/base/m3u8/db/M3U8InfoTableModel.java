@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class M3U8InfoTableModel extends BaseTableModel {
-    static final String TABLE_NAME = "common_info";
+    static final String TABLE_NAME = "m3u8_info";
 
     private static final String col_id = "id";
     private static final String col_url = "url";
@@ -22,7 +22,7 @@ class M3U8InfoTableModel extends BaseTableModel {
     static final String TABLE_CREATE_SQL = "CREATE TABLE IF NOT EXISTS ["
             + TABLE_NAME
             + "] ("
-            + "[" + col_id + "] INT  UNIQUE NOT NULL,"
+            + "[" + col_id + "] INTEGER PRIMARY KEY AUTOINCREMENT,"
             + "[" + col_url + "] NVARCHAR(128)  NULL,"
             + "[" + col_base_url + "] VARCHAR(256)  NULL,"
             + "[" + col_create_at + "] TIMESTAMP  NULL,"

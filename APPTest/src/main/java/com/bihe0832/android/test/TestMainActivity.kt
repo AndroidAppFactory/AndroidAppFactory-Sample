@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.update.UpdateManager
+import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.framework.ui.main.CommonActivity
 import com.bihe0832.android.lib.adapter.CardInfoHelper
 import com.bihe0832.android.lib.immersion.hideBottomUIMenu
 import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
+import com.bihe0832.android.lib.sqlite.impl.CommonDBManager
 
 @APPMain
 @Module(RouterConstants.MODULE_NAME_DEBUG)
@@ -28,6 +30,9 @@ class TestMainActivity : CommonActivity() {
             put(Manifest.permission.CAMERA, "扫描二维码")
         })
         hideBottomUIMenu()
+        M3U8DBManager.init(this)
+        CommonDBManager.init(this)
+
     }
 
     override fun getStatusBarColor(): Int {
