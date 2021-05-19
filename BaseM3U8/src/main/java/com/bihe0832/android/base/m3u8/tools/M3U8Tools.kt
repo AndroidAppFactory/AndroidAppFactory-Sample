@@ -30,6 +30,7 @@ object M3U8Tools {
         return M3U8Info().apply {
             this.baseURL = baseURL
             this.m3u8URL = m3u8URL
+            this.downloadTime = System.currentTimeMillis()
             try {
                 val inputStream: InputStream = File(filePath).inputStream()
                 var seconds = 0f
@@ -186,9 +187,9 @@ object M3U8Tools {
             for (i in 0 until a.tsList.size) {
                 try {
                     var ts = a.tsList[i]
-                    File(m3u8Dir + ts.m3u8TSURL).let { file->
+                    File(m3u8Dir + ts.m3u8TSURL).let { file ->
                         ZLog.d("分片信息：$ts")
-                        if(file.exists()){
+                        if (file.exists()) {
                             val fileInputStream = FileInputStream(file)
                             val b = ByteArray(4096)
                             var size = -1

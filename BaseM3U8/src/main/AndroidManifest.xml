@@ -13,5 +13,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/activityTheme">
         </activity>
+
+        <activity
+            android:name="com.bihe0832.android.base.m3u8.M3u8DownloadActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/activityTheme">
+        </activity>
     </application>
 </manifest>

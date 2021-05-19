@@ -51,6 +51,7 @@ class M3U8InfoTableModel extends BaseTableModel {
                 cursor.moveToFirst();
                 info.setM3u8URL(getStringByName(cursor, col_url));
                 info.setBaseURL(getStringByName(cursor, col_base_url));
+                info.setDownloadTime(getLongByName(cursor, col_update_at));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,6 +74,7 @@ class M3U8InfoTableModel extends BaseTableModel {
                 M3U8Info info = new M3U8Info();
                 info.setM3u8URL(getStringByName(cursor, col_url));
                 info.setBaseURL(getStringByName(cursor, col_base_url));
+                info.setDownloadTime(getLongByName(cursor, col_update_at));
                 dataList.add(info);
             }
             if (cursor != null) {

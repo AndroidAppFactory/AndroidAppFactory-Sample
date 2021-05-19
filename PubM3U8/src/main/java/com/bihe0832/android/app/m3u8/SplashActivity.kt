@@ -16,6 +16,10 @@ class SplashActivity : SplashActivity() {
     }
 
     override fun getMainRouter(): String {
-        return RouterConstants.MODULE_NAME_M3U8
+        if(M3U8DBManager.getAll().isNotEmpty()){
+            return RouterConstants.MODULE_NAME_MAIN
+        }else{
+            return RouterConstants.MODULE_NAME_M3U8
+        }
     }
 }

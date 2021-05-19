@@ -1,19 +1,14 @@
 package com.bihe0832.android.base.card.apk
 
 import android.content.Context
-import android.content.pm.PackageManager
-import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bihe0832.android.base.card.R
 import com.bihe0832.android.lib.adapter.CardBaseHolder
 import com.bihe0832.android.lib.adapter.CardBaseModule
-import com.bihe0832.android.lib.install.InstallUtils
 import com.bihe0832.android.lib.text.TextFactoryUtils
-import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.utils.DateUtil
-import com.bihe0832.android.lib.utils.encypt.MD5
 
 /**
  * @author hardyshi code@bihe0832.com
@@ -33,10 +28,10 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
 
     override fun initView() {
         app_icon = getView(R.id.app_icon)
-        app_name = getView(R.id.app_name)
+        app_name = getView(R.id.title_info)
         app_version = getView(R.id.app_version)
-        app_package = getView(R.id.app_package)
-        app_install = getView(R.id.app_install)
+        app_package = getView(R.id.download_url)
+        app_install = getView(R.id.local_path)
         app_update = getView(R.id.app_update)
         app_md5 = getView(R.id.app_md5)
         signature_md5 = getView(R.id.signature_md5)

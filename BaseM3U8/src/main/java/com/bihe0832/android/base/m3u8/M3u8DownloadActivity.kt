@@ -11,7 +11,6 @@ import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.base.m3u8.tools.M3U8Tools
-import com.bihe0832.android.framework.constant.Constants
 import com.bihe0832.android.framework.ui.BaseActivity
 import com.bihe0832.android.lib.config.Config
 import com.bihe0832.android.lib.download.DownloadItem
@@ -22,36 +21,39 @@ import com.bihe0832.android.lib.file.ZixieFileProvider
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.request.URLUtils
+import com.bihe0832.android.lib.router.annotation.Module
 import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.ui.media.Media
-import kotlinx.android.synthetic.main.activity_m3u8.*
+import kotlinx.android.synthetic.main.m3u8_activity_download.*
 import java.io.File
 import java.io.InputStream
 import java.net.URLDecoder
-import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets
 
-
+@Module(RouterConstants.MODULE_NAME_M3U8)
 open class M3u8DownloadActivity : BaseActivity() {
 
     private var m3u8Info: M3U8Info = M3U8Info()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_m3u8)
-        initToolbarAction()
-        initPermission()
-
+        setContentView(R.layout.m3u8_activity_download)
+        initToolbar(R.id.common_toolbar, "M3U8视频下载器", true)
         initGuide()
-        reset()
-        initM3u8URL()
-        updateBaseURL()
+        initPermission()
         initActionView()
+
+        reset()
+
+        initM3u8URL()
+
+        getLocalIndexFile().let {
+            if (FileUtils.checkFileExist(it)) {
+                parseM3U8InfoWithLocalIndex(it)
+            }
+        }
+
     }
 
-    open fun initToolbarAction() {
-        initToolbar(R.id.common_toolbar, "M3U8视频下载器", false, R.mipmap.ic_menu_white)
-    }
 
     override fun getPermissionList(): List<String> {
         return ArrayList<String>().apply {
@@ -75,7 +77,7 @@ open class M3u8DownloadActivity : BaseActivity() {
             val m3u8URL = if (intent?.extras?.containsKey(RouterConstants.INTENT_EXTRA_KEY_WEB_URL) == true) {
                 URLDecoder.decode(intent.extras.getString(RouterConstants.INTENT_EXTRA_KEY_WEB_URL))
             } else {
-                Config.readConfig(this@M3u8DownloadActivity.javaClass.name + "URL", "")
+                ""
             }
             setText(m3u8URL)
             setSingleLine()
@@ -92,27 +94,39 @@ open class M3u8DownloadActivity : BaseActivity() {
                 }
 
                 override fun afterTextChanged(s: Editable?) {
-                    Config.writeConfig(this@M3u8DownloadActivity.javaClass.name + "URL", getM3U8URL())
                 }
             })
         }
 
 
         baseURl.apply {
-            val baseURL = if (intent?.extras?.containsKey(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL) == true) {
+            setText(if (intent?.extras?.containsKey(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL) == true) {
                 URLDecoder.decode(intent.extras.getString(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL))
             } else {
                 getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1)
-            }
-            setText(baseURL)
+            })
         }
 
     }
 
     private fun updateBaseURL() {
-        baseURl.apply {
-            setText(getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1))
+        if(TextUtils.isEmpty(baseURl.text)){
+            baseURl.setText(getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1))
         }
+    }
+
+    private fun getLocalIndexFile(): String {
+        return M3U8ModuleManager.getDownloadPath(getM3U8URL()) + FileUtils.getFileName(getM3U8URL())
+    }
+
+    private fun parseM3U8InfoWithLocalIndex(finalPath: String) {
+        showResult("<b>开始解析</b>：${getM3U8URL()} $finalPath")
+        m3u8Info = M3U8Tools.parseIndex(getM3U8URL(), getBaseURL(), finalPath)
+        updateBaseURL()
+        M3U8Tools.generateLocalM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info)
+        showResult("<b>解析成功</b><BR>$m3u8Info")
+        downloadPart.isEnabled = true
+        mergePart.isEnabled = true
     }
 
     private fun initGuide() {
@@ -128,6 +142,26 @@ open class M3u8DownloadActivity : BaseActivity() {
         }
     }
 
+    private fun reset() {
+        m3u8Info = M3U8Info()
+        downloadPart.isEnabled = false
+        baseURl.apply { setText("") }
+    }
+
+    private fun getM3U8URL(): String {
+        return urlText.text.toString()
+    }
+
+    private fun getBaseURL(): String {
+        return baseURl.text.toString()
+    }
+
+
+    private fun showResult(tipsText: String) {
+        runOnUiThread {
+            tips.text = TextFactoryUtils.getSpannedTextByHtml("下载提示：<BR> $tipsText <BR><BR>")
+        }
+    }
 
     private fun initActionView() {
 
@@ -172,14 +206,9 @@ open class M3u8DownloadActivity : BaseActivity() {
         }
 
         parseIndex.setOnClickListener {
-            var finalPath = M3U8ModuleManager.getDownloadPath(getM3U8URL()) + FileUtils.getFileName(getM3U8URL())
-            showResult("<b>开始解析</b>：${getM3U8URL()} $finalPath")
-            m3u8Info = M3U8Tools.parseIndex(getM3U8URL(), getBaseURL(), finalPath)
-            M3U8Tools.generateLocalM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info)
-            showResult("<b>解析成功</b><BR>$m3u8Info")
-            updateBaseURL()
-            downloadPart.isEnabled = true
-            mergePart.isEnabled = true
+            parseM3U8InfoWithLocalIndex(getLocalIndexFile())
+            M3U8DBManager.saveData(m3u8Info)
+
         }
 
         downloadPart.setOnClickListener {
@@ -267,24 +296,5 @@ open class M3u8DownloadActivity : BaseActivity() {
         }
     }
 
-    private fun reset() {
-        m3u8Info = M3U8Info()
-        downloadPart.isEnabled = false
-        baseURl.apply { setText("") }
-    }
 
-    private fun getM3U8URL(): String {
-        return urlText.text.toString()
-    }
-
-    private fun getBaseURL(): String {
-        return baseURl.text.toString()
-    }
-
-
-    private fun showResult(tipsText: String) {
-        runOnUiThread {
-            tips.text = TextFactoryUtils.getSpannedTextByHtml("下载提示：<BR> $tipsText <BR><BR>")
-        }
-    }
 }

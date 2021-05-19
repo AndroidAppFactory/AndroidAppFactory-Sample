@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:background="@color/bihe0832_common_toast_background_color"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="8dp">
+
+
+    <TextView
+        android:id="@+id/title_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2021-02-13 下载" />
+
+    <TextView
+        android:id="@+id/download_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_info"
+        tools:text="下载地址：" />
+
+    <TextView
+        android:id="@+id/local_path"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/app_version"
+        app:layout_constraintStart_toStartOf="@+id/title_info"
+        app:layout_constraintTop_toBottomOf="@+id/download_url"
+        tools:text="本地路径：" />
+
+    <TextView
+        android:id="@+id/video_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/app_version"
+        app:layout_constraintStart_toStartOf="@+id/title_info"
+        app:layout_constraintTop_toBottomOf="@+id/local_path"
+        tools:text="视频名称：" />
+
+
+</android.support.constraint.ConstraintLayout>

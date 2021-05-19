@@ -14,7 +14,9 @@ public class M3U8Info {
     //下载ts的基础URL
     private String baseURL = "";
     //m3u8文件URL
-    private String m3u8URL;
+    private String m3u8URL = "";
+    //更新时间
+    private long downloadTime = 0;
     //文件总大小
     private long fileSize;
     //总时间，单位毫秒
@@ -38,6 +40,13 @@ public class M3U8Info {
         this.m3u8URL = m3u8URL;
     }
 
+    public long getDownloadTime() {
+        return downloadTime;
+    }
+
+    public void setDownloadTime(long downloadTime) {
+        this.downloadTime = downloadTime;
+    }
 
     public long getFileSize() {
         fileSize = 0;
@@ -70,10 +79,10 @@ public class M3U8Info {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("待下载视频信息: \n");
-        sb.append("m3u8URL: ").append(m3u8URL).append("\n");
-        sb.append("baseURL: ").append(baseURL).append("\n");
-        sb.append("分片数量: ").append(tsList.size()).append("\n");
+        sb.append("待下载视频信息: \n\n");
+        sb.append("m3u8URL: ").append(m3u8URL).append("\n\n");
+        sb.append("baseURL: ").append(baseURL).append("\n\n");
+        sb.append("分片数量: ").append(tsList.size()).append("\n\n");
         if(tsList.size() > 0 ){
             sb.append("第一分片信息: ").append(tsList.get(0).toString());
         }

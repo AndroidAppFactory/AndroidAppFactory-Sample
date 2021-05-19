@@ -39,7 +39,7 @@
             app:layout_constraintTop_toBottomOf="@+id/app_icon" />
 
     <TextView
-            android:id="@+id/app_name"
+            android:id="@+id/title_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -62,13 +62,13 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textSize="12dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/app_name"
+            app:layout_constraintBaseline_toBaselineOf="@+id/title_info"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/app_name"
+            app:layout_constraintStart_toEndOf="@+id/title_info"
             tools:text="版本号：1.1.1.1" />
 
     <TextView
-            android:id="@+id/app_package"
+            android:id="@+id/download_url"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -76,12 +76,12 @@
             android:singleLine="true"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="@+id/app_version"
-            app:layout_constraintStart_toStartOf="@+id/app_name"
-            app:layout_constraintTop_toBottomOf="@+id/app_name"
+            app:layout_constraintStart_toStartOf="@+id/title_info"
+            app:layout_constraintTop_toBottomOf="@+id/title_info"
             tools:text="包名：com.bihe0832.aaa" />
 
     <TextView
-            android:id="@+id/app_install"
+            android:id="@+id/local_path"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -89,8 +89,8 @@
             android:singleLine="true"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="@+id/app_version"
-            app:layout_constraintStart_toStartOf="@+id/app_name"
-            app:layout_constraintTop_toBottomOf="@+id/app_package"
+            app:layout_constraintStart_toStartOf="@+id/title_info"
+            app:layout_constraintTop_toBottomOf="@+id/download_url"
             tools:text="安装：2020年9月15日" />
 
     <TextView
@@ -102,8 +102,8 @@
             android:singleLine="true"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="@+id/app_version"
-            app:layout_constraintStart_toStartOf="@+id/app_name"
-            app:layout_constraintTop_toBottomOf="@+id/app_install"
+            app:layout_constraintStart_toStartOf="@+id/title_info"
+            app:layout_constraintTop_toBottomOf="@+id/local_path"
             tools:text="最后更新：2020年9月15日" />
 
     <TextView
@@ -115,7 +115,7 @@
             android:singleLine="true"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="@+id/app_version"
-            app:layout_constraintStart_toStartOf="@+id/app_name"
+            app:layout_constraintStart_toStartOf="@+id/title_info"
             app:layout_constraintTop_toBottomOf="@+id/app_update"
             tools:text="安装包MD5：f7312bf1113af189cba98bbddcd4affe" />
 
@@ -128,7 +128,7 @@
             android:singleLine="true"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="@+id/app_version"
-            app:layout_constraintStart_toStartOf="@+id/app_name"
+            app:layout_constraintStart_toStartOf="@+id/title_info"
             app:layout_constraintTop_toBottomOf="@+id/app_md5"
             tools:text="签名MD5：f7312bf1113af189cba98bbddcd4affe" />
 

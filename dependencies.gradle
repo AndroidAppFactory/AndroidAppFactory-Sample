@@ -6,7 +6,7 @@ def project = ext
  * 当前开发中，最终运行的主工程，多个用 "," 分隔
  * 当前如果全量填"APPTest"
  */
-ext.mainProject = "APPTest,PubM3U8"
+ext.mainProject = "PubM3U8,PubGetAPKInfo"
 /**
  * 当前开发中，涉及到修改的工程（仅填写直接修改的即可，依赖他的会自动添加），多个用 "," 分隔。
  * 当前如果全量填"Application"
@@ -18,7 +18,7 @@ ext.developModule = "Application"
  * true 表示以 application 模式运行
  * false 表示以 Android Library 模式运行
  */
-ext.pubModuleIsApplication = false
+ext.pubModuleIsApplication = true
 /**
  * 是否将所有依赖了 developModule 的模块都加载进来。
  *  true 全都加载，
