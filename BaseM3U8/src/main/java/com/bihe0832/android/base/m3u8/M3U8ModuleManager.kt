@@ -28,7 +28,7 @@ object M3U8ModuleManager {
         return path
     }
 
-    fun getFinalFilePath(m3u8Url: String): String {
+    fun getFinalVideoPath(m3u8Url: String): String {
         val finalOutPutFile = Environment.getExternalStorageDirectory().absolutePath + File.separator + "zixie" + File.separator + "pictures" + File.separator + "m3u8" + File.separator + MD5.getMd5(m3u8Url) + ".mp4"
         FileUtils.checkAndCreateFolder(File(finalOutPutFile).parentFile.absolutePath)
         return finalOutPutFile

@@ -174,8 +174,8 @@ object M3U8Tools {
         return localM3u8
     }
 
-    fun mergeM3U8(m3u8Dir: String, filepath: String, listener: M3U8Listener) {
-        val finalOutPutFile = File(filepath)
+    fun mergeM3U8(m3u8Dir: String, videoName: String, listener: M3U8Listener) {
+        val finalOutPutFile = File(videoName)
         try {
             if (finalOutPutFile.exists()) {
                 finalOutPutFile.delete()
