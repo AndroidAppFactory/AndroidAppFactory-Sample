@@ -4,9 +4,7 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.db.M3U8DBManager
@@ -37,11 +35,10 @@ open class M3u8DownloadActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.m3u8_activity_download)
         initToolbar(R.id.common_toolbar, "M3U8视频下载器", true)
+        m3u8Info = M3U8Info()
         initGuide()
         initPermission()
         initActionView()
-
-        reset()
 
         initM3u8URL()
 
@@ -80,36 +77,31 @@ open class M3u8DownloadActivity : BaseActivity() {
             }
             setText(m3u8URL)
             setSingleLine()
-            if (!TextUtils.isEmpty(m3u8URL)) {
+            if (TextUtils.isEmpty(m3u8URL)) {
                 requestFocus()
                 selectAll()
             }
-            addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    reset()
-                }
-
-                override fun afterTextChanged(s: Editable?) {
-                }
-            })
         }
 
 
         baseURl.apply {
-            setText(if (intent?.extras?.containsKey(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL) == true) {
+            val baseurl = if (intent?.extras?.containsKey(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL) == true) {
                 URLDecoder.decode(intent.extras.getString(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL))
             } else {
                 getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1)
-            })
+            }
+            setText(baseurl)
+            setSingleLine()
+            if (!TextUtils.isEmpty(urlText.text.toString()) && TextUtils.isEmpty(baseurl)) {
+                requestFocus()
+                selectAll()
+            }
         }
 
     }
 
     private fun updateBaseURL() {
-        if(TextUtils.isEmpty(baseURl.text.toString())){
+        if (TextUtils.isEmpty(baseURl.text.toString())) {
             baseURl.setText(getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1))
         }
     }
@@ -119,13 +111,15 @@ open class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun parseM3U8InfoWithLocalIndex(finalPath: String) {
-        showResult("<b>开始解析</b>：${getM3U8URL()} $finalPath")
-        updateBaseURL()
-        m3u8Info = M3U8Tools.parseIndex(getM3U8URL(), getBaseURL(), finalPath)
-        M3U8Tools.generateLocalM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info)
-        showResult("<b>解析成功</b><BR>$m3u8Info")
-        downloadPart.isEnabled = true
-        mergePart.isEnabled = true
+        ThreadManager.getInstance().runOnUIThread {
+            showResult("<b>开始解析</b>：${getM3U8URL()} $finalPath")
+            updateBaseURL()
+            m3u8Info = M3U8Tools.parseIndex(getM3U8URL(), getBaseURL(), finalPath)
+            M3U8DBManager.saveData(m3u8Info)
+            M3U8Tools.generateLocalM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info)
+            showResult("<b>解析成功</b><BR>$m3u8Info")
+            downloadPart.isEnabled = true
+        }
     }
 
     private fun initGuide() {
@@ -139,11 +133,6 @@ open class M3u8DownloadActivity : BaseActivity() {
                             "5. 如果下载过程中出现异常，可以在下载结束以后再次点击<b><font color='#8e44ad'>点击</font>下载分片</b>"
             )
         }
-    }
-
-    private fun reset() {
-        m3u8Info = M3U8Info()
-        downloadPart.isEnabled = false
     }
 
     private fun getM3U8URL(): String {
@@ -162,6 +151,12 @@ open class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun initActionView() {
+
+        baseURl.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                updateBaseURL()
+            }
+        }
 
         downloadIndex.setOnClickListener {
             if (!TextUtils.isEmpty(getM3U8URL()) && URLUtils.isHTTPUrl(getM3U8URL())) {
@@ -185,6 +180,7 @@ open class M3u8DownloadActivity : BaseActivity() {
                                 }
                             }
                             showResult("<b>下载成功，点击 <font color='#8e44ad'>解析M3U8</font></b> 开始解析 <BR> $filePath<BR>：${FileUtils.getFileContent(filePath)} ")
+                            parseM3U8InfoWithLocalIndex(getLocalIndexFile())
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -200,25 +196,23 @@ open class M3u8DownloadActivity : BaseActivity() {
                     }
 
                 })
-            }else{
+            } else {
                 showResult("请先输入需要下载的视频地址")
             }
         }
 
         parseIndex.setOnClickListener {
             parseM3U8InfoWithLocalIndex(getLocalIndexFile())
-            M3U8DBManager.saveData(m3u8Info)
-
         }
 
         downloadPart.setOnClickListener {
             showResult("开始下载分片！")
-            M3U8DBManager.saveData(m3u8Info)
+
             M3U8Tools.downloadM3U8(this, getBaseURL(), M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info, object : M3U8Listener {
                 override fun onFail(errorCode: Int, msg: String) {
 
                     ThreadManager.getInstance().runOnUIThread {
-                        showResult("<b>下载异常</b>（$errorCode）：$msg")
+                        showResult("<b>下载异常</b>（$errorCode）：$msg <BR> 请检查BaseURL是否正确")
                     }
                 }
 
@@ -243,7 +237,6 @@ open class M3u8DownloadActivity : BaseActivity() {
 
                     ThreadManager.getInstance().runOnUIThread {
                         mergePart.isEnabled = true
-                        openVideo.isEnabled = true
                     }
                 }
 
@@ -255,8 +248,6 @@ open class M3u8DownloadActivity : BaseActivity() {
                             showResult("<b>合并失败</b>")
                         }
                         mergePart.isEnabled = true
-                        openVideo.isEnabled = true
-                        addToPhoto.isEnabled = true
                     }
                 }
 

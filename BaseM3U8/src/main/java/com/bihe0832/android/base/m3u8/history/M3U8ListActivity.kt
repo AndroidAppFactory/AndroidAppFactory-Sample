@@ -35,7 +35,7 @@ open class M3U8ListActivity : CommonListActivity() {
         var data = ArrayList<CardBaseModule>()
         M3U8DBManager.getAll().let {
             if (it.isNotEmpty()) {
-                data.add(TipsData("1. <b>点击 列表消息</b>，即可进入对应 M3U8 视频下载页面"))
+                data.add(TipsData("点击下方列表<b>下载信息</b>即可进入对应视频下载页面"))
                 it.forEach { m3u8Info ->
                     data.add(M3U8ViewData().apply {
                         this.m3u8URL = m3u8Info.m3u8URL
@@ -68,7 +68,10 @@ open class M3U8ListActivity : CommonListActivity() {
         return mTestDataLiveData
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        mTestDataLiveData.fetchData()
+    }
     override fun getCardList(): List<CardItemForCommonList>? {
         return mutableListOf<CardItemForCommonList>().apply {
             add(CardItemForCommonList(M3U8ViewData::class.java))

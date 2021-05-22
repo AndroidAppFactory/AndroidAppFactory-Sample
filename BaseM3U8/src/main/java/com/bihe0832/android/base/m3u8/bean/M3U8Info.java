@@ -76,6 +76,9 @@ public class M3U8Info {
         return totalTime;
     }
 
+    public boolean isOK(){
+        return tsList.size() > 0;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
