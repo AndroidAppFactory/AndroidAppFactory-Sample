@@ -24,7 +24,7 @@ ext.pubModuleIsApplication = true
  *  true 全都加载，
  *  false 仅加载与 mainProject 相关的模块
  */
-ext.includeALLDependOnDevelopModule = false
+ext.includeALLDependOnDevelopModule = true
 /**
  * 组件所有模块的最新版本
  */
@@ -34,7 +34,7 @@ ext.moduleVersionName = "3.6.5"
 ext.moduleInfo = [
 
         "APPTest"       : [
-                "apidependenciesList": ["PubM3U8",
+                "apidependenciesList": ["",
                                         "com.bihe0832.android:common-test:${project.aaf_version}",
                                         "Application", "BaseTest"
                 ]
@@ -42,9 +42,9 @@ ext.moduleInfo = [
         "Application"   : [
                 "apidependenciesList"    : [
                         "com.bihe0832.android:common-feedback:${project.aaf_version}",
-                        "com.bihe0832.android:common-photos:${project.aaf_version}",
-                        "com.bihe0832.android:common-splash:${project.aaf_version}",
-                        "com.bihe0832.android:framework:${project.aaf_version}",
+                        "com.bihe0832.android:common-photos:4.5.0",
+                        "com.bihe0832.android:common-splash:4.5.0",
+                        "com.bihe0832.android:framework:4.5.0",
                         'com.squareup.okhttp3:okhttp:3.9.1',
                         'com.squareup.okhttp3:logging-interceptor:3.8.0',
                         'com.squareup.retrofit2:retrofit:2.4.0',
