@@ -35,16 +35,13 @@ ext.moduleInfo = [
 
         "APPTest"       : [
                 "apidependenciesList": ["",
-                                        "com.bihe0832.android:common-test:${project.aaf_version}",
+                                        "com.bihe0832.android:common-test:${project.aaf_test_version}",
                                         "Application", "BaseTest"
                 ]
         ],
         "Application"   : [
                 "apidependenciesList"    : [
-                        "com.bihe0832.android:common-feedback:${project.aaf_version}",
-                        "com.bihe0832.android:common-photos:4.5.0",
-                        "com.bihe0832.android:common-splash:4.5.0",
-                        "com.bihe0832.android:framework:4.5.0",
+                        "com.bihe0832.android:common-wrapper:${project.aaf_version}",
                         'com.squareup.okhttp3:okhttp:3.9.1',
                         'com.squareup.okhttp3:logging-interceptor:3.8.0',
                         'com.squareup.retrofit2:retrofit:2.4.0',
@@ -59,7 +56,7 @@ ext.moduleInfo = [
         "BaseTest"      : [
                 "apidependenciesList": [
                         "com.bihe0832.android:common-test:${project.aaf_version}",
-                        "Application", "BaseCard", "BasePuzzleGame"
+                        "Application", "BaseCard", "BasePuzzleGame","BaseM3U8"
                 ]
         ],
         "BaseCard"      : [

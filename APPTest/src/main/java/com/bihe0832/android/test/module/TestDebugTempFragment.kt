@@ -7,7 +7,6 @@ import com.bihe0832.android.common.test.item.TestItemData
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.sqlite.impl.CommonDBManager
 import com.bihe0832.android.lib.utils.intent.IntentUtils
-import kotlin.collections.ArrayList
 
 
 class
@@ -34,6 +33,6 @@ TestDebugTempFragment : BaseTestFragment() {
     }
 
     private fun testFunc() {
-        CommonDBManager.saveData("sss","Fsdfsd")
+        CommonDBManager.saveData("sss", "Fsdfsd")
     }
 }
