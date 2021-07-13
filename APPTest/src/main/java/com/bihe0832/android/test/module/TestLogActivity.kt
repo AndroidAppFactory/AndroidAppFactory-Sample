@@ -24,5 +24,4 @@ class TestLogActivity : TestLogActivity() {
             add(SectionDataContent("应用更新", AAFLoggerFile.getLogPathByModuleName(AAFLoggerFile.MODULE_UPDATE)))
         }
     }
-
 }
