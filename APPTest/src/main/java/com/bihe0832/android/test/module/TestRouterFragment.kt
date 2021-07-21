@@ -1,29 +1,14 @@
 package com.bihe0832.android.test.module
 
-import android.view.View
-import com.bihe0832.android.common.test.base.BaseTestFragment
-import com.bihe0832.android.common.test.item.TestItemData
-import com.bihe0832.android.common.test.item.TestTipsData
-import com.bihe0832.android.framework.router.RouterAction
-import com.bihe0832.android.lib.adapter.CardBaseModule
-class TestRouterFragment : BaseTestFragment() {
+import com.bihe0832.android.common.test.module.TestDebugRouterFragment
 
-    private inner class RouterItem(url: String) : TestItemData(url, View.OnClickListener {
-        RouterAction.openFinalURL(url)
-        showResult(url)
-    })
+class TestRouterFragment : TestDebugRouterFragment() {
 
-    override fun getDataList(): ArrayList<CardBaseModule> {
-        return ArrayList<CardBaseModule>().apply {
-            add(TestTipsData(
-                    "可以在PC打开下面链接生成二维码后测试：<small>https://microdemo.bihe0832.com/MyJS/router/</small> ",
-                    View.OnClickListener {
-                        showInfo("路由测试工具链接分享", "路由测试工具链接：\n https://microdemo.bihe0832.com/MyJS/router/")
-                    })
-            )
-            add(RouterItem("zixie://web?url=https%3A%2F%2Fblog.bihe0832.com"))
-            add(RouterItem("zixie://feedback?url=https%3A%2F%2Fsupport.qq.com%2Fproduct%2F290858"))
-            add(RouterItem("zixie://babout"))
+    override fun getRouterList(): ArrayList<TestDebugRouterFragment.RouterItem> {
+        return ArrayList<TestDebugRouterFragment.RouterItem>().apply {
+            add(RouterItem("zixie://zweb?url=https%3A%2F%2Fblog.bihe0832.com"))
+            add(RouterItem("zixie://zfeedback?url=https%3A%2F%2Fsupport.qq.com%2Fproduct%2F290858"))
+            add(RouterItem("zixie://zabout"))
             add(RouterItem("zixie://m3u8"))
             add(RouterItem("zixie://m3u8list"))
 

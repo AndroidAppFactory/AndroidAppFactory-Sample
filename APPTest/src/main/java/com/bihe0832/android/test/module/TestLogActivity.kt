@@ -1,5 +1,6 @@
 package com.bihe0832.android.test.module
 
+import android.support.v7.widget.RecyclerView
 import com.bihe0832.android.app.log.AAFLoggerFile
 import com.bihe0832.android.common.test.item.TestItemData
 import com.bihe0832.android.common.test.log.SectionDataContent
@@ -10,9 +11,13 @@ import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.router.RouterInterrupt
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.file.select.FileSelectTools
+import com.bihe0832.android.lib.ui.recycleview.ext.SafeGridLayoutManager
 
 
 class TestLogActivity : TestLogActivity() {
+    override fun getLayoutManagerForList(): RecyclerView.LayoutManager {
+        return SafeGridLayoutManager(this, 2)
+    }
 
     override fun getTempData(): List<CardBaseModule> {
         return mutableListOf<CardBaseModule>().apply {

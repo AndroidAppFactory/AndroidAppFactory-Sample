@@ -49,6 +49,11 @@ public class Application extends BaseApplication {
     }
 
     @Override
+    protected boolean skipPrivacy() {
+        return !isOfficial();
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
         ZLog.d("Application", "Application onCreate start");
@@ -69,5 +74,4 @@ public class Application extends BaseApplication {
         }
         ZLog.d("Application", "MnaApplication onCreate end");
     }
-
 }
