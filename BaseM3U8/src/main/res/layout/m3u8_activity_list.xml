@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="点击开启新下载"
-        android:textSize="18dp"
+        android:textSize="16dp"
         android:textStyle="bold"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -12,10 +12,10 @@ import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
 import com.bihe0832.android.base.card.apk.APPItemData
 import com.bihe0832.android.base.card.tips.TipsData
+import com.bihe0832.android.common.list.CardItemForCommonList
+import com.bihe0832.android.common.list.CommonListLiveData
+import com.bihe0832.android.common.list.swiperefresh.CommonListActivity
 import com.bihe0832.android.framework.ZixieContext
-import com.bihe0832.android.framework.ui.list.CardItemForCommonList
-import com.bihe0832.android.framework.ui.list.CommonListLiveData
-import com.bihe0832.android.framework.ui.list.swiperefresh.CommonListActivity
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.debug.DebugTools
 import com.bihe0832.android.lib.install.InstallUtils

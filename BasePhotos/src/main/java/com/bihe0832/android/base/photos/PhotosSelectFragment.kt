@@ -4,13 +4,13 @@ import android.Manifest
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import com.bihe0832.android.base.card.photo.IconTextData
+import com.bihe0832.android.common.list.CardItemForCommonList
+import com.bihe0832.android.common.list.CommonListLiveData
+import com.bihe0832.android.common.list.swiperefresh.CommonListFragment
 import com.bihe0832.android.common.photos.choosePhoto
 import com.bihe0832.android.common.photos.getDefaultPhoto
 import com.bihe0832.android.common.photos.takePhoto
 import com.bihe0832.android.framework.ZixieContext
-import com.bihe0832.android.framework.ui.list.CardItemForCommonList
-import com.bihe0832.android.framework.ui.list.CommonListLiveData
-import com.bihe0832.android.framework.ui.list.swiperefresh.CommonListFragment
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.ui.recycleview.ext.SafeGridLayoutManager

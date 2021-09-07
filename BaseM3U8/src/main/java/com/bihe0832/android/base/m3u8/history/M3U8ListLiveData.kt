@@ -1,6 +1,7 @@
 package com.bihe0832.android.base.m3u8.history
 
-import com.bihe0832.android.framework.ui.list.CommonListLiveData
+import com.bihe0832.android.common.list.CommonListLiveData
+
 
 /**
  *

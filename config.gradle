@@ -52,8 +52,8 @@ ext {
 
 
     aaf_router_version = '4.1.0'
-    aaf_test_version ='4.10.0'
-    aaf_version ='4.10.0'
+    aaf_test_version ='4.12.2'
+    aaf_version ='4.12.2'
 
 
     excludeList = [

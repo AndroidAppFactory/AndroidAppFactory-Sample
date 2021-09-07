@@ -10,9 +10,9 @@ import com.bihe0832.android.base.card.tips.TipsData
 import com.bihe0832.android.base.m3u8.M3U8ModuleManager
 import com.bihe0832.android.base.m3u8.R
 import com.bihe0832.android.base.m3u8.db.M3U8DBManager
-import com.bihe0832.android.framework.ui.list.CardItemForCommonList
-import com.bihe0832.android.framework.ui.list.CommonListLiveData
-import com.bihe0832.android.framework.ui.list.easyrefresh.CommonListActivity
+import com.bihe0832.android.common.list.CardItemForCommonList
+import com.bihe0832.android.common.list.CommonListLiveData
+import com.bihe0832.android.common.list.easyrefresh.CommonListActivity
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.router.annotation.Module
 import kotlinx.android.synthetic.main.m3u8_activity_list.*
