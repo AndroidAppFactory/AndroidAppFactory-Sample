@@ -14,7 +14,7 @@ import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.timer.BaseTask
 import com.bihe0832.android.lib.timer.TaskManager
-import com.bihe0832.android.lib.utils.encypt.AESUtils
+import com.bihe0832.android.lib.utils.encrypt.AESUtils
 import java.io.*
 import java.util.concurrent.ConcurrentHashMap
 

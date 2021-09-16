@@ -2,8 +2,7 @@ package com.bihe0832.android.base.m3u8.bean;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
-import com.bihe0832.android.lib.utils.encypt.MD5;
+import com.bihe0832.android.lib.utils.encrypt.MD5;
 
 
 /**

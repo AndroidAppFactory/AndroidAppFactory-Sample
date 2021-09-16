@@ -10,7 +10,7 @@ import com.bihe0832.android.base.card.R;
 import com.bihe0832.android.lib.adapter.CardBaseHolder;
 import com.bihe0832.android.lib.adapter.CardBaseModule;
 import com.bihe0832.android.lib.utils.DateUtil;
-import com.bihe0832.android.lib.utils.encypt.MD5;
+import com.bihe0832.android.lib.utils.encrypt.MD5;
 
 /**
  * @author hardyshi code@bihe0832.com
@@ -43,7 +43,7 @@ public class M3U8ViewHolder extends CardBaseHolder {
         title_info.setText(DateUtil.getDateEN(data.downloadTime, "yyyy-MM-dd") + " 下载视频");
         download_url.setText("下载地址："+Html.fromHtml(data.m3u8URL));
         local_path.setText("本地路径："+data.localpath);
-        video_name.setText("视频名称："+MD5.getMd5(data.m3u8URL) + ".mp4");
+        video_name.setText("视频名称："+ MD5.getMd5(data.m3u8URL) + ".mp4");
         if (null != data.mListener) {
             itemView.setOnClickListener(data.mListener);
         }

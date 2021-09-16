@@ -4,7 +4,7 @@ import android.os.Environment
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.file.ZixieFileProvider
-import com.bihe0832.android.lib.utils.encypt.MD5
+import com.bihe0832.android.lib.utils.encrypt.MD5
 import java.io.File
 
 /**
