@@ -89,7 +89,7 @@ open class PhotosSelectFragment : CommonListFragment() {
     }
 
     open fun takePhoto() {
-        PermissionManager.checkPermission(context, false, object : PermissionManager.OnPermissionResult {
+        PermissionManager.checkPermission(context, "takePhoto", false, object : PermissionManager.OnPermissionResult {
             override fun onFailed(msg: String) {
             }
 
@@ -97,17 +97,19 @@ open class PhotosSelectFragment : CommonListFragment() {
                 activity!!.takePhoto(activity!!.getDefaultPhoto())
             }
 
-            override fun onUserCancel() {
+            override fun onUserCancel(scene: String, permission: String) {
+
             }
 
-            override fun onUserDeny() {
+            override fun onUserDeny(scene: String, permission: String) {
+
             }
 
         }, *takePhotoPermission)
     }
 
     open fun choosePhoto() {
-        PermissionManager.checkPermission(context, false, object : PermissionManager.OnPermissionResult {
+        PermissionManager.checkPermission(context, "choosePhoto", false, object : PermissionManager.OnPermissionResult {
             override fun onFailed(msg: String) {
             }
 
@@ -115,10 +117,12 @@ open class PhotosSelectFragment : CommonListFragment() {
                 activity!!.choosePhoto()
             }
 
-            override fun onUserCancel() {
+            override fun onUserCancel(scene: String, permission: String) {
+
             }
 
-            override fun onUserDeny() {
+            override fun onUserDeny(scene: String, permission: String) {
+
             }
 
         }, *selectPhotoPermission)

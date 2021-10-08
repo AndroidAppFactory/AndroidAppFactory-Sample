@@ -27,7 +27,7 @@ import com.bihe0832.android.lib.ui.dialog.CommonDialog
 import com.bihe0832.android.lib.ui.dialog.OnDialogListener
 import com.bihe0832.android.lib.ui.recycleview.ext.SafeLinearLayoutManager
 import com.bihe0832.android.lib.utils.apk.APKUtils
-import com.bihe0832.android.lib.utils.encypt.MD5
+import com.bihe0832.android.lib.utils.encrypt.MD5
 
 @APPMain
 @Module(RouterConstants.MODULE_NAME_APK_LIST)
