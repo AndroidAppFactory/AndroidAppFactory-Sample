@@ -14,9 +14,9 @@ class TestSplashActivity : SplashActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun doAgreement() {
-//        AppFactoryInit.initExtra(applicationContext)
-        super.doAgreement()
+    override fun doNext() {
+        // AppFactoryInit.initExtra(applicationContext)
+        super.doNext()
     }
 
     override fun getMainRouter(): String {
