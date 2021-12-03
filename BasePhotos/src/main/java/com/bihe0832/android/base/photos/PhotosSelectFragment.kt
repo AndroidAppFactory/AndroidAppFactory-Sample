@@ -1,6 +1,7 @@
 package com.bihe0832.android.base.photos
 
 import android.Manifest
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import com.bihe0832.android.base.card.photo.IconTextData
@@ -8,7 +9,7 @@ import com.bihe0832.android.common.list.CardItemForCommonList
 import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.swiperefresh.CommonListFragment
 import com.bihe0832.android.common.photos.choosePhoto
-import com.bihe0832.android.common.photos.getDefaultPhoto
+import com.bihe0832.android.common.photos.getAutoChangedPhotoUri
 import com.bihe0832.android.common.photos.takePhoto
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.adapter.CardBaseModule
@@ -24,6 +25,7 @@ open class PhotosSelectFragment : CommonListFragment() {
 
     val takePhotoPermission = arrayOf(Manifest.permission.CAMERA)
     val selectPhotoPermission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    var mTakePhotoUri: Uri? = null
 
     init {
         PermissionManager.addPermissionDesc(HashMap<String, String>().apply {
@@ -89,43 +91,56 @@ open class PhotosSelectFragment : CommonListFragment() {
     }
 
     open fun takePhoto() {
-        PermissionManager.checkPermission(context, "takePhoto", false, object : PermissionManager.OnPermissionResult {
-            override fun onFailed(msg: String) {
-            }
+        mTakePhotoUri = activity!!.getAutoChangedPhotoUri()
+        PermissionManager.checkPermission(
+            context,
+            "takePhoto",
+            false,
+            object : PermissionManager.OnPermissionResult {
+                override fun onFailed(msg: String) {
+                }
 
-            override fun onSuccess() {
-                activity!!.takePhoto(activity!!.getDefaultPhoto())
-            }
+                override fun onSuccess() {
+                    activity!!.takePhoto(mTakePhotoUri)
+                }
 
-            override fun onUserCancel(scene: String, permission: String) {
+                override fun onUserCancel(scene: String, permission: String) {
 
-            }
+                }
 
-            override fun onUserDeny(scene: String, permission: String) {
+                override fun onUserDeny(scene: String, permission: String) {
 
-            }
+                }
 
-        }, *takePhotoPermission)
+            },
+            *takePhotoPermission
+        )
     }
 
     open fun choosePhoto() {
-        PermissionManager.checkPermission(context, "choosePhoto", false, object : PermissionManager.OnPermissionResult {
-            override fun onFailed(msg: String) {
-            }
+        PermissionManager.checkPermission(
+            context,
+            "choosePhoto",
+            false,
+            object : PermissionManager.OnPermissionResult {
+                override fun onFailed(msg: String) {
+                }
 
-            override fun onSuccess() {
-                activity!!.choosePhoto()
-            }
+                override fun onSuccess() {
+                    activity!!.choosePhoto()
+                }
 
-            override fun onUserCancel(scene: String, permission: String) {
+                override fun onUserCancel(scene: String, permission: String) {
 
-            }
+                }
 
-            override fun onUserDeny(scene: String, permission: String) {
+                override fun onUserDeny(scene: String, permission: String) {
 
-            }
+                }
 
-        }, *selectPhotoPermission)
+            },
+            *selectPhotoPermission
+        )
     }
 
     open fun cloudPhoto() {

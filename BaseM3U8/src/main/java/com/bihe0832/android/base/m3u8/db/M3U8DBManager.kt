@@ -18,7 +18,9 @@ object M3U8DBManager {
 
     fun init(context: Context) {
         mApplicationContext = context
-        commonDBHelperInstance = M3U8InfoDBHelper(mApplicationContext)
+        if(null == commonDBHelperInstance){
+            commonDBHelperInstance = M3U8InfoDBHelper(mApplicationContext)
+        }
     }
 
     fun getAll(): List<M3U8Info> {

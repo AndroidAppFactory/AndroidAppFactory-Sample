@@ -5,6 +5,7 @@ import com.bihe0832.android.app.getapk.R
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
+import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.base.m3u8.history.M3U8ListActivity
 import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
@@ -23,6 +24,8 @@ class MainActivity : M3U8ListActivity() {
                 RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_BASE_ABOUT)
             }
         }
+        M3U8DBManager.init(this)
+
 
     }
 
