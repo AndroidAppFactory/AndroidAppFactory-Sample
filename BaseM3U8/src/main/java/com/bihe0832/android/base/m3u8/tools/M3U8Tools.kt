@@ -177,15 +177,17 @@ object M3U8Tools {
     fun mergeM3U8(m3u8Dir: String, videoName: String, listener: M3U8Listener) {
         try {
             var a = parseIndex("", "", m3u8Dir + "local.m3u8")
-            if(a.tsList.isEmpty()){
-                listener.onFail(-1,"local.m3u8 not exist。 请先点击解析 M3U8")
+            if (a.tsList.isEmpty()) {
+                listener.onFail(-1, "local.m3u8 not exist。 请先点击解析 M3U8")
                 return
             }
             val finalOutPutFile = File(videoName)
             if (finalOutPutFile.exists()) {
                 finalOutPutFile.delete()
             }
+
             FileUtils.checkAndCreateFolder(finalOutPutFile.parentFile.absolutePath)
+            finalOutPutFile.createNewFile()
 
             val fileOutputStream = FileOutputStream(finalOutPutFile, true)
             for (i in 0 until a.tsList.size) {

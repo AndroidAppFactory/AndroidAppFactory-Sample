@@ -1,5 +1,6 @@
 package com.bihe0832.android.app.router
 
+import android.content.Context
 import android.net.Uri
 import com.bihe0832.android.framework.router.RouterAction
 import com.bihe0832.android.framework.router.RouterAction.SCHEME
@@ -8,7 +9,7 @@ import com.bihe0832.android.framework.router.RouterInterrupt
 import com.bihe0832.android.lib.lifecycle.ApplicationObserver
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.request.URLUtils
-import java.net.URLEncoder
+import com.bihe0832.android.lib.utils.intent.IntentUtils
 import java.util.*
 
 
@@ -71,6 +72,11 @@ object RouterHelper {
                 } else {
                     false
                 }
+            }
+
+            override fun notFound(context: Context, uri: Uri) {
+                super.notFound(context, uri)
+                IntentUtils.jumpToOtherApp(uri.toString(), context)
             }
         })
     }

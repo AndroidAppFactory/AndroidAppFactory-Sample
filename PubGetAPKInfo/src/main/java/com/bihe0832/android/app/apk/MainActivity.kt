@@ -17,6 +17,7 @@ import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.swiperefresh.CommonListActivity
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.adapter.CardBaseModule
+import com.bihe0832.android.lib.adapter.CardInfoHelper
 import com.bihe0832.android.lib.debug.DebugTools
 import com.bihe0832.android.lib.install.InstallUtils
 import com.bihe0832.android.lib.lifecycle.INSTALL_TYPE_NOT_FIRST
@@ -28,11 +29,35 @@ import com.bihe0832.android.lib.ui.dialog.OnDialogListener
 import com.bihe0832.android.lib.ui.recycleview.ext.SafeLinearLayoutManager
 import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.encrypt.MD5
-
 @APPMain
 @Module(RouterConstants.MODULE_NAME_APK_LIST)
 class MainActivity : CommonListActivity() {
     var hasShowTips = false
+
+    private val mCommonListLiveData = object : CommonListLiveData() {
+        override fun fetchData() {
+            postValue(getTempData())
+        }
+
+        override fun clearData() {
+        }
+
+        override fun loadMore() {
+            postValue(getTempData())
+        }
+
+        override fun hasMore(): Boolean {
+            return false
+        }
+
+        override fun canRefresh(): Boolean {
+            return true
+        }
+
+        override fun getEmptyText(): String {
+            return "尚未安装应用"
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mToolbar?.apply {
@@ -69,30 +94,7 @@ class MainActivity : CommonListActivity() {
     }
 
     override fun getDataLiveData(): CommonListLiveData {
-        return object : CommonListLiveData() {
-            override fun fetchData() {
-                postValue(getTempData())
-            }
-
-            override fun clearData() {
-            }
-
-            override fun loadMore() {
-                postValue(getTempData())
-            }
-
-            override fun hasMore(): Boolean {
-                return false
-            }
-
-            override fun canRefresh(): Boolean {
-                return true
-            }
-
-            override fun getEmptyText(): String {
-                return "尚未安装应用"
-            }
-        }
+        return mCommonListLiveData
     }
 
     private fun initAdapter() {

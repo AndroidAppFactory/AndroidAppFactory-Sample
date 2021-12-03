@@ -93,9 +93,12 @@ ext.moduleInfo = [
                 "apidependenciesList": [
                         "BaseM3U8"
                 ]
+        ],
+        "PubBrowser" : [
+                "apidependenciesList": [
+                        "BaseCard"
+                ]
         ]
-
-
 ]
 
 

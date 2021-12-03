@@ -20,4 +20,7 @@ public class RouterConstants extends com.bihe0832.android.framework.router.Route
     public static final String MODULE_NAME_M3U8_LIST = "m3u8list";
     public static final String MODULE_NAME_MAIN = "main";
 
+    public static final String MODULE_NAME_BROWSER_LIST = "weblist";
+
+
 }

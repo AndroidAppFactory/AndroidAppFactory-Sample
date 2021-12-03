@@ -23,6 +23,7 @@ class TestLogActivity : TestLogActivity() {
         return mutableListOf<CardBaseModule>().apply {
             add(SectionDataHeader("通用日志工具"))
             add(TestItemData("选择并发送单个日志") { FileSelectTools.openFileSelect(this@TestLogActivity, ZixieContext.getLogFolder()) })
+//            add(TestItemData("上传日志") { })
             add(SectionDataHeader("基础通用日志"))
             add(SectionDataContent("路由跳转", RouterInterrupt.getRouterLogPath()))
             add(SectionDataContent("Webview", WebviewLoggerFile.getWebviewLogPath()))

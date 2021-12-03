@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <application
         android:name="com.bihe0832.android.app.Application"
@@ -31,6 +32,11 @@
             </intent-filter>
         </activity>
 
+
     </application>
+    <queries>
+        <package android:name="com.bihe0832.puzzle" />
+        <package android:name="com.bihe0832.m3u8" />
+    </queries>
 
 </manifest>

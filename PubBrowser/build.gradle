@@ -1,0 +1,110 @@
+if (rootProject.ext.pubModuleIsApplication as boolean) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+// 不同类型的包，仅仅修改下面两项即可，其余内容保持一致
+project.ext.applicationID = "com.bihe0832.browser"
+project.ext.applicationName = "子勰浏览"
+project.ext.applicationPrefix = "ZBROWSER"
+project.ext.routerSchema = "zbrowser"
+
+android {
+
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
+
+    defaultConfig {
+        if (rootProject.ext.pubModuleIsApplication as boolean) {
+            applicationId applicationID
+        }
+        multiDexEnabled true
+        minSdkVersion project.appMinSdkVersion
+        targetSdkVersion project.targetSdkVersion
+        versionName project.versionName
+        versionCode project.versionCode
+        vectorDrawables.useSupportLibrary = true
+        ndk {
+            abiFilters "armeabi-v7a"
+            stl "stlport_static"
+        }
+    }
+
+    packagingOptions {
+        project.doNotStripList.each { item ->
+            doNotStrip item
+        }
+        project.excludeList.each { item ->
+            exclude item
+        }
+        project.pickFirstList.each { item ->
+            pickFirst item
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    signingConfigs {
+        debug {
+            keyAlias project.signingConfigs.keyAlias
+            keyPassword project.signingConfigs.keyPassword
+            storeFile file(project.signingConfigs.storeFile)
+            storePassword project.signingConfigs.storePassword
+            v1SigningEnabled project.signingConfigs.v1SigningEnabled as boolean
+            v2SigningEnabled project.signingConfigs.v2SigningEnabled as boolean
+        }
+
+        release {
+            keyAlias project.signingConfigs.keyAlias
+            keyPassword project.signingConfigs.keyPassword
+            storeFile file(project.signingConfigs.storeFile)
+            storePassword project.signingConfigs.storePassword
+            v1SigningEnabled project.signingConfigs.v1SigningEnabled as boolean
+            v2SigningEnabled project.signingConfigs.v2SigningEnabled as boolean
+        }
+    }
+
+    buildTypes {
+        debug {
+            resValue "string", "app_name", applicationName
+            resValue "string", "router_schema", routerSchema
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+        }
+
+        release {
+            resValue "string", "app_name", applicationName
+            resValue "string", "router_schema", routerSchema
+
+            signingConfig signingConfigs.release
+            minifyEnabled project.minifyEnabled as boolean
+            proguardFiles "./../proguard-rules-common.pro"
+            shrinkResources false
+        }
+    }
+
+    if (rootProject.ext.pubModuleIsApplication as boolean) {
+        applicationVariants.all { variant ->
+            def finalFileName = applicationPrefix + "_V${defaultConfig.versionName}_${defaultConfig.versionCode}"
+            variant.outputs.all {
+                if (variant.buildType.name == 'debug') {
+                    outputFileName = finalFileName + "_debug.apk"
+                } else {
+                    outputFileName = finalFileName + "_release.apk"
+                }
+            }
+        }
+    }
+}

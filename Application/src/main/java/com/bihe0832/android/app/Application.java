@@ -67,7 +67,6 @@ public class Application extends BaseApplication {
                 if (processName.equalsIgnoreCase(getPackageName())) {
                     AppFactoryInit.INSTANCE.initCore(getApplicationContext());
                     if(RouterInterrupt.INSTANCE.hasAgreedPrivacy()){
-                        
                     }
                 }
             }

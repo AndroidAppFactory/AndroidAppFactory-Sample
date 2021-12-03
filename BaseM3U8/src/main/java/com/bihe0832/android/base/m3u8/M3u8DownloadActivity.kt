@@ -69,11 +69,11 @@ open class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun initM3u8URL() {
+        var intentData = intent?.extras ?: Bundle()
         urlText.apply {
-            val m3u8URL = if (intent?.extras?.containsKey(RouterConstants.INTENT_EXTRA_KEY_WEB_URL) == true) {
-                URLDecoder.decode(intent.extras.getString(RouterConstants.INTENT_EXTRA_KEY_WEB_URL))
-            } else {
-                ""
+            var m3u8URL = ""
+            if (intentData.containsKey(RouterConstants.INTENT_EXTRA_KEY_WEB_URL)) {
+                m3u8URL = URLDecoder.decode(intentData.getString(RouterConstants.INTENT_EXTRA_KEY_WEB_URL))
             }
             setText(m3u8URL)
             setSingleLine()
@@ -85,8 +85,8 @@ open class M3u8DownloadActivity : BaseActivity() {
 
 
         baseURl.apply {
-            val baseurl = if (intent?.extras?.containsKey(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL) == true) {
-                URLDecoder.decode(intent.extras.getString(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL))
+            val baseurl = if (intentData.containsKey(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL)) {
+                URLDecoder.decode(intentData.getString(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL))
             } else {
                 getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1)
             }
