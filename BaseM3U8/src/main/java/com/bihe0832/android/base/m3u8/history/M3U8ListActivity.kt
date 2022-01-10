@@ -68,6 +68,7 @@ open class M3U8ListActivity : CommonListActivity() {
                                     setShouldCanceled(true)
                                     setOnClickBottomListener(object : OnDialogListener{
                                         override fun onPositiveClick() {
+                                            dismiss()
                                             M3U8DBManager.deleteData(m3u8Info.m3u8URL)
                                             m3u8DataLiveData.fetchData()
                                         }
