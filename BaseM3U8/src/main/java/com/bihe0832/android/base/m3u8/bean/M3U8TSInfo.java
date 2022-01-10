@@ -15,6 +15,7 @@ public class M3U8TSInfo implements Comparable<M3U8TSInfo> {
     private String m3u8TSKeyURL;
     private long fileSize;
     private float seconds;
+    public boolean finished = false;
 
     public M3U8TSInfo(String m3u8TSURL, String key, float seconds) {
         this.m3u8TSURL = m3u8TSURL;

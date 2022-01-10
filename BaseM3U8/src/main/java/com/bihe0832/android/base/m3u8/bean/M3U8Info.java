@@ -4,6 +4,7 @@ import com.bihe0832.android.lib.file.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author hardyshi code@bihe0832.com
@@ -22,7 +23,7 @@ public class M3U8Info {
     //总时间，单位毫秒
     private long totalTime;
     //视频切片
-    private List<M3U8TSInfo> tsList = new ArrayList<M3U8TSInfo>();
+    private List<M3U8TSInfo> tsList = new CopyOnWriteArrayList<>();
 
     public String getBaseURL() {
         return baseURL;

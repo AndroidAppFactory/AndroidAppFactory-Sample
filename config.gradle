@@ -12,7 +12,7 @@ ext {
     //版本号，正式版本会由自动构建替换
     versionCode = 35
     //版本名，正式版本会由自动构建替换
-    versionName = "1.1.0"
+    versionName = "1.1.1"
     //Android 构建包时是否混淆代码
     minifyEnabled = true
 
@@ -51,9 +51,9 @@ ext {
     robolectricVersion = '3.3.2'
 
 
-    aaf_router_version = '4.1.0'
-    aaf_test_version ='4.14.18'
-    aaf_version ='4.14.18'
+    aaf_router_version = '4.15.0'
+    aaf_test_version = '4.15.2'
+    aaf_version = '4.15.4'
 
 
     excludeList = [

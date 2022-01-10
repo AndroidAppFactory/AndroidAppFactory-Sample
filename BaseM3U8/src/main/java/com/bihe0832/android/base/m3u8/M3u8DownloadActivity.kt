@@ -84,7 +84,7 @@ open class M3u8DownloadActivity : BaseActivity() {
         }
 
 
-        baseURl.apply {
+        baseURL.apply {
             val baseurl = if (intentData.containsKey(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL)) {
                 URLDecoder.decode(intentData.getString(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL))
             } else {
@@ -101,8 +101,8 @@ open class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun updateBaseURL() {
-        if (TextUtils.isEmpty(baseURl.text.toString())) {
-            baseURl.setText(getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1))
+        if (TextUtils.isEmpty(baseURL.text.toString())) {
+            baseURL.setText(getM3U8URL().substring(0, getM3U8URL().lastIndexOf("/") + 1))
         }
     }
 
@@ -117,7 +117,7 @@ open class M3u8DownloadActivity : BaseActivity() {
             m3u8Info = M3U8Tools.parseIndex(getM3U8URL(), getBaseURL(), finalPath)
             M3U8DBManager.saveData(m3u8Info)
             M3U8Tools.generateLocalM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info)
-            showResult("<b>解析成功</b><BR>$m3u8Info")
+            showResult("<b>解析成功，已更新本地存储</b><BR>$m3u8Info")
             downloadPart.isEnabled = true
         }
     }
@@ -140,7 +140,7 @@ open class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun getBaseURL(): String {
-        return baseURl.text.toString()
+        return baseURL.text.toString()
     }
 
 
@@ -152,7 +152,7 @@ open class M3u8DownloadActivity : BaseActivity() {
 
     private fun initActionView() {
 
-        baseURl.setOnFocusChangeListener { v, hasFocus ->
+        baseURL.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 updateBaseURL()
             }

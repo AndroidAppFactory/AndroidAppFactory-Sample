@@ -2,10 +2,12 @@ package com.bihe0832.android.test.module
 
 import android.view.View
 import com.bihe0832.android.app.about.AboutActivity
+import com.bihe0832.android.base.m3u8.bean.M3U8Info
+import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.common.test.base.BaseTestListFragment
 import com.bihe0832.android.common.test.item.TestItemData
-
 import com.bihe0832.android.lib.adapter.CardBaseModule
+import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.sqlite.impl.CommonDBManager
 import com.bihe0832.android.lib.utils.intent.IntentUtils
 
@@ -42,4 +44,6 @@ class TestDebugTempFragment : BaseTestListFragment() {
     private fun testFunc() {
 //        CommonDBManager.saveData("sss", "Fsdfsd")
     }
+
+
 }

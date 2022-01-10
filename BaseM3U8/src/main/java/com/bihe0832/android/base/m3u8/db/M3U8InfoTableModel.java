@@ -67,7 +67,7 @@ class M3U8InfoTableModel extends BaseTableModel {
         String groupBy = null;
         String having = null;
         String orderBy = " `" + col_update_at + "` DESC ";
-        String limit = " 1 ";
+        String limit = null;
         Cursor cursor = helper.queryInfo(TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
         try {
             while (cursor.moveToNext()) {
