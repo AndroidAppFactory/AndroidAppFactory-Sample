@@ -57,7 +57,7 @@ object PuzzleGameManager {
 
     fun getCurrentGameSourceBitmap(): Bitmap {
         return mBitmap
-                ?: BitmapUtil.getLoacalBitmap(ZixieContext.applicationContext, R.mipmap.icon, 4)
+                ?: BitmapUtil.getLocalBitmap(ZixieContext.applicationContext, R.mipmap.icon, 4)
     }
 
     fun setBitmap(bitmap: Bitmap) {

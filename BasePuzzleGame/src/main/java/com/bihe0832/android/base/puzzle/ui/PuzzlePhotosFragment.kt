@@ -10,6 +10,7 @@ import com.bihe0832.android.base.photos.PhotosSelectFragment
 import com.bihe0832.android.base.puzzle.PuzzleGameManager
 import com.bihe0832.android.common.photos.cropPhoto
 import com.bihe0832.android.common.photos.getAutoChangedCropUri
+import com.bihe0832.android.common.photos.getAutoChangedPhotoName
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.constant.ZixieActivityRequestCode
 import com.bihe0832.android.lib.debug.DebugTools
@@ -32,11 +33,11 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
 
     private var mCropUri: Uri? = null
 
-    private val PIC_URL = "https://api.nmb.show/xiaojiejie1.php"
+    private val PIC_URL = "http://up.deskcity.org/pic_source/18/2e/04/182e04f62f1aebf9089ed2275d26de21.jpg"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mCropUri = activity!!.getAutoChangedCropUri()
+        mCropUri = activity?.getAutoChangedCropUri()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -48,19 +49,23 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
             )
             when (requestCode) {
                 ZixieActivityRequestCode.TAKE_PHOTO -> {
-                    mCropUri = activity!!.getAutoChangedCropUri()
+                    mCropUri = activity?.getAutoChangedCropUri()
                     activity?.cropPhoto(mTakePhotoUri, mCropUri)
                 }
                 ZixieActivityRequestCode.CHOOSE_PHOTO -> {
-                    activity?.cropPhoto(data?.data as Uri, activity!!.getAutoChangedCropUri())
+                    mCropUri = activity?.getAutoChangedCropUri()
+                    activity?.cropPhoto(data?.data as Uri, mCropUri)
                 }
                 ZixieActivityRequestCode.CROP_PHOTO -> {
+                    var filePath = ZixieFileProvider.uriToFile(
+                        activity,
+                        mCropUri
+                    ).absolutePath
+
+
                     PuzzleGameManager.setBitmap(
-                        BitmapUtil.getLoacalBitmap(
-                            ZixieFileProvider.uriToFile(
-                                activity,
-                                mCropUri
-                            ).absolutePath
+                        BitmapUtil.getLocalBitmap(
+                            filePath
                         )
                     )
                     RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_PUZZLE_GAME)
@@ -96,6 +101,7 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
             url,
             "", "",
             canCancel = true,
+            forceDownload = false,
             useMobile = true,
             listener = object : OnDialogListener {
                 override fun onPositiveClick() {
@@ -114,7 +120,7 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
                 override fun onComplete(filePath: String, item: DownloadItem) {
                     ZLog.d("onComplete:$item")
                     ThreadManager.getInstance().runOnUIThread {
-                        mCropUri = activity!!.getAutoChangedCropUri()
+                        mCropUri = activity?.getAutoChangedCropUri()
                         activity?.cropPhoto(
                             ZixieFileProvider.getZixieFileProvider(activity!!, File(filePath)),
                             mCropUri

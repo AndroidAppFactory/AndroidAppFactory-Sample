@@ -8,8 +8,8 @@ import android.widget.TextView;
 import com.bihe0832.android.base.card.R;
 import com.bihe0832.android.lib.adapter.CardBaseHolder;
 import com.bihe0832.android.lib.adapter.CardBaseModule;
-import com.bihe0832.android.lib.utils.DateUtil;
 import com.bihe0832.android.lib.utils.encrypt.MD5;
+import com.bihe0832.android.lib.utils.time.DateUtil;
 
 /**
  * @author hardyshi code@bihe0832.com

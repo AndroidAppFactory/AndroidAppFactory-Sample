@@ -66,11 +66,9 @@ public class BrowserFragment extends BaseWebviewFragment {
             return super.shouldInterceptRequest(view, request);
         }
 
-
         private void saveURL(String url) {
-            ZLog.e(TAG, "111 " + url);
-            CommonDBManager.INSTANCE.saveData(mIntentUrl, mIntentUrl);
             if (url.endsWith(".m3u8")) {
+                CommonDBManager.INSTANCE.saveData(url, mIntentUrl);
                 IntentUtils.jumpToOtherApp("zm3u8://m3u8?url=" + URLUtils.encode(url), getContext());
             }
         }

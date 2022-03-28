@@ -8,7 +8,7 @@ import com.bihe0832.android.base.card.R
 import com.bihe0832.android.lib.adapter.CardBaseHolder
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.text.TextFactoryUtils
-import com.bihe0832.android.lib.utils.DateUtil
+import com.bihe0832.android.lib.utils.time.DateUtil
 
 /**
  * @author hardyshi code@bihe0832.com
@@ -49,7 +49,8 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
         app_install?.text = "安装时间：${DateUtil.getDateEN(data.app_install_time)}"
         app_update?.text = "最后更新：${DateUtil.getDateEN(data.app_update_time)}"
         app_md5?.text = TextFactoryUtils.getSpannedTextByHtml("<B> APK MD5</B>：${data.app_md5}")
-        signature_md5?.text = TextFactoryUtils.getSpannedTextByHtml("<B> 签名 MD5</B>：${data.signature_md5}")
+        signature_md5?.text =
+            TextFactoryUtils.getSpannedTextByHtml("<B> 签名 MD5</B>：${data.signature_md5}")
     }
 
 }

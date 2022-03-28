@@ -207,7 +207,7 @@ open class M3u8DownloadActivity : BaseActivity() {
 
         downloadPart.setOnClickListener {
             showResult("开始下载分片！")
-
+            M3U8Tools.cancleDownload()
             M3U8Tools.downloadM3U8(this, getBaseURL(), M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info, object : M3U8Listener {
                 override fun onFail(errorCode: Int, msg: String) {
 
