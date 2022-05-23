@@ -18,13 +18,13 @@ ext.developModule = "Application"
  * true 表示以 application 模式运行
  * false 表示以 Android Library 模式运行
  */
-ext.pubModuleIsApplication = true
+ext.pubModuleIsApplication = false
 /**
  * 是否将所有依赖了 developModule 的模块都加载进来。
  *  true 全都加载，
  *  false 仅加载与 mainProject 相关的模块
  */
-ext.includeALLDependOnDevelopModule = true
+ext.includeALLDependOnDevelopModule = false
 /**
  * 组件所有模块的最新版本
  */
@@ -34,7 +34,7 @@ ext.moduleVersionName = "3.6.5"
 ext.moduleInfo = [
 
         "APPTest"       : [
-                "apidependenciesList": ["",
+                "apidependenciesList": ["PubTextEdit",
                                         "com.bihe0832.android:common-test:${project.aaf_test_version}",
                                         "Application", "BaseTest"
                 ]
@@ -56,7 +56,11 @@ ext.moduleInfo = [
         "BaseTest"      : [
                 "apidependenciesList": [
                         "com.bihe0832.android:common-test:${project.aaf_test_version}",
-                        "Application", "BaseCard", "BasePuzzleGame","BaseM3U8"
+                        "Application", "BaseCard"
+//                        , "BasePuzzleGame","BaseM3U8"
+                ],
+                specialdependenciesList: [
+                        
                 ]
         ],
         "BaseCard"      : [
@@ -95,6 +99,11 @@ ext.moduleInfo = [
                 ]
         ],
         "PubBrowser" : [
+                "apidependenciesList": [
+                        "BaseCard"
+                ]
+        ],
+        "PubTextEdit" : [
                 "apidependenciesList": [
                         "BaseCard"
                 ]

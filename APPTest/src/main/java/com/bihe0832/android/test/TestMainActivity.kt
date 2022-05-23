@@ -8,7 +8,6 @@ import android.os.StrictMode
 import android.support.v4.content.ContextCompat
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.update.UpdateManager
-import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.framework.ui.PermissionResultOfAAF
 import com.bihe0832.android.framework.ui.main.CommonActivity
 import com.bihe0832.android.lib.adapter.CardInfoHelper
