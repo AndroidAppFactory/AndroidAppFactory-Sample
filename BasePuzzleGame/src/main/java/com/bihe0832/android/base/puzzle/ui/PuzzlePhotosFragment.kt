@@ -35,10 +35,11 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
 
     private val PIC_URL = "http://up.deskcity.org/pic_source/18/2e/04/182e04f62f1aebf9089ed2275d26de21.jpg"
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView(view: View) {
+        super.initView(view)
         mCropUri = activity?.getAutoChangedCropUri()
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

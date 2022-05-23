@@ -1,10 +1,7 @@
 package com.bihe0832.android.base.puzzle.ui
 
 import android.graphics.Bitmap
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.bihe0832.android.base.puzzle.GameMode
 import com.bihe0832.android.base.puzzle.PuzzleGameManager
 import com.bihe0832.android.base.puzzle.R
@@ -24,18 +21,45 @@ class PuzzleGameMainFragment : BaseFragment() {
     private val CONFIG_PUZZLE_LEVEL = this.javaClass.name + ".level"
     private val CONFIG_PUZZLE_MODE = this.javaClass.name + ".mode"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_puzzle_game_main, container, false)
+
+    override fun getLayoutID(): Int {
+        return R.layout.fragment_puzzle_game_main
     }
 
+    override fun initView(view: View) {
+        updateLevetText()
+        updateGameModeText()
+        updatePreviewImg()
+        addLevel.setOnClickListener {
+            if (PuzzleGameManager.getLevel() == PuzzleGameManager.getMaxLevel()) {
+                ZixieContext.showLongToastJustAPPFront(getString(R.string.top_level))
+                it.isEnabled = false
+            } else {
+                PuzzleGameManager.addLevel()
+            }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
+        }
+
+        reduceLevel.setOnClickListener {
+            if (PuzzleGameManager.getLevel() == PuzzleGameManager.getMinLevel()) {
+                ZixieContext.showLongToastJustAPPFront(getString(R.string.bottom_level))
+                it.isEnabled = false
+            } else {
+                PuzzleGameManager.reduceLevel()
+            }
+        }
+        changeMode.setOnClickListener {
+            PuzzleGameManager.getGameMode().let {
+                if (it == GameMode.EXCHANGE) {
+                    PuzzleGameManager.changeGameMode(GameMode.NORMAL)
+                } else {
+                    PuzzleGameManager.changeGameMode(GameMode.EXCHANGE)
+                }
+            }
+        }
     }
 
-    private fun initView() {
+    override fun initData() {
         PuzzleGameManager.init(puzzleLayout)
         PuzzleGameManager.addListener(object : PuzzleGameManager.GameStateListener {
             override fun onImageChanged(bitmap: Bitmap) {
@@ -90,38 +114,7 @@ class PuzzleGameMainFragment : BaseFragment() {
         })
         PuzzleGameManager.changeGameMode(GameMode.getGameMode(Config.readConfig(CONFIG_PUZZLE_MODE, GameMode.NORMAL.ordinal)))
         PuzzleGameManager.changeGameLevel(Config.readConfig(CONFIG_PUZZLE_LEVEL, 1))
-        updateLevetText()
-        updateGameModeText()
-        updatePreviewImg()
-        addLevel.setOnClickListener {
-            if (PuzzleGameManager.getLevel() == PuzzleGameManager.getMaxLevel()) {
-                ZixieContext.showLongToastJustAPPFront(getString(R.string.top_level))
-                it.isEnabled = false
-            } else {
-                PuzzleGameManager.addLevel()
-            }
-
-        }
-
-        reduceLevel.setOnClickListener {
-            if (PuzzleGameManager.getLevel() == PuzzleGameManager.getMinLevel()) {
-                ZixieContext.showLongToastJustAPPFront(getString(R.string.bottom_level))
-                it.isEnabled = false
-            } else {
-                PuzzleGameManager.reduceLevel()
-            }
-        }
-        changeMode.setOnClickListener {
-            PuzzleGameManager.getGameMode().let {
-                if (it == GameMode.EXCHANGE) {
-                    PuzzleGameManager.changeGameMode(GameMode.NORMAL)
-                } else {
-                    PuzzleGameManager.changeGameMode(GameMode.EXCHANGE)
-                }
-            }
-        }
     }
-
 
     private fun updatePreviewImg() {
         image_preview.setImageBitmap(PuzzleGameManager.getCurrentGameSourceBitmap())

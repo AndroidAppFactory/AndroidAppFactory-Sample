@@ -2,6 +2,7 @@ package com.bihe0832.android.app.router
 
 import android.content.Context
 import android.net.Uri
+import com.bihe0832.android.framework.privacy.AgreementPrivacy
 import com.bihe0832.android.framework.router.RouterAction
 import com.bihe0832.android.framework.router.RouterAction.SCHEME
 import com.bihe0832.android.framework.router.RouterConstants
@@ -61,12 +62,12 @@ object RouterHelper {
                     false
                 } else {
                     //需要被拦截
-                    needCheckInterceptHostList.contains(uri.host) || !RouterInterrupt.hasAgreedPrivacy()
+                    needCheckInterceptHostList.contains(uri.host) || !AgreementPrivacy.hasAgreedPrivacy()
                 }
             }
 
             override fun doInterrupt(uri: Uri): Boolean {
-                return if (!RouterInterrupt.hasAgreedPrivacy()) {
+                return if (!AgreementPrivacy.hasAgreedPrivacy()) {
                     goSplash(uri)
                     true
                 } else {
