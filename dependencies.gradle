@@ -78,6 +78,11 @@ ext.moduleInfo = [
                         "BaseCard"
                 ]
         ],
+        "BaseTextEditMain"    : [
+                "apidependenciesList": [
+                        "BaseCard"
+                ]
+        ],
         "BasePuzzleGame": [
                 "apidependenciesList": [
                         "BasePhotos"
@@ -105,7 +110,7 @@ ext.moduleInfo = [
         ],
         "PubTextEdit" : [
                 "apidependenciesList": [
-                        "BaseCard"
+                        "BaseTextEditMain"
                 ]
         ]
 ]
