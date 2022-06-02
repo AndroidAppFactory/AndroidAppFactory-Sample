@@ -59,20 +59,7 @@ public class Application extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         ZLog.d("Application", "Application onCreate start");
-        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
-        for (ActivityManager.RunningAppProcessInfo it : runningApps) {
-            if (it.pid == android.os.Process.myPid() && it.processName != null && it.processName
-                    .contains(getPackageName())) {
-                ZLog.e("Application initCore process: name:" + it.processName + " and id:" + it.pid);
-                final String processName = it.processName;
-                if (processName.equalsIgnoreCase(getPackageName())) {
-                    AppFactoryInit.INSTANCE.initCore(getApplicationContext());
-                    if(AgreementPrivacy.INSTANCE.hasAgreedPrivacy()){
-                    }
-                }
-            }
-        }
+        AppFactoryInit.INSTANCE.initAll(this);
         ZLog.d("Application", "MnaApplication onCreate end");
     }
 }

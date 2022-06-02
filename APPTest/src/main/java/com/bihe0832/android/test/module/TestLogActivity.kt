@@ -16,13 +16,16 @@ import com.bihe0832.android.lib.ui.recycleview.ext.SafeGridLayoutManager
 
 class TestLogActivity : TestLogActivity() {
     override fun getLayoutManagerForList(): RecyclerView.LayoutManager {
-        return SafeGridLayoutManager(this, 2)
+        return SafeGridLayoutManager(this, 3)
     }
 
     override fun getTempData(): List<CardBaseModule> {
         return mutableListOf<CardBaseModule>().apply {
             add(SectionDataHeader("通用日志工具"))
-            add(TestItemData("选择并发送单个日志") { FileSelectTools.openFileSelect(this@TestLogActivity, ZixieContext.getLogFolder()) })
+            add(TestItemData("选择并查看单个日志") {
+                isView = true
+                FileSelectTools.openFileSelect(this@TestLogActivity, ZixieContext.getLogFolder())
+            })
 //            add(TestItemData("上传日志") { })
             add(SectionDataHeader("基础通用日志"))
             add(SectionDataContent("路由跳转", RouterInterrupt.getRouterLogPath()))

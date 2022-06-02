@@ -1,6 +1,7 @@
 package com.bihe0832.android.test
 
 import android.os.Bundle
+import com.bihe0832.android.app.AppFactoryInit
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.common.splash.SplashActivity
 import com.bihe0832.android.lib.router.annotation.APPMain
@@ -15,7 +16,7 @@ class TestSplashActivity : SplashActivity() {
     }
 
     override fun doNext() {
-        // AppFactoryInit.initExtra(applicationContext)
+        AppFactoryInit.initAll(application)
         super.doNext()
     }
 

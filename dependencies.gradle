@@ -33,13 +33,13 @@ ext.moduleVersionName = "3.6.5"
 
 ext.moduleInfo = [
 
-        "APPTest"       : [
+        "APPTest"         : [
                 "apidependenciesList": ["PubTextEdit",
                                         "com.bihe0832.android:common-test:${project.aaf_test_version}",
                                         "Application", "BaseTest"
                 ]
         ],
-        "Application"   : [
+        "Application"     : [
                 "apidependenciesList"    : [
                         "com.bihe0832.android:common-wrapper:${project.aaf_version}",
                         'com.squareup.okhttp3:okhttp:3.9.1',
@@ -50,67 +50,64 @@ ext.moduleInfo = [
 
                 ],
                 "specialdependenciesList": [
+                        "debugApi"  : ["com.squareup.leakcanary:leakcanary-android:1.5.1"],
+                        "releaseApi": ["com.squareup.leakcanary:leakcanary-android-no-op:1.5.1"],
                         "kapt": ["com.bihe0832.android:lib-router-compiler:${project.aaf_router_version}"]
                 ]
         ],
-        "BaseTest"      : [
-                "apidependenciesList": [
+        "BaseTest"        : [
+                "apidependenciesList"  : [
                         "com.bihe0832.android:common-test:${project.aaf_test_version}",
                         "Application", "BaseCard"
 //                        , "BasePuzzleGame","BaseM3U8"
                 ],
                 specialdependenciesList: [
-                        
+
                 ]
         ],
-        "BaseCard"      : [
+        "BaseCard"        : [
                 "apidependenciesList": [
                         "Application"
                 ]
         ],
-        "BaseM3U8"      : [
+        "BaseM3U8"        : [
                 "apidependenciesList": [
-                        "Application","BaseCard"
+                        "Application", "BaseCard"
                 ]
         ],
-        "BasePhotos"    : [
-                "apidependenciesList": [
-                        "BaseCard"
-                ]
-        ],
-        "BaseTextEditMain"    : [
+        "BasePhotos"      : [
                 "apidependenciesList": [
                         "BaseCard"
                 ]
         ],
-        "BasePuzzleGame": [
+        "BaseTextEditMain": [
+                "apidependenciesList": [
+                        "BaseCard"
+                ]
+        ],
+        "BasePuzzleGame"  : [
                 "apidependenciesList": [
                         "BasePhotos"
                 ]
         ],
-        "PubGetAPKInfo" : [
+        "PubGetAPKInfo"   : [
                 "apidependenciesList": [
                         "BaseCard"
                 ]
         ],
-        "PubPuzzleGame" : [
+        "PubPuzzleGame"   : [
                 "apidependenciesList": [
                         "BasePuzzleGame", "BaseCard"
                 ]
         ],
-        "PubM3U8" : [
+        "PubM3U8"         : [
                 "apidependenciesList": [
                         "BaseM3U8"
                 ]
         ],
-        "PubBrowser" : [
+        "PubBrowser"      : [
                 "apidependenciesList": [
                         "BaseCard"
-                ]
-        ],
-        "PubTextEdit" : [
-                "apidependenciesList": [
-                        "BaseTextEditMain"
                 ]
         ]
 ]
