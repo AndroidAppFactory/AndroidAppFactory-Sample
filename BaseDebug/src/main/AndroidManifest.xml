@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bihe0832.android.base.test">
+    package="com.bihe0832.android.base.debug">
 
     <application
         android:name="com.bihe0832.android.app.Application"
