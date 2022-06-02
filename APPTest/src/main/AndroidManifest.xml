@@ -13,7 +13,7 @@
             android:label="@string/app_name"
             android:supportsRtl="true">
         <activity
-                android:name=".TestSplashActivity"
+                android:name=".DebugSplashActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden"
                 android:screenOrientation="portrait"
                 android:theme="@style/fullscreenActivityTheme">
@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-                android:name="com.bihe0832.android.test.TestMainActivity"
+                android:name="com.bihe0832.android.test.DebugMainActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden"
                 android:label="@string/test_activity_name"
                 android:screenOrientation="portrait"
@@ -36,7 +36,7 @@
         </activity>
 
         <activity
-                android:name=".module.TestLogActivity"
+                android:name=".module.DebugLogActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden"
                 android:screenOrientation="portrait"
                 android:theme="@style/activityTheme" />

@@ -9,7 +9,7 @@ import com.bihe0832.android.lib.router.annotation.Module
 
 @APPMain
 @Module(RouterConstants.MODULE_NAME_SPLASH)
-class TestSplashActivity : SplashActivity() {
+class DebugSplashActivity : SplashActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

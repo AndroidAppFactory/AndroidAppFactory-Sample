@@ -21,10 +21,10 @@ import com.bihe0832.android.lib.utils.os.BuildUtils
 
 @APPMain
 @Module(RouterConstants.MODULE_NAME_DEBUG)
-class TestMainActivity : CommonActivity() {
+class DebugMainActivity : CommonActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar("TestMainActivity", false)
+        initToolbar("DebugMainActivity", false)
         if (BuildUtils.SDK_INT > Build.VERSION_CODES.GINGERBREAD) {
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         }
@@ -69,8 +69,8 @@ class TestMainActivity : CommonActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (findFragment(TestMainFragment::class.java) == null) {
-            loadRootFragment(R.id.common_fragment_content, TestMainFragment())
+        if (findFragment(DebugMainFragment::class.java) == null) {
+            loadRootFragment(R.id.common_fragment_content, DebugMainFragment())
         }
         UpdateManager.checkUpdateAndShowDialog(this, false)
 //        hideBottomUIMenu()

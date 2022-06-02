@@ -1,22 +1,23 @@
 package com.bihe0832.android.test;
 
 import android.support.v4.app.Fragment;
-import com.bihe0832.android.test.module.TestDebugCommonFragment;
-import com.bihe0832.android.test.module.TestDebugTempFragment;
-import com.bihe0832.android.test.module.TestRouterFragment;
+
+import com.bihe0832.android.test.module.DebugCommonFragment;
+import com.bihe0832.android.test.module.DebugTempFragment;
+import com.bihe0832.android.test.module.DebugRouterFragment;
 
 
 /**
  * Created by hardyshi on 16/6/30.
  */
-public class TestMainFragment extends com.bihe0832.android.common.test.TestMainFragment {
+public class DebugMainFragment extends com.bihe0832.android.common.debug.DebugMainFragment {
 
     private static final String TAB_FOR_DEV_COMMON = "通用调试";
     private static final String TAB_FOR_DEV_TEMP = "临时调试";
     private static final String TAB_FOR_ROUTER = "路由测试";
     private static final String TAB_FOR_DEV = "开发测试";
 
-    public TestMainFragment() {
+    public DebugMainFragment() {
         super(new String[]{
                 TAB_FOR_DEV_COMMON, TAB_FOR_DEV_TEMP, TAB_FOR_ROUTER, TAB_FOR_DEV
         });
@@ -26,15 +27,15 @@ public class TestMainFragment extends com.bihe0832.android.common.test.TestMainF
 
     protected Fragment getFragmentByIndex(String title) {
         if (title.equals(TAB_FOR_DEV)) {
-            return new TestDebugTempFragment();
+            return new DebugTempFragment();
         } else if (title.equals(TAB_FOR_DEV_TEMP)) {
-            return new TestDebugTempFragment();
+            return new DebugTempFragment();
         } else if (title.equals(TAB_FOR_DEV_COMMON)) {
-            return new TestDebugCommonFragment();
+            return new DebugCommonFragment();
         } else if (title.equals(TAB_FOR_ROUTER)) {
-            return new TestRouterFragment();
+            return new DebugRouterFragment();
         } else {
-            return new TestDebugCommonFragment();
+            return new DebugCommonFragment();
         }
     }
 
