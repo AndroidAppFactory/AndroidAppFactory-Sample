@@ -52,7 +52,7 @@ ext {
 
 
     aaf_router_version = '4.15.0'
-    aaf_test_version = '4.21.0'
+    aaf_test_version = '4.21.3'
     aaf_version = '4.21.0'
 
 
