@@ -1,10 +1,10 @@
 package com.bihe0832.android.test;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import com.bihe0832.android.test.module.DebugCommonFragment;
-import com.bihe0832.android.test.module.DebugTempFragment;
 import com.bihe0832.android.test.module.DebugRouterFragment;
+import com.bihe0832.android.test.module.DebugTempFragment;
 
 
 /**

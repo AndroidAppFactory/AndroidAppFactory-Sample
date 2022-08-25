@@ -14,7 +14,7 @@ import com.bihe0832.android.lib.download.DownloadItem
 import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.FileUtils
-import com.bihe0832.android.lib.file.ZixieFileProvider
+import com.bihe0832.android.lib.file.provider.ZixieFileProvider
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.request.URLUtils
@@ -50,19 +50,18 @@ open class M3u8DownloadActivity : BaseActivity() {
 
     }
 
-
-    override fun getPermissionList(): List<String> {
-        return ArrayList<String>().apply {
-            add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
+    override fun onResume() {
+        super.onResume()
+        PermissionManager.checkPermission(this, mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
     }
 
+
     private fun initPermission() {
-        PermissionManager.addPermissionDesc(HashMap<String, String>().apply {
+        PermissionManager.addPermissionGroupDesc(HashMap<String, String>().apply {
             put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "读取和保存到存储卡")
         })
 
-        PermissionManager.addPermissionScene(HashMap<String, String>().apply {
+        PermissionManager.addPermissionGroupScene(HashMap<String, String>().apply {
             put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "保存视频")
         })
 

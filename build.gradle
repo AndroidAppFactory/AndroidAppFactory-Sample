@@ -11,9 +11,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.3'
+        classpath 'com.android.tools.build:gradle:7.0.4'
         classpath "com.bihe0832.android:GradleDependenciesCheck:4.1.0"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.71"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
     }
 }
 
@@ -69,13 +69,13 @@ subprojects {
         }
 
         if (!subproject.name.startsWith("Pub") || subproject.name != "APPTest") {
-            subproject.getTasks().create("copyAAR", Copy.class) {
-                group = "zixieDev"
-                from 'build/outputs/aar/' + module.name + '-release.aar'
-                into "./../libs/"
-            }
-
-            subproject.getTasks().getByName('copyAAR').dependsOn("assembleRelease")
+//            subproject.getTasks().create("copyAAR", Copy.class) {
+//                group = "zixieDev"
+//                from 'build/outputs/aar/' + module.name + '-release.aar'
+//                into "./../libs/"
+//            }
+//
+//            subproject.getTasks().getByName('copyAAR').dependsOn("assembleRelease")
         }
     }
 }

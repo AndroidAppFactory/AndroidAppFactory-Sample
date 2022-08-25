@@ -3,7 +3,7 @@ package com.bihe0832.android.base.photos
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import com.bihe0832.android.base.card.photo.IconTextData
 import com.bihe0832.android.common.list.CardItemForCommonList
 import com.bihe0832.android.common.list.CommonListLiveData
@@ -23,16 +23,16 @@ open class PhotosSelectFragment : CommonListFragment() {
     protected val ID_CLOUD = 3
     protected val ID_CUSTOM = 4
 
-    val takePhotoPermission = arrayOf(Manifest.permission.CAMERA)
-    val selectPhotoPermission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    val takePhotoPermission = mutableListOf(Manifest.permission.CAMERA)
+    val selectPhotoPermission = mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     var mTakePhotoUri: Uri? = null
 
     init {
-        PermissionManager.addPermissionDesc(HashMap<String, String>().apply {
+        PermissionManager.addPermissionGroupDesc(HashMap<String, String>().apply {
             put(Manifest.permission.CAMERA, "相机")
         })
 
-        PermissionManager.addPermissionScene(HashMap<String, String>().apply {
+        PermissionManager.addPermissionGroupScene(HashMap<String, String>().apply {
             put(Manifest.permission.CAMERA, "拍摄拼图原图")
         })
     }
@@ -91,55 +91,55 @@ open class PhotosSelectFragment : CommonListFragment() {
     }
 
     open fun takePhoto() {
-        mTakePhotoUri = activity!!.getAutoChangedPhotoUri()
+        mTakePhotoUri = requireActivity().getAutoChangedPhotoUri()
         PermissionManager.checkPermission(
-            context,
-            "takePhoto",
-            false,
-            object : PermissionManager.OnPermissionResult {
-                override fun onFailed(msg: String) {
-                }
+                context,
+                "takePhoto",
+                false,
+                object : PermissionManager.OnPermissionResult {
+                    override fun onFailed(msg: String) {
+                    }
 
-                override fun onSuccess() {
-                    activity!!.takePhoto(mTakePhotoUri)
-                }
+                    override fun onSuccess() {
+                        activity!!.takePhoto(mTakePhotoUri)
+                    }
 
-                override fun onUserCancel(scene: String, permission: String) {
+                    override fun onUserCancel(scene: String, permissionGroupID: String, permission: String) {
 
-                }
+                    }
 
-                override fun onUserDeny(scene: String, permission: String) {
+                    override fun onUserDeny(scene: String, permissionGroupID: String, permission: String) {
 
-                }
+                    }
 
-            },
-            *takePhotoPermission
+                },
+                takePhotoPermission
         )
     }
 
     open fun choosePhoto() {
         PermissionManager.checkPermission(
-            context,
-            "choosePhoto",
-            false,
-            object : PermissionManager.OnPermissionResult {
-                override fun onFailed(msg: String) {
-                }
+                context,
+                "choosePhoto",
+                false,
+                object : PermissionManager.OnPermissionResult {
+                    override fun onFailed(msg: String) {
+                    }
 
-                override fun onSuccess() {
-                    activity!!.choosePhoto()
-                }
+                    override fun onSuccess() {
+                        activity!!.choosePhoto()
+                    }
 
-                override fun onUserCancel(scene: String, permission: String) {
+                    override fun onUserCancel(scene: String, permissionGroupID: String, permission: String) {
 
-                }
+                    }
 
-                override fun onUserDeny(scene: String, permission: String) {
+                    override fun onUserDeny(scene: String, permissionGroupID: String, permission: String) {
 
-                }
+                    }
 
-            },
-            *selectPhotoPermission
+                },
+                selectPhotoPermission
         )
     }
 
@@ -165,30 +165,27 @@ open class PhotosSelectFragment : CommonListFragment() {
 
     override fun getDataLiveData(): CommonListLiveData {
         return object : CommonListLiveData() {
-            override fun fetchData() {
-                mDataList.clear()
-                mDataList.addAll(getDataList())
-                postValue(mDataList)
-            }
-
-            override fun clearData() {
-                mDataList.clear()
-            }
 
             override fun loadMore() {
                 postValue(mDataList)
+            }
+
+            override fun refresh() {
+                mDataList.clear()
             }
 
             override fun hasMore(): Boolean {
                 return false
             }
 
-            override fun canRefresh(): Boolean {
-                return false
+            override fun initData() {
+
+                mDataList.addAll(getDataList())
+                postValue(mDataList)
             }
 
-            override fun getEmptyText(): String {
-                return ""
+            override fun canRefresh(): Boolean {
+                return false
             }
         }
     }

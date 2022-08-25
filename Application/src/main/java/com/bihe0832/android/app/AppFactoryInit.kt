@@ -99,14 +99,14 @@ object AppFactoryInit {
     }
 
      private fun initPermission() {
-        PermissionManager.addPermissionDesc(
+        PermissionManager.addPermissionGroupDesc(
                 HashMap<String, String>().apply {
                     put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "访问存储卡")
                     put(Manifest.permission.READ_PHONE_STATE, "读取手机状态")
                 }
         )
 
-        PermissionManager.addPermissionScene(
+        PermissionManager.addPermissionGroupScene(
                 HashMap<String, String>().apply {
                     put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "获取应用信息")
                     put(Manifest.permission.READ_PHONE_STATE, "获取应用安装时间等")

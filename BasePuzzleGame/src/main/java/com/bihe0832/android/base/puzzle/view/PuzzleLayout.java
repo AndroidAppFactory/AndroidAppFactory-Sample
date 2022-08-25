@@ -8,16 +8,19 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
+
 import com.bihe0832.android.base.puzzle.GameMode;
 import com.bihe0832.android.base.puzzle.R;
 import com.bihe0832.android.lib.utils.MathUtils;
 import com.bihe0832.android.lib.utils.os.DisplayUtil;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

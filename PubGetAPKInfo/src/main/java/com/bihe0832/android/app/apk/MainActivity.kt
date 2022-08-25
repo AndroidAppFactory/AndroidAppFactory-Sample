@@ -4,8 +4,8 @@ import android.Manifest
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.bihe0832.android.app.getapk.R
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
@@ -17,10 +17,10 @@ import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.swiperefresh.CommonListActivity
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.adapter.CardBaseModule
-import com.bihe0832.android.lib.adapter.CardInfoHelper
 import com.bihe0832.android.lib.debug.DebugTools
 import com.bihe0832.android.lib.install.InstallUtils
 import com.bihe0832.android.lib.lifecycle.INSTALL_TYPE_NOT_FIRST
+import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
 import com.bihe0832.android.lib.thread.ThreadManager
@@ -29,20 +29,19 @@ import com.bihe0832.android.lib.ui.dialog.OnDialogListener
 import com.bihe0832.android.lib.ui.recycleview.ext.SafeLinearLayoutManager
 import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.encrypt.MD5
+
 @APPMain
 @Module(RouterConstants.MODULE_NAME_APK_LIST)
 class MainActivity : CommonListActivity() {
     var hasShowTips = false
 
     private val mCommonListLiveData = object : CommonListLiveData() {
-        override fun fetchData() {
+
+        override fun loadMore() {
             postValue(getTempData())
         }
 
-        override fun clearData() {
-        }
-
-        override fun loadMore() {
+        override fun refresh() {
             postValue(getTempData())
         }
 
@@ -50,14 +49,16 @@ class MainActivity : CommonListActivity() {
             return false
         }
 
+        override fun initData() {
+            postValue(getTempData())
+        }
+
         override fun canRefresh(): Boolean {
             return true
         }
 
-        override fun getEmptyText(): String {
-            return "尚未安装应用"
-        }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mToolbar?.apply {
@@ -75,11 +76,12 @@ class MainActivity : CommonListActivity() {
         return ContextCompat.getColor(this, R.color.colorPrimary)
     }
 
-    override fun getPermissionList(): List<String> {
-        return mutableListOf(
+    override fun onResume() {
+        super.onResume()
+        PermissionManager.checkPermission(this, mutableListOf(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_PHONE_STATE
-        )
+        ))
     }
 
     override fun getLayoutManagerForList(): RecyclerView.LayoutManager {

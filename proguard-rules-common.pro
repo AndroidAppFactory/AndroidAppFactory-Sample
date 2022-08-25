@@ -6,7 +6,6 @@
 -dontpreverify                          # 混淆时是否做预校验
 -dontoptimize
 -dontshrink
--ignorewarning                          # 忽略警告，避免打包时某些警告出现
 -verbose                                # 混淆时是否记录日志
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*    # 混淆时所采用的算法
 -keepattributes SourceFile,LineNumberTable # 抛出异常时保留代码行数

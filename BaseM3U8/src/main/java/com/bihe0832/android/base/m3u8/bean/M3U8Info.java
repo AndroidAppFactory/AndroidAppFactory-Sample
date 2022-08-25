@@ -2,7 +2,6 @@ package com.bihe0832.android.base.m3u8.bean;
 
 import com.bihe0832.android.lib.file.FileUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

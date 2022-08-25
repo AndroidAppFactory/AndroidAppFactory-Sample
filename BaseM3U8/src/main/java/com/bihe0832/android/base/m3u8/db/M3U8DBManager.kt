@@ -2,7 +2,6 @@ package com.bihe0832.android.base.m3u8.db;
 
 import android.content.Context
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
-import com.bihe0832.android.base.m3u8.history.M3U8ListLiveData
 
 /**
  *

@@ -25,7 +25,7 @@ open class BrowserListActivity : CommonListActivity() {
         super.onCreate(savedInstanceState)
         start_new.setOnClickListener {
             var result = new_url.text.toString()
-            if(!result.startsWith("http")){
+            if (!result.startsWith("http")) {
                 result = "http://$result"
             }
             openMain(result)
@@ -57,23 +57,19 @@ open class BrowserListActivity : CommonListActivity() {
                 return false
             }
 
-            override fun clearData() {
-                postValue(mutableListOf())
-            }
-
-            override fun fetchData() {
-                postValue(getDataList())
-            }
-
-            override fun getEmptyText(): String {
-                return ""
-            }
-
             override fun hasMore(): Boolean {
                 return false
             }
 
+            override fun initData() {
+                postValue(getDataList())
+            }
+
             override fun loadMore() {
+            }
+
+            override fun refresh() {
+                postValue(mutableListOf())
             }
         }
     }
@@ -88,7 +84,7 @@ open class BrowserListActivity : CommonListActivity() {
 
     override fun onResume() {
         super.onResume()
-        mTestDataLiveData.fetchData()
+        mTestDataLiveData.initData()
     }
 
     override fun getCardList(): List<CardItemForCommonList>? {
