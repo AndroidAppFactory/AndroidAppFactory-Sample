@@ -10,10 +10,6 @@ import com.bihe0832.android.common.list.CommonListLiveData
  */
 abstract class M3U8ListLiveData : CommonListLiveData() {
 
-    override fun clearData() {
-        postValue(ArrayList())
-    }
-
     override fun loadMore() {
 
     }
@@ -26,7 +22,6 @@ abstract class M3U8ListLiveData : CommonListLiveData() {
         return false
     }
 
-    override fun getEmptyText(): String {
-        return ""
+    override fun refresh() {
     }
 }

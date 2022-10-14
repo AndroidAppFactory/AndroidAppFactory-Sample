@@ -12,7 +12,7 @@
                 android:name="com.bihe0832.android.app.browser.SplashActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden"
                 android:screenOrientation="portrait"
-                android:theme="@style/fullscreenActivityTheme">
+                android:theme="@style/AAF.ActivityTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,7 +25,7 @@
                 android:label="@string/app_name"
                 android:screenOrientation="portrait"
                 android:launchMode="singleInstance"
-                android:theme="@style/activityTheme">
+                android:theme="@style/AAF.ActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -43,7 +43,7 @@
                 android:name="com.bihe0832.android.app.browser.BrowserListActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden"
                 android:screenOrientation="portrait"
-                android:theme="@style/activityTheme"></activity>
+                android:theme="@style/AAF.ActivityTheme"></activity>
     </application>
 
 </manifest>

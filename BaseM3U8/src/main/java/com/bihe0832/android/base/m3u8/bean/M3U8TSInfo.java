@@ -1,7 +1,7 @@
 package com.bihe0832.android.base.m3u8.bean;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
 import com.bihe0832.android.lib.utils.encrypt.MD5;
 
 
@@ -52,9 +52,8 @@ public class M3U8TSInfo implements Comparable<M3U8TSInfo> {
     }
 
 
-
     @Override
-    public int compareTo(@NonNull M3U8TSInfo o) {
+    public int compareTo(M3U8TSInfo o) {
         return m3u8TSURL.compareTo(o.m3u8TSURL);
     }
 

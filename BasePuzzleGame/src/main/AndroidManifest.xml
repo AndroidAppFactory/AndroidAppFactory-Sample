@@ -10,7 +10,7 @@
                 android:name="com.bihe0832.android.base.puzzle.ui.GameActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden"
                 android:screenOrientation="portrait"
-                android:theme="@style/activityTheme"></activity>
+                android:theme="@style/AAF.ActivityTheme"></activity>
 
     </application>
 

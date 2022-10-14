@@ -12,11 +12,11 @@ ext {
     //版本号，正式版本会由自动构建替换
     versionCode = 35
     //版本名，正式版本会由自动构建替换
-    versionName = "1.1.1"
+    versionName = "1.2.0"
     //Android 构建包时是否混淆代码
     minifyEnabled = true
 
-	//使用kotlin版本
+    //使用kotlin版本
     kotlin_version = '1.7.10'
     kotlinx_coroutines_version = "1.6.3"
 
@@ -46,7 +46,7 @@ ext {
 
 
     ]
-    
+
     pickFirstList = [
             'lib/armeabi-v7a/libc++_shared.so',
     ]
@@ -82,16 +82,8 @@ ext {
     robolectricVersion = '3.3.2'
 
 
-    aaf_test_version = '5.1.7'
-    aaf_version = '5.1.7'
+    aaf_test_version = '5.5.0'
+    aaf_version = '5.5.0'
 
 
-    excludeList = [
-            'META-INF/*.kotlin_module',
-            'META-INF/proguard/androidx-annotations.pro'
-    ]
-
-    doNotStripList = [
-            "*/armeabi-v7a/*.so"
-    ]
 }

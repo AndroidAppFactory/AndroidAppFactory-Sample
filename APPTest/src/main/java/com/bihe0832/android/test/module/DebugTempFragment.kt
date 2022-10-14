@@ -19,7 +19,7 @@ class DebugTempFragment : BaseDebugListFragment() {
             add(
                     DebugItemData(
                             "默认关于页",
-                            View.OnClickListener { startActivity(AboutActivity::class.java) })
+                            View.OnClickListener { startActivityWithException(AboutActivity::class.java) })
             )
             add(
                     DebugItemData(

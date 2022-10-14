@@ -102,8 +102,8 @@ object M3U8Tools {
                 return mDownloadList
             }
 
-            fun startNew(){
-                if(!hasStop){
+            fun startNew() {
+                if (!hasStop) {
                     info.tsList.find { !mDownloadList.containsKey(it.localFileName) }?.let {
                         addNewItem(it.localFileName)
                         startDownload(
@@ -114,6 +114,7 @@ object M3U8Tools {
                     }
                 }
             }
+
             override fun onComplete(filePath: String, item: DownloadItem) {
                 mDownloadList.put(FileUtils.getFileName(filePath), true)
                 startNew()
@@ -128,7 +129,7 @@ object M3U8Tools {
             }
         }
         DownloadUtils.addDownloadListener(downItem)
-        info.tsList.subList(0,if(info.tsList.size > 10) 10 else info.tsList.size).forEach {
+        info.tsList.subList(0, if (info.tsList.size > 10) 10 else info.tsList.size).forEach {
             downItem.addNewItem(it.localFileName)
             startDownload(
                 context!!,
@@ -291,14 +292,25 @@ object M3U8Tools {
         }
     }
 
-    private fun startDownload(context: Context, url: String, filePath: String) {
+    private fun startDownload(context: Context, url: String, paramFilePath: String) {
         DownloadUtils.startDownload(context, DownloadItem().apply {
             downloadURL = url
-            if (!TextUtils.isEmpty(filePath)) {
-                fileNameWithPath = filePath
-            }
             isDownloadWhenUseMobile = true
             setCanDownloadByPart(false)
+            downloadListener = object : SimpleDownloadListener() {
+                override fun onComplete(filePath: String, item: DownloadItem) {
+                    if (TextUtils.isEmpty(paramFilePath)) {
+                        FileUtils.copyFile(File(filePath), File(paramFilePath), true)
+                    }
+                }
+
+                override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
+                }
+
+                override fun onProgress(item: DownloadItem) {
+                }
+
+            }
         }, false)
     }
 

@@ -164,7 +164,7 @@ open class M3u8DownloadActivity : BaseActivity() {
                     File(finalPath).delete()
                 }
                 showResult("<b><font color='#8e44ad'>开始下载</font></b>：${getM3U8URL()}")
-                DownloadFile.startDownload(this, getM3U8URL(), finalPath, object : SimpleDownloadListener() {
+                DownloadFile.download(this, getM3U8URL(), finalPath, object : SimpleDownloadListener() {
                     override fun onComplete(filePath: String, item: DownloadItem) {
                         try {
                             val inputStream: InputStream = File(filePath).inputStream()

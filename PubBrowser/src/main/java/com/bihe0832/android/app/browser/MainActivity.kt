@@ -18,7 +18,7 @@ class MainActivity : WebPageActivity() {
     }
 
     override fun getWebViewFragment(): BaseWebviewFragment? {
-        return BrowserFragment.newInstance(mURL)
+        return BrowserFragment.newInstance(url)
     }
 
     override fun getWebViewFragmentClass(): Class<*>? {

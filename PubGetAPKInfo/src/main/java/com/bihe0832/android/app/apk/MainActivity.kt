@@ -59,6 +59,7 @@ class MainActivity : CommonListActivity() {
 
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mToolbar?.apply {

@@ -15,18 +15,18 @@ open class DebugCommonFragment : DebugCommonFragment() {
             add(DebugItemData("查看应用版本及环境", View.OnClickListener { showAPPInfo() }))
             add(DebugItemData("查看使用情况", View.OnClickListener { showUsedInfo() }))
             add(DebugItemData("查看设备信息", View.OnClickListener { showMobileInfo() }))
-            add(DebugItemData("日志管理", View.OnClickListener { startActivity(DebugLogActivity::class.java) }))
+            add(DebugItemData("日志管理", View.OnClickListener { startActivityWithException(DebugLogActivity::class.java) }))
             add(DebugTipsData("APPFactory支持的应用"))
             add(DebugItemData("应用信息获取") {
-                startActivity("com.bihe0832.android.app.apk.MainActivity")
+                startActivityWithException("com.bihe0832.android.app.apk.MainActivity")
             })
 
             add(DebugItemData("来拼图") {
-                startActivity("com.bihe0832.android.app.puzzle.MainActivity")
+                startActivityWithException("com.bihe0832.android.app.puzzle.MainActivity")
             })
 
             add(DebugItemData("M3U8下载器") {
-                startActivity("com.bihe0832.android.app.m3u8.MainActivity")
+                startActivityWithException("com.bihe0832.android.app.m3u8.MainActivity")
             })
 
         }
