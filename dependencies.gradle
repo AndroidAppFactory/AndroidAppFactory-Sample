@@ -24,7 +24,7 @@ ext.pubModuleIsApplication = true
  *  true 全都加载，
  *  false 仅加载与 mainProject 相关的模块
  */
-ext.includeALLDependOnDevelopModule = true
+ext.includeALLDependOnDevelopModule = false
 /**
  * 组件所有模块的最新版本
  */
