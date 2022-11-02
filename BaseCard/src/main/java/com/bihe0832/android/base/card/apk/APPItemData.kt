@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import com.bihe0832.android.base.card.R
 import com.bihe0832.android.lib.adapter.CardBaseHolder
 import com.bihe0832.android.lib.adapter.CardBaseModule
+import com.bihe0832.android.lib.utils.encrypt.MD5
 
 /**
  * @author hardyshi code@bihe0832.com
@@ -26,9 +27,17 @@ class APPItemData : CardBaseModule() {
     var app_install_time = 0L
     var app_update_time = 0L
     var app_md5 = ""
-    var signature_md5 = ""
+    var signature_type = MD5.MESSAGE_DIGEST_TYPE_MD5
+    var signature_value = ""
     override fun toString(): String {
-        return "应用：$app_name\n版本号：$app_version\n包名：$app_package\n安装于：$app_install_time\n更新于：$app_update_time \nAPK MD5：$app_md5\n签名 MD5：$signature_md5"
+        return "应用：$app_name\n" +
+                "版本号：$app_version\n" +
+                "包名：$app_package\n" +
+                "安装于：$app_install_time\n" +
+                "更新于：$app_update_time \n" +
+                "APK MD5：$app_md5\n" +
+                "签名 算法：$signature_type\n" +
+                "签名 值：$signature_value"
     }
 
 

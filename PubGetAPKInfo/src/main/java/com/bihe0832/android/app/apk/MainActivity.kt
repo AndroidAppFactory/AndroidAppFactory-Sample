@@ -26,14 +26,18 @@ import com.bihe0832.android.lib.router.annotation.Module
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.ui.dialog.CommonDialog
 import com.bihe0832.android.lib.ui.dialog.OnDialogListener
+import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
+import com.bihe0832.android.lib.ui.dialog.input.InputDialogCompletedCallback
 import com.bihe0832.android.lib.ui.recycleview.ext.SafeLinearLayoutManager
 import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.encrypt.MD5
+import com.bihe0832.android.lib.utils.intent.IntentUtils
 
 @APPMain
 @Module(RouterConstants.MODULE_NAME_APK_LIST)
 class MainActivity : CommonListActivity() {
     var hasShowTips = false
+    var defaultSignatureType = MD5.MESSAGE_DIGEST_TYPE_MD5
 
     private val mCommonListLiveData = object : CommonListLiveData() {
 
@@ -79,10 +83,12 @@ class MainActivity : CommonListActivity() {
 
     override fun onResume() {
         super.onResume()
-        PermissionManager.checkPermission(this, mutableListOf(
+        PermissionManager.checkPermission(
+            this, mutableListOf(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_PHONE_STATE
-        ))
+            )
+        )
     }
 
     override fun getLayoutManagerForList(): RecyclerView.LayoutManager {
@@ -109,7 +115,10 @@ class MainActivity : CommonListActivity() {
                         if (temp.app_md5.isNullOrEmpty()) {
                             ThreadManager.getInstance().start {
                                 try {
-                                    packageManager.getApplicationInfo(temp.app_package, PackageManager.GET_SIGNATURES)?.let {
+                                    packageManager.getApplicationInfo(
+                                        temp.app_package,
+                                        PackageManager.GET_SIGNATURES
+                                    )?.let {
                                         temp.app_md5 = MD5.getFileMD5(it.sourceDir)
                                         view.post {
                                             mAdapter.notifyDataSetChanged()
@@ -127,12 +136,37 @@ class MainActivity : CommonListActivity() {
                             mAdapter.notifyDataSetChanged()
                         }
                     }
+                    R.id.app_icon -> {
+                        DialogUtils.showInputDialog(
+                            this@MainActivity,
+                            "签名信息获取算法",
+                            "在下方输入框输入算法名称后，点击「确认」即可设定并计算签名信息",
+                            defaultSignatureType,
+                            object : InputDialogCompletedCallback {
+                                override fun onInputCompleted(p0: String?) {
+                                    p0?.let {
+                                        defaultSignatureType = it
+                                        temp.signature_type = it
+                                        view.post {
+                                            mAdapter.notifyDataSetChanged()
+                                        }
+                                    }
+                                }
+
+                            }
+                        )
+                    }
                 }
             }
 
             setOnItemLongClickListener { adapter, view, position ->
                 var temp = adapter.data[position] as APPItemData
-                DebugTools.showInfo(this@MainActivity, temp.app_name + "基础信息", temp.toString(), "分享")
+                DebugTools.showInfo(
+                    this@MainActivity,
+                    temp.app_name + "基础信息",
+                    temp.toString(),
+                    "分享"
+                )
                 return@setOnItemLongClickListener true
             }
         }
@@ -170,7 +204,8 @@ class MainActivity : CommonListActivity() {
 
     private fun getTipsContent(color: String): String {
         return "1. <b><font color='$color'>点击</font>应用信息</b>，可以计算APK的MD5<BR>" +
-                "2. <b><font color='$color'>长按</font>应用信息</b>，可以复制到剪切板或对外分享"
+                "2. <b><font color='$color'>长按</font>应用信息</b>，可以复制到剪切板或对外分享<BR>" +
+                "3. <b><font color='$color'>点击</font>应用图标</b>，可以调整应用签名计算算法"
     }
 
     private fun getTempData(): List<CardBaseModule> {
@@ -183,14 +218,16 @@ class MainActivity : CommonListActivity() {
             for (info in appList) {
                 if (info.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
                     try {
-                        var packageInfo = APKUtils.getInstalledPackage(applicationContext, info.packageName)
+                        var packageInfo =
+                            APKUtils.getInstalledPackage(applicationContext, info.packageName)
                         add(APPItemData().apply {
                             this.app_icon = packageInfo?.applicationInfo?.loadIcon(packageManager)
-                            this.app_name = packageInfo?.applicationInfo?.loadLabel(packageManager)?.toString()
+                            this.app_name =
+                                packageInfo?.applicationInfo?.loadLabel(packageManager)?.toString()
                                     ?: ""
-                            this.app_version = packageInfo.versionName + "." + packageInfo.versionCode
+                            this.app_version =
+                                packageInfo.versionName + "." + packageInfo.versionCode
                             this.app_package = info.packageName
-                            this.signature_md5 = APKUtils.getSigMd5ByPkgName(applicationContext, info.packageName)
                             this.app_install_time = packageInfo.firstInstallTime
                             this.app_update_time = packageInfo.lastUpdateTime
                         })

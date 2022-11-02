@@ -8,17 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bihe0832.android.base.card.R;
 import com.bihe0832.android.framework.ZixieContext;
 import com.bihe0832.android.lib.adapter.CardBaseHolder;
 import com.bihe0832.android.lib.adapter.CardBaseModule;
-import com.bihe0832.android.lib.ui.image.GlideExtKt;
+import com.bihe0832.android.lib.media.image.GlideExtKt;
 import com.bihe0832.android.lib.utils.os.DisplayUtil;
 
 /**
  * @author hardyshi code@bihe0832.com
- *         Created on 2019-11-21.
- *         Description: Description
+ * Created on 2019-11-21.
+ * Description: Description
  */
 
 public class IconTextHolder extends CardBaseHolder {
