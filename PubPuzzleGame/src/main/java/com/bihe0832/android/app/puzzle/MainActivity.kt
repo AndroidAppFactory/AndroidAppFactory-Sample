@@ -18,13 +18,8 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_puzzle_main)
-        initToolbar(
-            R.id.common_toolbar,
-            getString(R.string.app_name),
-            needTitleCenter = false,
-            needBack = true,
-            iconRes = R.mipmap.ic_menu_white
-        )
+
+        initToolbar(R.id.common_toolbar, getString(R.string.app_name), true, needBack = false, iconRes = R.mipmap.ic_menu_white)
         mToolbar?.apply {
             setNavigationOnClickListener {
                 RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_BASE_ABOUT)
@@ -32,9 +27,9 @@ class MainActivity : BaseActivity() {
         }
 
         puzzle_desc.text = Html.fromHtml(
-            "使用教程<BR>" +
-                    " 1. <b><font color='#38ADFF'>点击</font>下方图标</b>，选择拼图的素材<BR>" +
-                    " 2. 选择图片后，进入<b><font color='#38ADFF'>拼图游戏</font>页面，可自由切换模式和难度</b>"
+                "使用教程<BR>" +
+                        " 1. <b><font color='#38ADFF'>点击</font>下方图标</b>，选择拼图的素材<BR>" +
+                        " 2. 选择图片后，进入<b><font color='#38ADFF'>拼图游戏</font>页面，可自由切换模式和难度</b>"
         )
     }
 

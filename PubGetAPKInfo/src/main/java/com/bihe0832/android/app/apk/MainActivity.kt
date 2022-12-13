@@ -31,7 +31,6 @@ import com.bihe0832.android.lib.ui.dialog.input.InputDialogCompletedCallback
 import com.bihe0832.android.lib.ui.recycleview.ext.SafeLinearLayoutManager
 import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.encrypt.MD5
-import com.bihe0832.android.lib.utils.intent.IntentUtils
 
 @APPMain
 @Module(RouterConstants.MODULE_NAME_APK_LIST)
@@ -83,12 +82,8 @@ class MainActivity : CommonListActivity() {
 
     override fun onResume() {
         super.onResume()
-        PermissionManager.checkPermission(
-            this, mutableListOf(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_PHONE_STATE
-            )
-        )
+        PermissionManager.checkPermission(this, mutableListOf(Manifest.permission.READ_PHONE_STATE))
+
     }
 
     override fun getLayoutManagerForList(): RecyclerView.LayoutManager {
@@ -116,8 +111,8 @@ class MainActivity : CommonListActivity() {
                             ThreadManager.getInstance().start {
                                 try {
                                     packageManager.getApplicationInfo(
-                                        temp.app_package,
-                                        PackageManager.GET_SIGNATURES
+                                            temp.app_package,
+                                            PackageManager.GET_SIGNATURES
                                     )?.let {
                                         temp.app_md5 = MD5.getFileMD5(it.sourceDir)
                                         view.post {
@@ -138,22 +133,22 @@ class MainActivity : CommonListActivity() {
                     }
                     R.id.app_icon -> {
                         DialogUtils.showInputDialog(
-                            this@MainActivity,
-                            "签名信息获取算法",
-                            "在下方输入框输入算法名称后，点击「确认」即可设定并计算签名信息",
-                            defaultSignatureType,
-                            object : InputDialogCompletedCallback {
-                                override fun onInputCompleted(p0: String?) {
-                                    p0?.let {
-                                        defaultSignatureType = it
-                                        temp.signature_type = it
-                                        view.post {
-                                            mAdapter.notifyDataSetChanged()
+                                this@MainActivity,
+                                "签名信息获取算法",
+                                "在下方输入框输入算法名称后，点击「确认」即可设定并计算签名信息",
+                                defaultSignatureType,
+                                object : InputDialogCompletedCallback {
+                                    override fun onInputCompleted(p0: String?) {
+                                        p0?.let {
+                                            defaultSignatureType = it
+                                            temp.signature_type = it
+                                            view.post {
+                                                mAdapter.notifyDataSetChanged()
+                                            }
                                         }
                                     }
-                                }
 
-                            }
+                                }
                         )
                     }
                 }
@@ -162,10 +157,10 @@ class MainActivity : CommonListActivity() {
             setOnItemLongClickListener { adapter, view, position ->
                 var temp = adapter.data[position] as APPItemData
                 DebugTools.showInfo(
-                    this@MainActivity,
-                    temp.app_name + "基础信息",
-                    temp.toString(),
-                    "分享"
+                        this@MainActivity,
+                        temp.app_name + "基础信息",
+                        temp.toString(),
+                        "分享"
                 )
                 return@setOnItemLongClickListener true
             }
@@ -180,7 +175,7 @@ class MainActivity : CommonListActivity() {
                 positive = "我知道了"
                 isSingle = true
                 setHtmlContent(getTipsContent("#38ADFF"))
-                setOnClickBottomListener(object : OnDialogListener {
+                onClickBottomListener = object : OnDialogListener {
                     override fun onPositiveClick() {
                         dismiss()
                     }
@@ -191,8 +186,8 @@ class MainActivity : CommonListActivity() {
 
                     override fun onCancel() {
                     }
-                })
-                setShouldCanceled(true)
+                }
+                shouldCanceled = true
             }.show()
             hasShowTips = true
         }
@@ -216,17 +211,17 @@ class MainActivity : CommonListActivity() {
             })
             var appList = packageManager.getInstalledApplications(PackageManager.GET_SIGNATURES)
             for (info in appList) {
-                if (info.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
+                if ((info.flags and ApplicationInfo.FLAG_SYSTEM == 0) && !info.packageName.equals(this@MainActivity.packageName)) {
                     try {
                         var packageInfo =
-                            APKUtils.getInstalledPackage(applicationContext, info.packageName)
+                                APKUtils.getInstalledPackage(applicationContext, info.packageName)
                         add(APPItemData().apply {
                             this.app_icon = packageInfo?.applicationInfo?.loadIcon(packageManager)
                             this.app_name =
-                                packageInfo?.applicationInfo?.loadLabel(packageManager)?.toString()
-                                    ?: ""
+                                    packageInfo?.applicationInfo?.loadLabel(packageManager)?.toString()
+                                            ?: ""
                             this.app_version =
-                                packageInfo.versionName + "." + packageInfo.versionCode
+                                    packageInfo.versionName + "." + packageInfo.versionCode
                             this.app_package = info.packageName
                             this.app_install_time = packageInfo.firstInstallTime
                             this.app_update_time = packageInfo.lastUpdateTime

@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import com.bihe0832.android.base.puzzle.view.PuzzleLayout
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.log.ZLog
+import com.bihe0832.android.lib.media.image.BitmapUtil
 import com.bihe0832.android.lib.thread.ThreadManager
-import com.bihe0832.android.lib.ui.image.BitmapUtil
 
 /**
  *

@@ -2,6 +2,7 @@ package com.bihe0832.android.base.m3u8.tools
 
 import android.content.Context
 import android.text.TextUtils
+import com.bihe0832.android.app.file.AAFDownload
 import com.bihe0832.android.base.m3u8.M3U8Listener
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
@@ -54,10 +55,7 @@ object M3U8Tools {
                                 line.startsWith("#EXT-X-KEY:") -> {
                                     key = when {
                                         line.contains("METHOD=AES-128") -> {
-                                            line.substring(
-                                                line.indexOf("\"") + 1,
-                                                line.lastIndexOf("\"")
-                                            )
+                                            line.substring(line.indexOf("\"") + 1, line.lastIndexOf("\""))
                                         }
                                         line.contains("METHOD=NONE") -> {
                                             ""
@@ -80,15 +78,9 @@ object M3U8Tools {
         }
     }
 
-    fun downloadM3U8(
-        context: Context,
-        baseURL: String,
-        fileDir: String,
-        info: M3U8Info,
-        listener: M3U8Listener
-    ) {
+    fun downloadM3U8(context: Context, baseURL: String, fileDir: String, info: M3U8Info, listener: M3U8Listener) {
         hasStop = false
-        var downItem = object : SimpleDownloadListener() {
+        var downloadListener = object : SimpleDownloadListener() {
 
             private var mDownloadList = ConcurrentHashMap<String, Boolean>()
 
@@ -106,11 +98,7 @@ object M3U8Tools {
                 if (!hasStop) {
                     info.tsList.find { !mDownloadList.containsKey(it.localFileName) }?.let {
                         addNewItem(it.localFileName)
-                        startDownload(
-                            context!!,
-                            getFullUrl(baseURL, it.m3u8TSURL),
-                            fileDir + it.localFileName
-                        )
+                        AAFDownload.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSURL), fileDir + it.localFileName)
                     }
                 }
             }
@@ -128,22 +116,14 @@ object M3U8Tools {
             override fun onProgress(item: DownloadItem) {
             }
         }
-        DownloadUtils.addDownloadListener(downItem)
-        info.tsList.subList(0, if (info.tsList.size > 10) 10 else info.tsList.size).forEach {
-            downItem.addNewItem(it.localFileName)
-            startDownload(
-                context!!,
-                getFullUrl(baseURL, it.m3u8TSURL),
-                fileDir + it.localFileName
-            )
-            if (!TextUtils.isEmpty(it.m3u8TSKeyURL)) {
-                downItem.addNewItem(it.localFileName)
-                startDownload(
-                    context!!,
-                    getFullUrl(baseURL, it.m3u8TSKeyURL),
-                    fileDir + it.localKeyName
-                )
 
+        DownloadUtils.addDownloadListener(downloadListener)
+        info.tsList.subList(0, if (info.tsList.size > 10) 10 else info.tsList.size).forEach {
+            downloadListener.addNewItem(it.localFileName)
+            AAFDownload.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSURL), fileDir + it.localFileName)
+            if (!TextUtils.isEmpty(it.m3u8TSKeyURL)) {
+                downloadListener.addNewItem(it.localFileName)
+                AAFDownload.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSKeyURL), fileDir + it.localKeyName)
             }
         }
         ThreadManager.getInstance().start {
@@ -160,13 +140,13 @@ object M3U8Tools {
 
                 override fun run() {
                     var finished = 0
-                    downItem.downloadItemList().values.forEach {
+                    downloadListener.downloadItemList().values.forEach {
                         if (it) {
                             finished++
                         }
                     }
                     listener.onProcess(finished, info.tsList.size)
-                    if (finished == downItem.downloadItemList().size) {
+                    if (finished == downloadListener.downloadItemList().size) {
                         ZixieContext.showToast("下载完成")
                         listener.onComplete()
                         TaskManager.getInstance().removeTask(NAME)
@@ -181,7 +161,7 @@ object M3U8Tools {
 
     }
 
-    fun cancleDownload() {
+    fun cancelDownload() {
         hasStop = true
         DownloadUtils.pauseAll()
         TaskManager.getInstance().removeTask(NAME)
@@ -244,10 +224,7 @@ object M3U8Tools {
                             byteArrayOutputStream.close()
 
                             var newbyte = if (!TextUtils.isEmpty(ts.m3u8TSKeyURL)) {
-                                AESUtils.decryptWithoutIV(
-                                    FileUtils.getFileContent(m3u8Dir + ts.m3u8TSKeyURL)
-                                        .toByteArray(), bytes
-                                )
+                                AESUtils.decryptWithoutIV(FileUtils.getFileContent(m3u8Dir + ts.m3u8TSKeyURL).toByteArray(), bytes)
                             } else {
                                 bytes
                             }
@@ -292,28 +269,6 @@ object M3U8Tools {
         }
     }
 
-    private fun startDownload(context: Context, url: String, paramFilePath: String) {
-        DownloadUtils.startDownload(context, DownloadItem().apply {
-            downloadURL = url
-            isDownloadWhenUseMobile = true
-            setCanDownloadByPart(false)
-            downloadListener = object : SimpleDownloadListener() {
-                override fun onComplete(filePath: String, item: DownloadItem) {
-                    if (TextUtils.isEmpty(paramFilePath)) {
-                        FileUtils.copyFile(File(filePath), File(paramFilePath), true)
-                    }
-                }
-
-                override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
-                }
-
-                override fun onProgress(item: DownloadItem) {
-                }
-
-            }
-        }, false)
-    }
-
     fun mergeURL(baseUrl: String, tempUrl: String): String {
 
         var newBaseURL = if (!baseUrl.endsWith("/")) {
@@ -330,8 +285,7 @@ object M3U8Tools {
 
         val tempList = newTempURL.split("/")
         if (newBaseURL.contains(tempList[0])) {
-            var sameString =
-                newBaseURL.substring(newBaseURL.lastIndexOf(tempList[0], newBaseURL.length))
+            var sameString = newBaseURL.substring(newBaseURL.lastIndexOf(tempList[0], newBaseURL.length))
             if (newTempURL.contains(sameString)) {
                 return newBaseURL + newTempURL.substring(sameString.length, newTempURL.length)
             }

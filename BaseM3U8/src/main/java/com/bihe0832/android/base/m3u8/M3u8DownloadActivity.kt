@@ -5,23 +5,23 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import com.bihe0832.android.app.file.AAFDownload
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.base.m3u8.tools.M3U8Tools
 import com.bihe0832.android.framework.ui.BaseActivity
 import com.bihe0832.android.lib.download.DownloadItem
-import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.file.provider.ZixieFileProvider
 import com.bihe0832.android.lib.log.ZLog
+import com.bihe0832.android.lib.media.Media
 import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.request.URLUtils
 import com.bihe0832.android.lib.router.annotation.Module
 import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.thread.ThreadManager
-import com.bihe0832.android.lib.ui.media.Media
 import kotlinx.android.synthetic.main.m3u8_activity_download.*
 import java.io.File
 import java.io.InputStream
@@ -160,11 +160,10 @@ open class M3u8DownloadActivity : BaseActivity() {
         downloadIndex.setOnClickListener {
             if (!TextUtils.isEmpty(getM3U8URL()) && URLUtils.isHTTPUrl(getM3U8URL())) {
                 var finalPath = getLocalIndexFile()
-                if (File(finalPath).exists()) {
-                    File(finalPath).delete()
-                }
+
                 showResult("<b><font color='#8e44ad'>开始下载</font></b>：${getM3U8URL()}")
-                DownloadFile.download(this, getM3U8URL(), finalPath, object : SimpleDownloadListener() {
+                AAFDownload.download(this, getM3U8URL(), finalPath, object : SimpleDownloadListener() {
+
                     override fun onComplete(filePath: String, item: DownloadItem) {
                         try {
                             val inputStream: InputStream = File(filePath).inputStream()
@@ -206,7 +205,7 @@ open class M3u8DownloadActivity : BaseActivity() {
 
         downloadPart.setOnClickListener {
             showResult("开始下载分片！")
-            M3U8Tools.cancleDownload()
+            M3U8Tools.cancelDownload()
             M3U8Tools.downloadM3U8(this, getBaseURL(), M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info, object : M3U8Listener {
                 override fun onFail(errorCode: Int, msg: String) {
 
@@ -228,7 +227,7 @@ open class M3u8DownloadActivity : BaseActivity() {
         }
 
         mergePart.setOnClickListener {
-            M3U8Tools.cancleDownload()
+            M3U8Tools.cancelDownload()
             showResult("分片下载已暂停，开始合并，合并结束以后，阔以点击下载分片继续下载！")
             mergePart.isEnabled = false
             M3U8Tools.mergeM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), M3U8ModuleManager.getFinalVideoPath(getM3U8URL()), object : M3U8Listener {

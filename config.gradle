@@ -82,8 +82,8 @@ ext {
     robolectricVersion = '3.3.2'
 
 
-    aaf_test_version = '5.9.4'
-    aaf_version = '5.9.4'
 
+    aaf_test_version = '5.10.18'
+    aaf_version = '5.10.18'
 
 }

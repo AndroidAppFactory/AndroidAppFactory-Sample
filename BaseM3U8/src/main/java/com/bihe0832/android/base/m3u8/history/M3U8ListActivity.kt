@@ -48,15 +48,9 @@ open class M3U8ListActivity : CommonListActivity() {
                             override fun onClick() {
                                 var data = HashMap<String, String>().apply {
                                     put(RouterConstants.INTENT_EXTRA_KEY_WEB_URL, m3u8Info.m3u8URL)
-                                    put(
-                                        RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL,
-                                        m3u8Info.baseURL
-                                    )
+                                    put(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL, m3u8Info.baseURL)
                                 }
-                                RouterHelper.openPageByRouter(
-                                    RouterConstants.MODULE_NAME_M3U8,
-                                    data
-                                )
+                                RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_M3U8, data)
                             }
 
                             override fun onDelete() {
@@ -70,7 +64,7 @@ open class M3U8ListActivity : CommonListActivity() {
                                         override fun onPositiveClick() {
                                             dismiss()
                                             M3U8DBManager.deleteData(m3u8Info.m3u8URL)
-                                            m3u8DataLiveData.initData()
+                                            m3u8DataLiveData.refresh()
                                         }
 
                                         override fun onNegativeClick() {
@@ -96,7 +90,13 @@ open class M3U8ListActivity : CommonListActivity() {
 
     private val m3u8DataLiveData by lazy {
         object : M3U8ListLiveData() {
+
             override fun initData() {
+                postValue(getDataList())
+            }
+
+            override fun refresh() {
+
                 postValue(getDataList())
             }
         }
@@ -108,7 +108,8 @@ open class M3U8ListActivity : CommonListActivity() {
 
     override fun onResume() {
         super.onResume()
-        m3u8DataLiveData.initData()
+        m3u8DataLiveData.refresh()
+
     }
 
     override fun getCardList(): List<CardItemForCommonList>? {

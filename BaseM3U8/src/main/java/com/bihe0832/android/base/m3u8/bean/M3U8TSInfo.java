@@ -67,10 +67,6 @@ public class M3U8TSInfo implements Comparable<M3U8TSInfo> {
 
     @Override
     public String toString() {
-        return "M3U8TSInfo{" +
-                "m3u8TSURL='" + m3u8TSURL + '\'' +
-                ", m3u8TSKeyURL='" + m3u8TSKeyURL + '\'' +
-                ", seconds=" + seconds +
-                '}';
+        return "M3U8TSInfo{" + "m3u8TSURL='" + m3u8TSURL + '\'' + ", m3u8TSKeyURL='" + m3u8TSKeyURL + '\'' + ", seconds=" + seconds + '}';
     }
 }

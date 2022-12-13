@@ -22,6 +22,4 @@ abstract class M3U8ListLiveData : CommonListLiveData() {
         return false
     }
 
-    override fun refresh() {
-    }
 }

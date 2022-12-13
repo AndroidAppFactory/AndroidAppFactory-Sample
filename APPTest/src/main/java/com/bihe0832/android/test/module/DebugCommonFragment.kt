@@ -16,11 +16,7 @@ open class DebugCommonFragment : DebugCommonFragment() {
             add(DebugItemData("查看应用版本及环境", View.OnClickListener { showAPPInfo() }))
             add(DebugItemData("查看使用情况", View.OnClickListener { showUsedInfo() }))
             add(DebugItemData("查看设备信息", View.OnClickListener { showMobileInfo() }))
-            add(
-                DebugItemData(
-                    "日志管理",
-                    View.OnClickListener { startActivityWithException(DebugLogActivity::class.java) })
-            )
+            add(DebugItemData("日志管理", View.OnClickListener { startActivityWithException(DebugLogActivity::class.java) }))
             add(DebugTipsData("APPFactory支持的应用"))
             add(DebugItemData("应用信息获取") {
                 openNew("com.bihe0832.android.app.apk.MainActivity")

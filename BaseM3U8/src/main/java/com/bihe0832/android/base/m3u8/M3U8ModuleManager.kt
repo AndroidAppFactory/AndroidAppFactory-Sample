@@ -27,7 +27,7 @@ object M3U8ModuleManager {
     }
 
     fun getFinalVideoPath(m3u8Url: String): String {
-        val finalOutPutFile = ZixieContext.getZixieExtFolder() + "pictures" + File.separator + "m3u8" + File.separator + MD5.getMd5(m3u8Url) + ".mp4"
+        val finalOutPutFile = getBasePath() + "pictures" + File.separator + "m3u8" + File.separator + MD5.getMd5(m3u8Url) + ".mp4"
         FileUtils.checkAndCreateFolder(File(finalOutPutFile).parentFile.absolutePath)
         return finalOutPutFile
     }
