@@ -5,6 +5,7 @@ import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.constant.Constants
 import com.bihe0832.android.lib.gson.JsonHelper
 import com.bihe0832.android.lib.log.ZLog
+import com.bihe0832.android.lib.okhttp.wrapper.OkHttpWrapper.getBasicOkHttpClientBuilderWithInterceptor
 import com.bihe0832.android.lib.request.URLUtils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,44 +18,18 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by hardyshi on 2018/2/5.
  */
-const val TIME_OUT_READ = 5000L
-const val TIME_OUT_CONNECTION = 5000L
-const val TIME_OUT_WRITE = 5000L
-
 
 object AAFNetWorkApi {
 
-    private var mHttpClient: OkHttpClient? = null
-    const val LOG_TAG = "RetrofitLog"
+    private val mHttpClient by lazy {
+        getBasicOkHttpClientBuilderWithInterceptor(!ZixieContext.isOfficial()).build()
+    }
 
     //获取个人信息等对应的后台接口地址
     const val REQUEST_PARAM_APP_VERSION = "version"
     const val REQUEST_PARAM_OS = "os"
     const val REQUEST_PARAM_DEVKEY = "devid"
     const val REQUEST_PARAM_PACKAGE_NAME = "package"
-
-    fun init(context: Context, debug: Boolean = false) {
-        mHttpClient =
-                OkHttpClient.Builder()
-                        .connectTimeout(TIME_OUT_CONNECTION, TimeUnit.MILLISECONDS)
-                        .readTimeout(TIME_OUT_READ, TimeUnit.MILLISECONDS)
-                        .writeTimeout(TIME_OUT_WRITE, TimeUnit.MILLISECONDS)
-                        .retryOnConnectionFailure(true)
-                        .addNetworkInterceptor(
-                                HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message ->
-                                    //打印retrofit日志
-                                    ZLog.d(LOG_TAG, "retrofitMsg = $message")
-                                }).apply {
-                                    level = if (debug) {
-                                        HttpLoggingInterceptor.Level.BODY
-                                    } else {
-                                        HttpLoggingInterceptor.Level.NONE
-                                    }
-                                }
-                        )
-                        .build()
-
-    }
 
     fun getCommonURL(url: String, param: String): String {
         val publicPara = StringBuffer()

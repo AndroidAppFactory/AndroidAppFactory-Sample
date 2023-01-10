@@ -41,11 +41,6 @@ ext.moduleInfo = [
         "Application"     : [
                 "apidependenciesList"    : [
                         "com.bihe0832.android:common-wrapper:${project.aaf_version}",
-                        'com.squareup.okhttp3:okhttp:3.9.1',
-                        'com.squareup.okhttp3:logging-interceptor:3.8.0',
-                        'com.squareup.retrofit2:retrofit:2.4.0',
-                        'com.squareup.retrofit2:converter-gson:2.4.0',
-                        "org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}"
 
                 ],
                 "specialdependenciesList": [

@@ -1,13 +1,8 @@
 package com.bihe0832.android.app;
 
-import android.app.ActivityManager;
-import android.content.Context;
-
 import com.bihe0832.android.framework.privacy.AgreementPrivacy;
-import com.bihe0832.android.framework.router.RouterInterrupt;
 import com.bihe0832.android.framework.ui.BaseApplication;
 import com.bihe0832.android.lib.log.ZLog;
-import java.util.List;
 
 public class Application extends BaseApplication {
 

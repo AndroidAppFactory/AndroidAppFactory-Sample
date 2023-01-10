@@ -29,7 +29,7 @@ android {
         versionCode project.versionCode
         vectorDrawables.useSupportLibrary = true
         ndk {
-            abiFilters "armeabi-v7a"
+            abiFilters project.ndk_abiFilters.split(",")
             stl "stlport_static"
         }
     }

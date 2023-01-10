@@ -39,7 +39,7 @@ object AppFactoryInit {
         if (!hasInit) {
             hasInit = true
             ZixieCoreInit.initAfterAgreePrivacy(application)
-            
+
             if (ZixieContext.isDebug()) {
                 LeakCanaryManager.init(application)
             }
@@ -98,7 +98,7 @@ object AppFactoryInit {
     fun initUserLoginRetBeforeGetUser(openid: String) {
     }
 
-     private fun initPermission() {
+    private fun initPermission() {
         PermissionManager.addPermissionGroupDesc(
                 HashMap<String, String>().apply {
                     put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "访问存储卡")
