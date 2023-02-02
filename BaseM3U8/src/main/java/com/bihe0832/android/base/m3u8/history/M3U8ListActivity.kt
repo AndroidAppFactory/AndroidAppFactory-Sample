@@ -42,15 +42,15 @@ open class M3U8ListActivity : CommonListActivity() {
                 it.forEach { m3u8Info ->
                     ZLog.d(m3u8Info.toString())
                     data.add(M3U8ViewData().apply {
-                        this.m3u8URL = m3u8Info.m3u8URL
-                        this.baseURl = m3u8Info.baseURL
-                        this.downloadTime = m3u8Info.downloadTime
-                        this.localpath = M3U8ModuleManager.getDownloadPath(m3u8Info.m3u8URL)
+                        this.m3u8URL = m3u8Info.getM3u8URL()
+                        this.baseURl = m3u8Info.getBaseURL()
+                        this.downloadTime = m3u8Info.getDownloadTime()
+                        this.localpath = M3U8ModuleManager.getDownloadPath(m3u8Info.getM3u8URL())
                         this.mListener = object : M3U8ViewHolder.OnClickListener {
                             override fun onClick() {
                                 var data = HashMap<String, String>().apply {
-                                    put(RouterConstants.INTENT_EXTRA_KEY_WEB_URL, m3u8Info.m3u8URL)
-                                    put(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL, m3u8Info.baseURL)
+                                    put(RouterConstants.INTENT_EXTRA_KEY_WEB_URL, m3u8Info.getM3u8URL())
+                                    put(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL, m3u8Info.getBaseURL())
                                 }
                                 RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_M3U8, data)
                             }
@@ -58,14 +58,14 @@ open class M3U8ListActivity : CommonListActivity() {
                             override fun onDelete() {
                                 CommonDialog(this@M3U8ListActivity).apply {
                                     title = "删除M3U8下载历史"
-                                    setHtmlContent("确定删除该条下载记录么？<BR>" + m3u8Info.m3u8URL)
+                                    setHtmlContent("确定删除该条下载记录么？<BR>" + m3u8Info.getM3u8URL())
                                     negative = "再想想"
                                     positive = "删除"
                                     setShouldCanceled(true)
                                     setOnClickBottomListener(object : OnDialogListener {
                                         override fun onPositiveClick() {
                                             dismiss()
-                                            M3U8DBManager.deleteData(m3u8Info.m3u8URL)
+                                            M3U8DBManager.deleteData(m3u8Info.getM3u8URL())
                                             m3u8DataLiveData.refresh()
                                         }
 

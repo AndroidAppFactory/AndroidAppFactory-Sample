@@ -29,20 +29,26 @@ android {
         versionCode project.versionCode
         vectorDrawables.useSupportLibrary = true
         ndk {
-            abiFilters project.ndk_abiFilters.split(",")
+            abiFilters project.ndk_abiFilters_project.split(",")
             stl "stlport_static"
         }
     }
 
     packagingOptions {
-        project.doNotStripList.each { item ->
-            doNotStrip item
+        project.ndk_abiFilters_project.split(",").each { abiItem ->
+            def finalDoNotStripFileName = "*/" + abiItem + "/*.so"
+            doNotStrip finalDoNotStripFileName
         }
+
+        project.ndk_abiFilters_all.split(",").each { abiItem ->
+            project.pickFirstList.each { item ->
+                def finalPickFirstFileName = "lib/" + abiItem + "/" + item
+                pickFirst finalPickFirstFileName
+            }
+        }
+
         project.excludeList.each { item ->
             exclude item
-        }
-        project.pickFirstList.each { item ->
-            pickFirst item
         }
     }
 
