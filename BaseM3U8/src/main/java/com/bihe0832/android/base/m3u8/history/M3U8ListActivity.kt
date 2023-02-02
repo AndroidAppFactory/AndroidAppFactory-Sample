@@ -14,6 +14,7 @@ import com.bihe0832.android.common.list.CardItemForCommonList
 import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.easyrefresh.CommonListActivity
 import com.bihe0832.android.lib.adapter.CardBaseModule
+import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.router.annotation.Module
 import com.bihe0832.android.lib.ui.dialog.CommonDialog
 import com.bihe0832.android.lib.ui.dialog.OnDialogListener
@@ -39,6 +40,7 @@ open class M3U8ListActivity : CommonListActivity() {
             if (it.isNotEmpty()) {
                 data.add(TipsData("点击下方列表<b>下载信息</b>即可进入对应视频下载页面"))
                 it.forEach { m3u8Info ->
+                    ZLog.d(m3u8Info.toString())
                     data.add(M3U8ViewData().apply {
                         this.m3u8URL = m3u8Info.m3u8URL
                         this.baseURl = m3u8Info.baseURL

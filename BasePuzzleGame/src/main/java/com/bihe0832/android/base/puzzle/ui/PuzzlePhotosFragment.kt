@@ -25,7 +25,7 @@ import com.bihe0832.android.lib.ui.dialog.input.InputDialogCompletedCallback
 import java.io.File
 
 /**
- * Created by hardyshi on 16/6/30.
+ * Created by zixie on 16/6/30.
  */
 class PuzzlePhotosFragment : PhotosSelectFragment() {
 

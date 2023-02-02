@@ -14,7 +14,7 @@ import com.bihe0832.android.lib.ui.dialog.OnDialogListener
 import kotlinx.android.synthetic.main.fragment_puzzle_game_main.*
 
 /**
- * Created by hardyshi on 16/6/30.
+ * Created by zixie on 16/6/30.
  */
 class PuzzleGameMainFragment : BaseFragment() {
 

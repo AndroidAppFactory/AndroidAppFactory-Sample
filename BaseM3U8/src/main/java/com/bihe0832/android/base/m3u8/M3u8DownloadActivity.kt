@@ -8,8 +8,11 @@ import android.text.TextUtils
 import com.bihe0832.android.app.file.AAFDownload
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
+import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.base.m3u8.tools.M3U8Tools
+import com.bihe0832.android.framework.file.AAFFileTools
+import com.bihe0832.android.framework.log.LoggerFile
 import com.bihe0832.android.framework.ui.BaseActivity
 import com.bihe0832.android.lib.download.DownloadItem
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
@@ -117,6 +120,7 @@ open class M3u8DownloadActivity : BaseActivity() {
             M3U8DBManager.saveData(m3u8Info)
             M3U8Tools.generateLocalM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info)
             showResult("<b>解析成功，已更新本地存储</b><BR>$m3u8Info")
+            ZLog.d(m3u8Info.toString())
             downloadPart.isEnabled = true
         }
     }
@@ -172,7 +176,7 @@ open class M3u8DownloadActivity : BaseActivity() {
                                     var line = it
                                     if (line.contains("m3u8")) {
                                         showResult("<b>下载失败，M3U8地址已发生变化，请再次点击<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${FileUtils.getFileContent(filePath)}")
-                                        urlText.setText(M3U8Tools.getFullUrl(getBaseURL(), line))
+                                        urlText.setText(M3U8TSInfo.getFullUrl(getBaseURL(), line))
                                         return
                                     }
                                 }
@@ -201,6 +205,10 @@ open class M3u8DownloadActivity : BaseActivity() {
 
         parseIndex.setOnClickListener {
             parseM3U8InfoWithLocalIndex(getLocalIndexFile())
+        }
+
+        previewIndex.setOnClickListener {
+            AAFFileTools.openFile(getLocalIndexFile())
         }
 
         downloadPart.setOnClickListener {
@@ -251,7 +259,7 @@ open class M3u8DownloadActivity : BaseActivity() {
 
                 override fun onProcess(finished: Int, total: Int) {
                     ThreadManager.getInstance().runOnUIThread {
-                        showResult("共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
+                        showResult("分片合并中，共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
                     }
                 }
             })

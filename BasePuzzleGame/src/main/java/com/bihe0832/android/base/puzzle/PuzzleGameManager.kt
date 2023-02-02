@@ -9,7 +9,7 @@ import com.bihe0832.android.lib.thread.ThreadManager
 
 /**
  *
- * @author hardyshi code@bihe0832.com Created on 1/7/21.
+ * @author zixie code@bihe0832.com Created on 1/7/21.
  *
  */
 object PuzzleGameManager {

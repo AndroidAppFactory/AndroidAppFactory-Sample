@@ -1,28 +1,25 @@
 package com.bihe0832.android.app.api
 
-import android.content.Context
+
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.constant.Constants
 import com.bihe0832.android.lib.gson.JsonHelper
-import com.bihe0832.android.lib.log.ZLog
-import com.bihe0832.android.lib.okhttp.wrapper.OkHttpWrapper.getBasicOkHttpClientBuilderWithInterceptor
+import com.bihe0832.android.lib.okhttp.wrapper.OkHttpWrapper
 import com.bihe0832.android.lib.request.URLUtils
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 
 /**
- * Created by hardyshi on 2018/2/5.
+ * Created by zixie on 2018/2/5.
  */
 
 object AAFNetWorkApi {
 
-    private val mHttpClient by lazy {
-        getBasicOkHttpClientBuilderWithInterceptor(!ZixieContext.isOfficial()).build()
+    private val mHttpClient: OkHttpClient by lazy {
+        OkHttpWrapper.getBasicOkHttpClientBuilderWithInterceptor(!ZixieContext.isOfficial()).build()
     }
 
     //获取个人信息等对应的后台接口地址

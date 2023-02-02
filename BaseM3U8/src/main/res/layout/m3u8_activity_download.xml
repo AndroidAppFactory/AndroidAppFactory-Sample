@@ -107,6 +107,17 @@
 
 
             <Button
+                android:id="@+id/previewIndex"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="查看M3U8"
+                android:textSize="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/downloadIndex" />
+
+            <Button
                 android:id="@+id/parseIndex"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -115,7 +126,7 @@
                 android:text="解析M3U8"
                 android:textSize="12dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/downloadIndex" />
+                app:layout_constraintTop_toBottomOf="@+id/previewIndex" />
 
             <Button
                 android:id="@+id/downloadPart"
@@ -170,7 +181,7 @@
                 android:layout_marginRight="10dp"
                 android:lineSpacingMultiplier="1.25"
                 android:text="下载提示："
-                android:textColor="@color/colorPrimaryText"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

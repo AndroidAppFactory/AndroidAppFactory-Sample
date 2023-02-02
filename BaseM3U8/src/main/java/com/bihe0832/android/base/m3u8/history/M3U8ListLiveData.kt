@@ -5,7 +5,7 @@ import com.bihe0832.android.common.list.CommonListLiveData
 
 /**
  *
- * @author hardyshi code@bihe0832.com Created on 2020/12/1.
+ * @author zixie code@bihe0832.com Created on 2020/12/1.
  *
  */
 abstract class M3U8ListLiveData : CommonListLiveData() {

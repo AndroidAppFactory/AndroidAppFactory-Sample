@@ -24,10 +24,10 @@ object AAFDownload {
     private const val TAG = "AAFDownload"
 
     fun download(context: Context, url: String, finalPath: String, downloadListener: DownloadListener?) {
-        if (File(finalPath).exists()) {
-            FileUtils.deleteDirectory(File(finalPath))
-            FileUtils.deleteFile(finalPath)
-        }
+//        if (File(finalPath).exists()) {
+//            FileUtils.deleteDirectory(File(finalPath))
+//            FileUtils.deleteFile(finalPath)
+//        }
         try {
             DownloadFile.download(context, url, File(finalPath).parent, downloadListener = object : SimpleDownloadListener() {
                 override fun onComplete(downloadFilePath: String, item: DownloadItem) {
@@ -67,22 +67,26 @@ object AAFDownload {
     fun startDownload(context: Context, url: String, finalPath: String) {
 
         try {
-            if (File(finalPath).exists()) {
+            if (File(finalPath).exists() && File(finalPath).isDirectory) {
                 FileUtils.deleteDirectory(File(finalPath))
-                FileUtils.deleteFile(finalPath)
             }
             DownloadFile.download(context, url, File(finalPath).parent, downloadListener = object : SimpleDownloadListener() {
                 override fun onComplete(downloadFilePath: String, item: DownloadItem) {
                     if (downloadFilePath.equals(finalPath)) {
                         ZLog.d(TAG, "download $url success")
                     } else {
-                        FileUtils.copyFile(File(downloadFilePath), File(finalPath), false).let {
-                            if (it) {
-                                ZLog.d(TAG, "download $url success")
-                            } else {
-                                ZLog.d(TAG, "download $url failed: rename failed $downloadFilePath $finalPath")
+                        try {
+                            FileUtils.copyFile(File(downloadFilePath), File(finalPath), false).let {
+                                if (it) {
+                                    ZLog.d(TAG, "download $url success")
+                                } else {
+                                    ZLog.d(TAG, "download $url failed: rename failed $downloadFilePath $finalPath")
+                                }
                             }
+                        }catch (e:Exception){
+                            e.printStackTrace()
                         }
+
                     }
                 }
 

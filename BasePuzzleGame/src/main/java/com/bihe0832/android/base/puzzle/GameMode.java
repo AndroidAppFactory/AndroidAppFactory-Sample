@@ -1,7 +1,7 @@
 package com.bihe0832.android.base.puzzle;
 
 /**
- * @author hardyshi code@bihe0832.com Created on 1/6/21.
+ * @author zixie code@bihe0832.com Created on 1/6/21.
  */
 
 public enum GameMode {

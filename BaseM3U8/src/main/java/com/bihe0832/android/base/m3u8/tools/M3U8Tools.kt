@@ -20,19 +20,22 @@ import java.io.*
 import java.util.concurrent.ConcurrentHashMap
 
 /**
- * @author hardyshi code@bihe0832.com
+ * @author zixie code@bihe0832.com
  * Created on 2021/2/20.
  * Description: Description
  */
 object M3U8Tools {
+
+    private val MAX_DOWNLOAD = 10
     private val NAME = "M3U8DownloadProcess"
-    private var hasStop = false
+    private var hasStop = true
+    private var mGlobalDownloadListener: SimpleDownloadListener? = null
 
     fun parseIndex(m3u8URL: String, baseURL: String, filePath: String): M3U8Info {
         return M3U8Info().apply {
-            this.baseURL = baseURL
-            this.m3u8URL = m3u8URL
-            this.downloadTime = System.currentTimeMillis()
+            this.setBaseURL(baseURL)
+            this.setM3u8URL(m3u8URL)
+            this.setDownloadTime(System.currentTimeMillis())
             try {
                 val inputStream: InputStream = File(filePath).inputStream()
                 var seconds = 0f
@@ -79,33 +82,49 @@ object M3U8Tools {
     }
 
     fun downloadM3U8(context: Context, baseURL: String, fileDir: String, info: M3U8Info, listener: M3U8Listener) {
+        if (!hasStop) {
+            return
+        }
         hasStop = false
         var downloadListener = object : SimpleDownloadListener() {
 
-            private var mDownloadList = ConcurrentHashMap<String, Boolean>()
+            private var mDownloadTSURLList = ConcurrentHashMap<String, Boolean>()
 
-            fun addNewItem(localFileName: String) {
-                if (!mDownloadList.contains(localFileName)) {
-                    mDownloadList.put(localFileName, false)
+            @Synchronized
+            fun addNewItem(tsInfo: M3U8TSInfo) {
+                if (!downloadItemList().containsKey(tsInfo.getM3u8TSFullURL(baseURL))) {
+                    AAFDownload.startDownload(context!!, tsInfo.getM3u8TSFullURL(baseURL), fileDir + tsInfo.localFileName)
+                    if (!TextUtils.isEmpty(tsInfo.m3u8TSKeyURL)) {
+                        AAFDownload.startDownload(context!!, tsInfo.getM3u8TSFullURL(baseURL), fileDir + tsInfo.localKeyName)
+                    }
                 }
             }
 
+            @Synchronized
             fun downloadItemList(): ConcurrentHashMap<String, Boolean> {
-                return mDownloadList
+                return mDownloadTSURLList
             }
 
             fun startNew() {
-                if (!hasStop) {
-                    info.tsList.find { !mDownloadList.containsKey(it.localFileName) }?.let {
-                        addNewItem(it.localFileName)
-                        AAFDownload.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSURL), fileDir + it.localFileName)
+                if (!hasStop && DownloadUtils.getDownloading().size < MAX_DOWNLOAD) {
+                    info.getTsList().filter { !downloadItemList().containsKey(it.getM3u8TSFullURL(baseURL)) }.let {
+                        it.shuffled().firstOrNull()?.let { item ->
+                            if (!downloadItemList().containsKey(item.getM3u8TSFullURL(baseURL))) {
+                                addNewItem(item)
+                            }
+
+                        }
                     }
                 }
             }
 
             override fun onComplete(filePath: String, item: DownloadItem) {
-                mDownloadList.put(FileUtils.getFileName(filePath), true)
-                startNew()
+                if (filePath.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
+                    downloadItemList()[item.downloadURL] = true
+                    startNew()
+                    notifyProcess()
+                }
+
             }
 
             override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
@@ -115,19 +134,27 @@ object M3U8Tools {
 
             override fun onProgress(item: DownloadItem) {
             }
-        }
 
-        DownloadUtils.addDownloadListener(downloadListener)
-        info.tsList.subList(0, if (info.tsList.size > 10) 10 else info.tsList.size).forEach {
-            downloadListener.addNewItem(it.localFileName)
-            AAFDownload.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSURL), fileDir + it.localFileName)
-            if (!TextUtils.isEmpty(it.m3u8TSKeyURL)) {
-                downloadListener.addNewItem(it.localFileName)
-                AAFDownload.startDownload(context!!, getFullUrl(baseURL, it.m3u8TSKeyURL), fileDir + it.localKeyName)
+            fun notifyProcess() {
+                var finished = downloadItemList().values.size
+                listener.onProcess(finished, info.getTsSize())
             }
         }
+        if (mGlobalDownloadListener != null) {
+            DownloadUtils.removeDownloadListener(mGlobalDownloadListener)
+        }
+        mGlobalDownloadListener = downloadListener
+        DownloadUtils.addDownloadListener(mGlobalDownloadListener)
         ThreadManager.getInstance().start {
-
+            if (info.getTsSize() > MAX_DOWNLOAD) {
+                MAX_DOWNLOAD
+            } else {
+                info.getTsSize()
+            }.let {
+                for (i in 0..it) {
+                    downloadListener.startNew()
+                }
+            }
             TaskManager.getInstance().addTask(object : BaseTask() {
 
                 override fun getMyInterval(): Int {
@@ -139,14 +166,9 @@ object M3U8Tools {
                 }
 
                 override fun run() {
-                    var finished = 0
-                    downloadListener.downloadItemList().values.forEach {
-                        if (it) {
-                            finished++
-                        }
-                    }
-                    listener.onProcess(finished, info.tsList.size)
-                    if (finished == downloadListener.downloadItemList().size) {
+                    var finished = downloadListener.downloadItemList().size
+                    if (finished == info.getTsSize()) {
+                        listener.onProcess(finished, finished)
                         ZixieContext.showToast("下载完成")
                         listener.onComplete()
                         TaskManager.getInstance().removeTask(NAME)
@@ -175,7 +197,7 @@ object M3U8Tools {
             bfw.write("#EXT-X-VERSION:3\n")
             bfw.write("#EXT-X-MEDIA-SEQUENCE:0\n")
             bfw.write("#EXT-X-TARGETDURATION:13\n")
-            for (m3U8Ts in m3U8.tsList) {
+            for (m3U8Ts in m3U8.getTsList()) {
                 if (!TextUtils.isEmpty(m3U8Ts.m3u8TSKeyURL)) {
                     bfw.write("#EXT-X-KEY:METHOD=AES-128,URI=\"${m3U8Ts.localKeyName}\"\n")
                 }
@@ -191,107 +213,66 @@ object M3U8Tools {
     }
 
     fun mergeM3U8(m3u8Dir: String, videoName: String, listener: M3U8Listener) {
-        try {
-            var a = parseIndex("", "", m3u8Dir + "local.m3u8")
-            if (a.tsList.isEmpty()) {
-                listener.onFail(-1, "local.m3u8 not exist。 请先点击解析 M3U8")
-                return
-            }
-            val finalOutPutFile = File(videoName)
-            if (finalOutPutFile.exists()) {
-                finalOutPutFile.delete()
-            }
-
-            FileUtils.checkAndCreateFolder(finalOutPutFile.parentFile.absolutePath)
-            finalOutPutFile.createNewFile()
-
-            val fileOutputStream = FileOutputStream(finalOutPutFile, true)
-            for (i in 0 until a.tsList.size) {
-                try {
-                    var ts = a.tsList[i]
-                    File(m3u8Dir + ts.m3u8TSURL).let { file ->
-                        ZLog.d("分片信息：$ts")
-                        if (file.exists()) {
-                            val fileInputStream = FileInputStream(file)
-                            val b = ByteArray(4096)
-                            var size = -1
-                            val byteArrayOutputStream = ByteArrayOutputStream()
-                            while (fileInputStream.read(b, 0, b.size)?.also { size = it } != -1) {
-                                byteArrayOutputStream.write(b, 0, size)
-                            }
-                            fileInputStream.close()
-                            val bytes: ByteArray = byteArrayOutputStream.toByteArray()
-                            byteArrayOutputStream.close()
-
-                            var newbyte = if (!TextUtils.isEmpty(ts.m3u8TSKeyURL)) {
-                                AESUtils.decryptWithoutIV(FileUtils.getFileContent(m3u8Dir + ts.m3u8TSKeyURL).toByteArray(), bytes)
-                            } else {
-                                bytes
-                            }
-                            if (newbyte != null) {
-                                fileOutputStream.write(newbyte)
-                            }
-                            listener.onProcess(i, a.tsList.size)
-                        }
-                    }
-
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
+        var a = parseIndex("", "", m3u8Dir + "local.m3u8")
+        if (!a.isOK()) {
+            listener.onFail(-1, "local.m3u8 not exist。 请先点击解析 M3U8")
+        }
+        ThreadManager.getInstance().start {
+            try {
+                val finalOutPutFile = File(videoName)
+                if (finalOutPutFile.exists()) {
+                    finalOutPutFile.delete()
                 }
+                FileUtils.checkAndCreateFolder(finalOutPutFile.parentFile.absolutePath)
+                finalOutPutFile.createNewFile()
+
+                val fileOutputStream = FileOutputStream(finalOutPutFile, true)
+                for (i in 0 until a.getTsSize()) {
+                    try {
+                        var ts = a.getTsList()[i]
+                        File(m3u8Dir + ts.m3u8TSURL).let { file ->
+                            ZLog.d("分片信息：$ts")
+                            if (file.exists()) {
+                                val fileInputStream = FileInputStream(file)
+                                val b = ByteArray(4096)
+                                var size = -1
+                                val byteArrayOutputStream = ByteArrayOutputStream()
+                                while (fileInputStream.read(b, 0, b.size)?.also { size = it } != -1) {
+                                    byteArrayOutputStream.write(b, 0, size)
+                                }
+                                fileInputStream.close()
+                                val bytes: ByteArray = byteArrayOutputStream.toByteArray()
+                                byteArrayOutputStream.close()
+
+                                var newbyte = if (!TextUtils.isEmpty(ts.m3u8TSKeyURL)) {
+                                    val keyData = FileUtils.getFileContent(m3u8Dir + ts.m3u8TSKeyURL).trim()
+                                    AESUtils.decryptWithoutIV(keyData.toByteArray(), bytes)
+                                } else {
+                                    bytes
+                                }
+                                if (newbyte != null) {
+                                    fileOutputStream.write(newbyte)
+                                }
+                                listener.onProcess(i, a.getTsSize())
+                            } else {
+                                ZLog.d("分片尚未下载：$ts")
+                            }
+                        }
+
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+                }
+                ZixieContext.showDebug("视频合并已经完成")
+                listener.onComplete()
+                if (fileOutputStream != null) {
+                    fileOutputStream.close()
+                }
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+                listener.onFail(-2, e.toString())
             }
-            ZixieContext.showDebug("视频合并已经完成")
             listener.onComplete()
-            if (fileOutputStream != null) {
-                fileOutputStream.close()
-            }
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-            listener.onFail(-2, e.toString())
-            return
         }
-        return listener.onComplete()
-    }
-
-    fun getFullUrl(baseURL: String, path: String): String {
-        if (TextUtils.isEmpty(path)) {
-            return ""
-        }
-        return when {
-            path.startsWith("http") -> {
-                path
-            }
-            path.startsWith("//") -> {
-                "http:$path"
-            }
-            else -> {
-                mergeURL(baseURL, path)
-            }
-        }
-    }
-
-    fun mergeURL(baseUrl: String, tempUrl: String): String {
-
-        var newBaseURL = if (!baseUrl.endsWith("/")) {
-            "$baseUrl/"
-        } else {
-            baseUrl
-        }
-
-        var newTempURL = if (tempUrl.startsWith("/")) {
-            tempUrl.substring(1, tempUrl.length)
-        } else {
-            tempUrl
-        }
-
-        val tempList = newTempURL.split("/")
-        if (newBaseURL.contains(tempList[0])) {
-            var sameString = newBaseURL.substring(newBaseURL.lastIndexOf(tempList[0], newBaseURL.length))
-            if (newTempURL.contains(sameString)) {
-                return newBaseURL + newTempURL.substring(sameString.length, newTempURL.length)
-            }
-        }
-
-        return newBaseURL + newTempURL
-
     }
 }
