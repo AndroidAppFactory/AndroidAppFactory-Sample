@@ -6,6 +6,9 @@ import com.bihe0832.android.common.webview.log.MyBaseJsBridgeProxy
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.request.URLUtils
 import com.bihe0832.android.lib.sqlite.impl.CommonDBManager.saveData
+import com.bihe0832.android.lib.thread.ThreadManager
+import com.bihe0832.android.lib.ui.dialog.CommonDialog
+import com.bihe0832.android.lib.ui.dialog.OnDialogListener
 import com.bihe0832.android.lib.utils.intent.IntentUtils
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse
@@ -49,32 +52,34 @@ class BrowserFragment : BaseWebviewFragment() {
 
         private fun saveURL(url: String) {
             if (url.endsWith(".m3u8")) {
-                saveData(url, mIntentUrl)
+                ThreadManager.getInstance().runOnUIThread {
+                    CommonDialog(activity).apply {
+                        title = "发现新资源"
+                        setHtmlContent("发现新资源，是否前往下载？")
+                        negative = "再想想"
+                        positive = "去下载"
+                        setShouldCanceled(true)
+                        setOnClickBottomListener(object : OnDialogListener {
+                            override fun onPositiveClick() {
+                                dismiss()
+                                saveData(url, mIntentUrl)
+                                IntentUtils.jumpToOtherApp("zm3u8://m3u8?url=" + URLUtils.encode(url), context)
+                            }
 
-//                CommonDialog(context).apply {
-//                    title = "发现下载资源"
-//                    setHtmlContent("发现新资源，是否前往下载？")
-//                    negative = "再想想"
-//                    positive = "去下载"
-//                    setShouldCanceled(true)
-//                    setOnClickBottomListener(object : OnDialogListener {
-//                        override fun onPositiveClick() {
-//                            dismiss()
-                IntentUtils.jumpToOtherApp("zm3u8://m3u8?url=" + URLUtils.encode(url), context)
-//                        }
-//
-//                        override fun onNegativeClick() {
-//                            dismiss()
-//                        }
-//
-//                        override fun onCancel() {
-//                            dismiss()
-//                        }
-//                    })
-//
-//                }.let { dialog ->
-//                    dialog.show()
-//                }
+                            override fun onNegativeClick() {
+                                dismiss()
+                            }
+
+                            override fun onCancel() {
+                                dismiss()
+                            }
+                        })
+
+                    }.let { dialog ->
+                        dialog.show()
+                    }
+                }
+
 
             }
         }
