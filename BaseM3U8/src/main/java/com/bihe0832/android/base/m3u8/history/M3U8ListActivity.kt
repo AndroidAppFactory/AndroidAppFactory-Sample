@@ -16,6 +16,7 @@ import com.bihe0832.android.common.list.easyrefresh.CommonListActivity
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.router.annotation.Module
+import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.ui.dialog.CommonDialog
 import com.bihe0832.android.lib.ui.dialog.OnDialogListener
 import kotlinx.android.synthetic.main.m3u8_activity_list.*
@@ -56,30 +57,32 @@ open class M3U8ListActivity : CommonListActivity() {
                             }
 
                             override fun onDelete() {
-                                CommonDialog(this@M3U8ListActivity).apply {
-                                    title = "删除M3U8下载历史"
-                                    setHtmlContent("确定删除该条下载记录么？<BR>" + m3u8Info.getM3u8URL())
-                                    negative = "再想想"
-                                    positive = "删除"
-                                    setShouldCanceled(true)
-                                    setOnClickBottomListener(object : OnDialogListener {
-                                        override fun onPositiveClick() {
-                                            dismiss()
-                                            M3U8DBManager.deleteData(m3u8Info.getM3u8URL())
-                                            m3u8DataLiveData.refresh()
-                                        }
+                                ThreadManager.getInstance().runOnUIThread {
+                                    CommonDialog(this@M3U8ListActivity).apply {
+                                        title = "删除M3U8下载历史"
+                                        setHtmlContent("确定删除该条下载记录么？<BR>" + m3u8Info.getM3u8URL())
+                                        negative = "再想想"
+                                        positive = "删除"
+                                        setShouldCanceled(true)
+                                        setOnClickBottomListener(object : OnDialogListener {
+                                            override fun onPositiveClick() {
+                                                dismiss()
+                                                M3U8DBManager.deleteData(m3u8Info.getM3u8URL())
+                                                m3u8DataLiveData.refresh()
+                                            }
 
-                                        override fun onNegativeClick() {
-                                            dismiss()
-                                        }
+                                            override fun onNegativeClick() {
+                                                dismiss()
+                                            }
 
-                                        override fun onCancel() {
-                                            dismiss()
-                                        }
-                                    })
+                                            override fun onCancel() {
+                                                dismiss()
+                                            }
+                                        })
 
-                                }.let { dialog ->
-                                    dialog.show()
+                                    }.let { dialog ->
+                                        dialog.show()
+                                    }
                                 }
                             }
                         }

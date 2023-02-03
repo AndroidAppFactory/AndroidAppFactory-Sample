@@ -122,7 +122,6 @@ object M3U8Tools {
                 if (filePath.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
                     downloadItemList()[item.downloadURL] = true
                     startNew()
-                    notifyProcess()
                 }
 
             }
@@ -167,8 +166,8 @@ object M3U8Tools {
 
                 override fun run() {
                     var finished = downloadListener.downloadItemList().size
+                    downloadListener.notifyProcess()
                     if (finished == info.getTsSize()) {
-                        listener.onProcess(finished, finished)
                         ZixieContext.showToast("下载完成")
                         listener.onComplete()
                         TaskManager.getInstance().removeTask(NAME)
