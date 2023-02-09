@@ -21,6 +21,9 @@ import com.tencent.smtt.sdk.WebViewClient
  * Description: Description
  */
 class BrowserFragment : BaseWebviewFragment() {
+
+    private var mDialog: CommonDialog? = null
+
     override fun getFinalURL(url: String): String {
         return url
     }
@@ -52,37 +55,50 @@ class BrowserFragment : BaseWebviewFragment() {
 
         private fun saveURL(url: String) {
             if (url.endsWith(".m3u8")) {
-                ThreadManager.getInstance().runOnUIThread {
-                    CommonDialog(activity).apply {
-                        title = "发现新资源"
-                        setHtmlContent("发现新资源，是否前往下载？")
-                        negative = "再想想"
-                        positive = "去下载"
-                        setShouldCanceled(true)
-                        setOnClickBottomListener(object : OnDialogListener {
-                            override fun onPositiveClick() {
-                                dismiss()
-                                saveData(url, mIntentUrl)
-                                IntentUtils.jumpToOtherApp("zm3u8://m3u8?url=" + URLUtils.encode(url), context)
-                            }
-
-                            override fun onNegativeClick() {
-                                dismiss()
-                            }
-
-                            override fun onCancel() {
-                                dismiss()
-                            }
-                        })
-
-                    }.let { dialog ->
-                        dialog.show()
-                    }
-                }
-
-
+                showDownload(url)
             }
         }
+    }
+
+    fun showDownload(url: String) {
+        if (null == mDialog) {
+            ThreadManager.getInstance().runOnUIThread {
+                mDialog = CommonDialog(activity)
+            }
+        }
+
+        mDialog?.apply {
+            title = "发现新资源"
+            setHtmlContent("发现新资源，是否前往下载？")
+            negative = "再想想"
+            positive = "去下载"
+            shouldCanceled = true
+            onClickBottomListener = object : OnDialogListener {
+                override fun onPositiveClick() {
+                    dismiss()
+                    saveData(url, mIntentUrl)
+                    IntentUtils.jumpToOtherApp("zm3u8://m3u8?url=" + URLUtils.encode(url), context)
+                }
+
+                override fun onNegativeClick() {
+                    dismiss()
+                }
+
+                override fun onCancel() {
+                    dismiss()
+                }
+            }
+
+        }?.let { dialog ->
+            ThreadManager.getInstance().runOnUIThread {
+                dialog.show()
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mDialog?.dismiss()
     }
 
     override fun getJsBridgeProxy(): MyBaseJsBridgeProxy {

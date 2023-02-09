@@ -5,16 +5,16 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import com.bihe0832.android.app.file.AAFDownload
+import com.bihe0832.android.app.dialog.AAFDialogManager
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.base.m3u8.tools.M3U8Tools
 import com.bihe0832.android.framework.file.AAFFileTools
-import com.bihe0832.android.framework.log.LoggerFile
 import com.bihe0832.android.framework.ui.BaseActivity
 import com.bihe0832.android.lib.download.DownloadItem
+import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.file.provider.ZixieFileProvider
@@ -25,6 +25,7 @@ import com.bihe0832.android.lib.request.URLUtils
 import com.bihe0832.android.lib.router.annotation.Module
 import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.thread.ThreadManager
+import com.bihe0832.android.lib.ui.dialog.OnDialogListener
 import kotlinx.android.synthetic.main.m3u8_activity_download.*
 import java.io.File
 import java.io.InputStream
@@ -166,7 +167,7 @@ open class M3u8DownloadActivity : BaseActivity() {
                 var finalPath = getLocalIndexFile()
 
                 showResult("<b><font color='#8e44ad'>开始下载</font></b>：${getM3U8URL()}")
-                AAFDownload.download(this, getM3U8URL(), finalPath, object : SimpleDownloadListener() {
+                DownloadFile.download(this, getM3U8URL(), finalPath, true, object : SimpleDownloadListener() {
 
                     override fun onComplete(filePath: String, item: DownloadItem) {
                         try {
@@ -212,26 +213,28 @@ open class M3u8DownloadActivity : BaseActivity() {
         }
 
         downloadPart.setOnClickListener {
-            showResult("开始下载分片！")
-            M3U8Tools.cancelDownload()
-            M3U8Tools.downloadM3U8(this, getBaseURL(), M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info, object : M3U8Listener {
-                override fun onFail(errorCode: Int, msg: String) {
+            File(M3U8ModuleManager.getDownloadPath(getM3U8URL())).let {
+                if (it.isDirectory && it.listFiles().size > 3) {
+                    AAFDialogManager.showActionConfirm("当前已存在下载的内容,是否删除？", "继续下载", "重新下载", object : OnDialogListener {
+                        override fun onPositiveClick() {
+                            downloadM3u8()
+                        }
 
-                    ThreadManager.getInstance().runOnUIThread {
-                        showResult("<b>下载异常</b>（$errorCode）：$msg <BR> 请检查BaseURL是否正确")
-                    }
+                        override fun onNegativeClick() {
+                            ThreadManager.getInstance().run {
+                                FileUtils.deleteDirectory(it.absoluteFile)
+                                downloadM3u8()
+                            }
+                        }
+
+                        override fun onCancel() {
+
+                        }
+                    })
+                }else{
+                    downloadM3u8()
                 }
-
-                override fun onComplete() {
-
-                }
-
-                override fun onProcess(finished: Int, total: Int) {
-                    ThreadManager.getInstance().runOnUIThread {
-                        showResult("<b>分片下载</b>中，共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
-                    }
-                }
-            })
+            }
         }
 
         mergePart.setOnClickListener {
@@ -292,5 +295,27 @@ open class M3u8DownloadActivity : BaseActivity() {
         }
     }
 
+    fun downloadM3u8() {
+        showResult("开始下载分片！")
+        M3U8Tools.cancelDownload()
+        M3U8Tools.downloadM3U8(this, getBaseURL(), M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info, object : M3U8Listener {
+            override fun onFail(errorCode: Int, msg: String) {
+
+                ThreadManager.getInstance().runOnUIThread {
+                    showResult("<b>下载异常</b>（$errorCode）：$msg <BR> 请检查BaseURL是否正确")
+                }
+            }
+
+            override fun onComplete() {
+
+            }
+
+            override fun onProcess(finished: Int, total: Int) {
+                ThreadManager.getInstance().runOnUIThread {
+                    showResult("<b>分片下载</b>中，共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
+                }
+            }
+        })
+    }
 
 }

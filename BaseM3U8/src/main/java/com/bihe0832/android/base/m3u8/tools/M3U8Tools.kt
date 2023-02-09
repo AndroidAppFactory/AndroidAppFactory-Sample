@@ -1,13 +1,15 @@
 package com.bihe0832.android.base.m3u8.tools
 
 import android.content.Context
+import android.os.Handler
+import android.os.Message
 import android.text.TextUtils
-import com.bihe0832.android.app.file.AAFDownload
 import com.bihe0832.android.base.m3u8.M3U8Listener
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.download.DownloadItem
+import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.FileUtils
@@ -89,13 +91,35 @@ object M3U8Tools {
         var downloadListener = object : SimpleDownloadListener() {
 
             private var mDownloadTSURLList = ConcurrentHashMap<String, Boolean>()
+            private val MSG_TYPE_PREPARE_START_DELAY = 1
+            private var lastStart = 0L
+            private val msgHandler = object : Handler(ThreadManager.getInstance().getLooper(ThreadManager.LOOPER_TYPE_NORMAL)) {
+                override fun handleMessage(msg: Message) {
+                    when (msg.what) {
+                        MSG_TYPE_PREPARE_START_DELAY -> {
+                            if (!hasStop && DownloadUtils.getDownloading().size < MAX_DOWNLOAD) {
+                                info.getTsList().filter { !downloadItemList().containsKey(it.getM3u8TSFullURL(baseURL)) }.let {
+                                    it.shuffled().firstOrNull()?.let { item ->
+                                        if (!downloadItemList().containsKey(item.getM3u8TSFullURL(baseURL))) {
+                                            addNewItem(item)
+                                        }
+                                    }
+                                }
+                            } else {
+                                startNew(1000)
+                            }
+                        }
+                    }
+                }
+            }
 
             @Synchronized
             fun addNewItem(tsInfo: M3U8TSInfo) {
+                lastStart = System.currentTimeMillis()
                 if (!downloadItemList().containsKey(tsInfo.getM3u8TSFullURL(baseURL))) {
-                    AAFDownload.startDownload(context!!, tsInfo.getM3u8TSFullURL(baseURL), fileDir + tsInfo.localFileName)
+                    DownloadFile.download(context!!, tsInfo.getM3u8TSFullURL(baseURL), fileDir + tsInfo.localFileName, true, this)
                     if (!TextUtils.isEmpty(tsInfo.m3u8TSKeyURL)) {
-                        AAFDownload.startDownload(context!!, tsInfo.getM3u8TSFullURL(baseURL), fileDir + tsInfo.localKeyName)
+                        DownloadFile.download(context!!, tsInfo.getM3u8TSFullURL(baseURL), fileDir + tsInfo.localKeyName, true, this)
                     }
                 }
             }
@@ -105,30 +129,21 @@ object M3U8Tools {
                 return mDownloadTSURLList
             }
 
-            fun startNew() {
-                if (!hasStop && DownloadUtils.getDownloading().size < MAX_DOWNLOAD) {
-                    info.getTsList().filter { !downloadItemList().containsKey(it.getM3u8TSFullURL(baseURL)) }.let {
-                        it.shuffled().firstOrNull()?.let { item ->
-                            if (!downloadItemList().containsKey(item.getM3u8TSFullURL(baseURL))) {
-                                addNewItem(item)
-                            }
-
-                        }
-                    }
-                }
+            fun startNew(delay: Int) {
+                msgHandler.sendEmptyMessageDelayed(MSG_TYPE_PREPARE_START_DELAY, delay.toLong())
             }
 
             override fun onComplete(filePath: String, item: DownloadItem) {
                 if (filePath.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
                     downloadItemList()[item.downloadURL] = true
-                    startNew()
+                    startNew(0)
+                    notifyProcess()
                 }
-
             }
 
             override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
                 listener.onFail(errorCode, msg)
-                startNew()
+                startNew(1000)
             }
 
             override fun onProgress(item: DownloadItem) {
@@ -139,11 +154,8 @@ object M3U8Tools {
                 listener.onProcess(finished, info.getTsSize())
             }
         }
-        if (mGlobalDownloadListener != null) {
-            DownloadUtils.removeDownloadListener(mGlobalDownloadListener)
-        }
+
         mGlobalDownloadListener = downloadListener
-        DownloadUtils.addDownloadListener(mGlobalDownloadListener)
         ThreadManager.getInstance().start {
             if (info.getTsSize() > MAX_DOWNLOAD) {
                 MAX_DOWNLOAD
@@ -151,7 +163,7 @@ object M3U8Tools {
                 info.getTsSize()
             }.let {
                 for (i in 0..it) {
-                    downloadListener.startNew()
+                    downloadListener.startNew(0)
                 }
             }
             TaskManager.getInstance().addTask(object : BaseTask() {
