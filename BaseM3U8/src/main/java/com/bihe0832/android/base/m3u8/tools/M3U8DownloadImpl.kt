@@ -28,8 +28,8 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
 
     private var lastStart = 0L
     private var mM3U8Info: M3U8Info? = null
-    val MAX_DOWNLOAD = 10
-    var hasStop = true
+    private val MAX_DOWNLOAD = 10
+    private var hasStop = true
     private var mDownloadTSURLList = ConcurrentHashMap<String, Boolean>()
     private val MSG_TYPE_START = 1
     private val MSG_TYPE_PAUSE = 2
@@ -87,7 +87,9 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
     }
 
     fun startNew(delay: Int) {
-        msgHandler.sendEmptyMessageDelayed(MSG_TYPE_START, delay.toLong())
+        if (!hasStop) {
+            msgHandler.sendEmptyMessageDelayed(MSG_TYPE_START, delay.toLong())
+        }
     }
 
     @Synchronized

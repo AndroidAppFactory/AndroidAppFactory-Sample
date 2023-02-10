@@ -69,7 +69,7 @@ class M3u8DownloadActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        mM3U8DownloadImpl.cancleDownload()
+        mM3U8DownloadImpl.cancleDownload()
     }
 
     override fun onResume() {
@@ -227,8 +227,8 @@ class M3u8DownloadActivity : BaseActivity() {
         }
 
         downloadPart.setOnClickListener {
-            File(M3U8ModuleManager.getDownloadPath(getM3U8URL())).let {
-                if (it.isDirectory && it.listFiles().size > 3) {
+            File(M3U8ModuleManager.getDownloadPath(getM3U8URL())).let { folder ->
+                if (folder.isDirectory && folder.listFiles().size > 3) {
                     AAFDialogManager.showActionConfirm("当前已存在下载的内容,是否删除？", "继续下载", "重新下载", object : OnDialogListener {
                         override fun onPositiveClick() {
                             downloadM3u8()
@@ -236,7 +236,11 @@ class M3u8DownloadActivity : BaseActivity() {
 
                         override fun onNegativeClick() {
                             ThreadManager.getInstance().run {
-                                FileUtils.deleteDirectory(it.absoluteFile)
+                                folder.listFiles().map { it.absolutePath }.forEach { file ->
+                                    if (file.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
+                                        FileUtils.deleteFile(file)
+                                    }
+                                }
                                 downloadM3u8()
                             }
                         }
