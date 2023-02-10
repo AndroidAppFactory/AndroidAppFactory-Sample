@@ -256,7 +256,7 @@ class M3u8DownloadActivity : BaseActivity() {
         }
 
         mergePart.setOnClickListener {
-            mM3U8DownloadImpl.cancleDownload()
+            mM3U8DownloadImpl.cancelDownload()
             showResult("分片下载已暂停，开始合并，合并结束以后，阔以点击下载分片继续下载！")
             mergePart.isEnabled = false
             M3U8Tools.mergeM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), M3U8ModuleManager.getFinalVideoPath(getM3U8URL()), object : M3U8Listener {
