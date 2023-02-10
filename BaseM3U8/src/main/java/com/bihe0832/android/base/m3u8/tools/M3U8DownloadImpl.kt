@@ -10,6 +10,7 @@ import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.download.DownloadItem
+import com.bihe0832.android.lib.download.core.list.DownloadingList
 import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.DownloadTools
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
@@ -62,7 +63,7 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 MSG_TYPE_START -> {
-                    if (!hasStop && DownloadUtils.getDownloading().size < MAX_DOWNLOAD) {
+                    if (!hasStop && DownloadingList.getDownloadingNum() < MAX_DOWNLOAD) {
                         mM3U8Info?.getTsList()?.filter { !mDownloadTSURLList.containsKey(it.getM3u8TSFullURL(mM3U8Info?.getBaseURL())) }?.let {
                             it.shuffled().firstOrNull()?.let { item ->
                                 if (!mDownloadTSURLList.containsKey(item.getM3u8TSFullURL(mM3U8Info?.getBaseURL()))) {
