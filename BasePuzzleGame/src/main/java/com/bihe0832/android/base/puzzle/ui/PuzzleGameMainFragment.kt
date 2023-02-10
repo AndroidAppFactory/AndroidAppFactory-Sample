@@ -8,9 +8,8 @@ import com.bihe0832.android.base.puzzle.R
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.ui.BaseFragment
 import com.bihe0832.android.lib.config.Config
-import com.bihe0832.android.lib.thread.ThreadManager
-import com.bihe0832.android.lib.ui.dialog.CommonDialog
 import com.bihe0832.android.lib.ui.dialog.OnDialogListener
+import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
 import kotlinx.android.synthetic.main.fragment_puzzle_game_main.*
 
 /**
@@ -79,37 +78,28 @@ class PuzzleGameMainFragment : BaseFragment() {
             }
 
             override fun onGameSuccess(level: Int, gameMode: GameMode) {
-                ThreadManager.getInstance().runOnUIThread {
-                    CommonDialog(context).apply {
-                        title = getString(R.string.success_title)
-                        setHtmlContent("你已完成<b><font color='#38ADFF'> " + gameMode.desc + " </font>的 $level 级</b>挑战，要换张图继续么？")
-                        negative = getString(R.string.success_negative)
-                        positive = getString(R.string.success_positive)
-                        setShouldCanceled(true)
-                        setOnClickBottomListener(object : OnDialogListener {
+                DialogUtils.showConfirmDialog(
+                        context!!,
+                        getString(R.string.success_title),
+                        "你已完成<b><font color='#38ADFF'> " + gameMode.desc + " </font>的 $level 级</b>挑战，要换张图继续么？",
+                        getString(R.string.success_negative),
+                        getString(R.string.success_positive),
+                        true,
+                        object : OnDialogListener {
                             override fun onPositiveClick() {
                                 try {
                                     activity?.finish()
-                                    dismiss()
                                 } catch (e: Exception) {
                                     e.printStackTrace()
                                 }
                             }
 
                             override fun onNegativeClick() {
-                                try {
-                                    dismiss()
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
+
                             }
 
                             override fun onCancel() {}
                         })
-                    }.let {
-                        it.show()
-                    }
-                }
             }
         })
         PuzzleGameManager.changeGameMode(GameMode.getGameMode(Config.readConfig(CONFIG_PUZZLE_MODE, GameMode.NORMAL.ordinal)))

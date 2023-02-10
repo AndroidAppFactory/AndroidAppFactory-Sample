@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import com.bihe0832.android.app.dialog.AAFDialogManager
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
@@ -27,6 +26,7 @@ import com.bihe0832.android.lib.router.annotation.Module
 import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.ui.dialog.OnDialogListener
+import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
 import kotlinx.android.synthetic.main.m3u8_activity_download.*
 import java.io.File
 import java.io.InputStream
@@ -183,7 +183,7 @@ class M3u8DownloadActivity : BaseActivity() {
                 showResult("<b><font color='#8e44ad'>开始下载</font></b>：${getM3U8URL()}")
                 DownloadFile.download(this, getM3U8URL(), finalPath, true, object : SimpleDownloadListener() {
 
-                    override fun onComplete(filePath: String, item: DownloadItem) {
+                    override fun onComplete(filePath: String, item: DownloadItem): String {
                         try {
                             val inputStream: InputStream = File(filePath).inputStream()
                             inputStream.bufferedReader().useLines { lines ->
@@ -192,7 +192,7 @@ class M3u8DownloadActivity : BaseActivity() {
                                     if (line.contains("m3u8")) {
                                         showResult("<b>下载失败，M3U8地址已发生变化，请再次点击<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${FileUtils.getFileContent(filePath)}")
                                         urlText.setText(M3U8TSInfo.getFullUrl(getBaseURL(), line))
-                                        return
+
                                     }
                                 }
                             }
@@ -201,7 +201,7 @@ class M3u8DownloadActivity : BaseActivity() {
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-
+                        return filePath
                     }
 
                     override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
@@ -229,7 +229,7 @@ class M3u8DownloadActivity : BaseActivity() {
         downloadPart.setOnClickListener {
             File(M3U8ModuleManager.getDownloadPath(getM3U8URL())).let { folder ->
                 if (folder.isDirectory && folder.listFiles().size > 3) {
-                    AAFDialogManager.showActionConfirm("当前已存在部分下载内容,是否删除？", "继续下载", "重新下载", object : OnDialogListener {
+                    DialogUtils.showConfirmDialog(this, "当前已存在部分下载内容,是否删除？", "", "继续下载", "重新下载", object : OnDialogListener {
                         override fun onPositiveClick() {
                             downloadM3u8()
                         }
