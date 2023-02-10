@@ -1,25 +1,15 @@
 package com.bihe0832.android.base.m3u8.tools
 
-import android.content.Context
-import android.os.Handler
-import android.os.Message
 import android.text.TextUtils
 import com.bihe0832.android.base.m3u8.M3U8Listener
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.framework.ZixieContext
-import com.bihe0832.android.lib.download.DownloadItem
-import com.bihe0832.android.lib.download.wrapper.DownloadFile
-import com.bihe0832.android.lib.download.wrapper.DownloadUtils
-import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.thread.ThreadManager
-import com.bihe0832.android.lib.timer.BaseTask
-import com.bihe0832.android.lib.timer.TaskManager
 import com.bihe0832.android.lib.utils.encrypt.AESUtils
 import java.io.*
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @author zixie code@bihe0832.com
@@ -27,11 +17,6 @@ import java.util.concurrent.ConcurrentHashMap
  * Description: Description
  */
 object M3U8Tools {
-
-    private val MAX_DOWNLOAD = 10
-    private val NAME = "M3U8DownloadProcess"
-    private var hasStop = true
-    private var mGlobalDownloadListener: SimpleDownloadListener? = null
 
     fun parseIndex(m3u8URL: String, baseURL: String, filePath: String): M3U8Info {
         return M3U8Info().apply {
@@ -81,123 +66,6 @@ object M3U8Tools {
                 e.printStackTrace()
             }
         }
-    }
-
-    fun downloadM3U8(context: Context, baseURL: String, fileDir: String, info: M3U8Info, listener: M3U8Listener) {
-        if (!hasStop) {
-            return
-        }
-        hasStop = false
-        var downloadListener = object : SimpleDownloadListener() {
-
-            private var mDownloadTSURLList = ConcurrentHashMap<String, Boolean>()
-            private val MSG_TYPE_PREPARE_START_DELAY = 1
-            private var lastStart = 0L
-            private val msgHandler = object : Handler(ThreadManager.getInstance().getLooper(ThreadManager.LOOPER_TYPE_NORMAL)) {
-                override fun handleMessage(msg: Message) {
-                    when (msg.what) {
-                        MSG_TYPE_PREPARE_START_DELAY -> {
-                            if (!hasStop && DownloadUtils.getDownloading().size < MAX_DOWNLOAD) {
-                                info.getTsList().filter { !downloadItemList().containsKey(it.getM3u8TSFullURL(baseURL)) }.let {
-                                    it.shuffled().firstOrNull()?.let { item ->
-                                        if (!downloadItemList().containsKey(item.getM3u8TSFullURL(baseURL))) {
-                                            addNewItem(item)
-                                        }
-                                    }
-                                }
-                            } else {
-                                startNew(1000)
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Synchronized
-            fun addNewItem(tsInfo: M3U8TSInfo) {
-                lastStart = System.currentTimeMillis()
-                if (!downloadItemList().containsKey(tsInfo.getM3u8TSFullURL(baseURL))) {
-                    DownloadFile.download(context!!, tsInfo.getM3u8TSFullURL(baseURL), fileDir + tsInfo.localFileName, true, this)
-                    if (!TextUtils.isEmpty(tsInfo.m3u8TSKeyURL)) {
-                        DownloadFile.download(context!!, tsInfo.getM3u8TSFullURL(baseURL), fileDir + tsInfo.localKeyName, true, this)
-                    }
-                }
-            }
-
-            @Synchronized
-            fun downloadItemList(): ConcurrentHashMap<String, Boolean> {
-                return mDownloadTSURLList
-            }
-
-            fun startNew(delay: Int) {
-                msgHandler.sendEmptyMessageDelayed(MSG_TYPE_PREPARE_START_DELAY, delay.toLong())
-            }
-
-            override fun onComplete(filePath: String, item: DownloadItem) {
-                if (filePath.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
-                    downloadItemList()[item.downloadURL] = true
-                    startNew(0)
-                    notifyProcess()
-                }
-            }
-
-            override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
-                listener.onFail(errorCode, msg)
-                startNew(1000)
-            }
-
-            override fun onProgress(item: DownloadItem) {
-            }
-
-            fun notifyProcess() {
-                var finished = downloadItemList().values.size
-                listener.onProcess(finished, info.getTsSize())
-            }
-        }
-
-        mGlobalDownloadListener = downloadListener
-        ThreadManager.getInstance().start {
-            if (info.getTsSize() > MAX_DOWNLOAD) {
-                MAX_DOWNLOAD
-            } else {
-                info.getTsSize()
-            }.let {
-                for (i in 0..it) {
-                    downloadListener.startNew(0)
-                }
-            }
-            TaskManager.getInstance().addTask(object : BaseTask() {
-
-                override fun getMyInterval(): Int {
-                    return 2 * 1
-                }
-
-                override fun getNextEarlyRunTime(): Int {
-                    return 0
-                }
-
-                override fun run() {
-                    var finished = downloadListener.downloadItemList().size
-                    downloadListener.notifyProcess()
-                    if (finished == info.getTsSize()) {
-                        ZixieContext.showToast("下载完成")
-                        listener.onComplete()
-                        TaskManager.getInstance().removeTask(NAME)
-                    }
-                }
-
-                override fun getTaskName(): String {
-                    return NAME
-                }
-            })
-        }
-
-    }
-
-    fun cancelDownload() {
-        hasStop = true
-        DownloadUtils.pauseAll()
-        TaskManager.getInstance().removeTask(NAME)
     }
 
     fun generateLocalM3U8(m3u8Dir: String, m3U8: M3U8Info): File {
