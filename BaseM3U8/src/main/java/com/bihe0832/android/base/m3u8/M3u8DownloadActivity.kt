@@ -69,7 +69,7 @@ class M3u8DownloadActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mM3U8DownloadImpl.cancleDownload()
+//        mM3U8DownloadImpl.cancleDownload()
     }
 
     override fun onResume() {
@@ -229,7 +229,7 @@ class M3u8DownloadActivity : BaseActivity() {
         downloadPart.setOnClickListener {
             File(M3U8ModuleManager.getDownloadPath(getM3U8URL())).let { folder ->
                 if (folder.isDirectory && folder.listFiles().size > 3) {
-                    AAFDialogManager.showActionConfirm("当前已存在下载的内容,是否删除？", "继续下载", "重新下载", object : OnDialogListener {
+                    AAFDialogManager.showActionConfirm("当前已存在部分下载内容,是否删除？", "继续下载", "重新下载", object : OnDialogListener {
                         override fun onPositiveClick() {
                             downloadM3u8()
                         }
