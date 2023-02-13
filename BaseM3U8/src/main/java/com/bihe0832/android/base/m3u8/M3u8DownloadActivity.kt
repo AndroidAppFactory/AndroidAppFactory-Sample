@@ -67,10 +67,27 @@ class M3u8DownloadActivity : BaseActivity() {
         initGuide()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-//        mM3U8DownloadImpl.cancleDownload()
+    fun close() {
+        super.onBack()
     }
+
+    override fun onBack() {
+        DialogUtils.showConfirmDialog(this, "温馨提示", "资源下载中，退出时是否继续下载？", "继续下载", "暂停下载", false, object : OnDialogListener {
+            override fun onPositiveClick() {
+                close()
+            }
+
+            override fun onNegativeClick() {
+                mM3U8DownloadImpl.cancelDownload()
+                close()
+            }
+
+            override fun onCancel() {
+                close()
+            }
+        })
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -139,7 +156,7 @@ class M3u8DownloadActivity : BaseActivity() {
                     m3u8Info = M3U8Tools.parseIndex(getM3U8URL(), getBaseURL(), localIndexFinalPath)
                     M3U8DBManager.saveData(m3u8Info)
                     M3U8Tools.generateLocalM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), m3u8Info)
-                    showResult("<b>解析成功，已更新本地存储</b><BR>$m3u8Info")
+                    showResult("<b>解析成功，已更新本地存储</b><BR>${TextFactoryUtils.getTextHtmlAfterTransform(m3u8Info.toString())}")
                     ZLog.d(m3u8Info.toString())
                     downloadPart.isEnabled = true
                 }
@@ -229,20 +246,13 @@ class M3u8DownloadActivity : BaseActivity() {
         downloadPart.setOnClickListener {
             File(M3U8ModuleManager.getDownloadPath(getM3U8URL())).let { folder ->
                 if (folder.isDirectory && folder.listFiles().size > 3) {
-                    DialogUtils.showConfirmDialog(this, "当前已存在部分下载内容,是否删除最近下载的部分确保内容完整？", "", "继续下载", "重新下载", object : OnDialogListener {
+                    DialogUtils.showConfirmDialog(this, "当前已存在部分下载内容,是否删除最近下载的部分确保内容完整？", "", "不删除", "删除", object : OnDialogListener {
                         override fun onPositiveClick() {
-                            downloadM3u8()
+                            downloadM3u8(false)
                         }
 
                         override fun onNegativeClick() {
-                            ThreadManager.getInstance().run {
-                                folder.listFiles().toList().sortedByDescending { it.lastModified() }.map { it.absolutePath }.take(10).forEach{ file ->
-                                    if (file.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
-                                        FileUtils.deleteFile(file)
-                                    }
-                                }
-                                downloadM3u8()
-                            }
+                            downloadM3u8(true)
                         }
 
                         override fun onCancel() {
@@ -250,7 +260,7 @@ class M3u8DownloadActivity : BaseActivity() {
                         }
                     })
                 } else {
-                    downloadM3u8()
+                    downloadM3u8(false)
                 }
             }
         }
@@ -314,10 +324,11 @@ class M3u8DownloadActivity : BaseActivity() {
         }
     }
 
-    fun downloadM3u8() {
+
+    fun downloadM3u8(needDeleteOld: Boolean) {
         showResult("开始下载分片！")
         updateM3U8Info()
-        mM3U8DownloadImpl.startDownload(m3u8Info)
+        mM3U8DownloadImpl.startDownload(m3u8Info, needDeleteOld)
     }
 
 

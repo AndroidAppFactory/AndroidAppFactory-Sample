@@ -1,5 +1,6 @@
 package com.bihe0832.android.base.m3u8.bean
 
+import com.bihe0832.android.base.m3u8.M3U8ModuleManager
 import com.bihe0832.android.lib.file.FileUtils.getFileLength
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -100,11 +101,12 @@ class M3U8Info {
 
     override fun toString(): String {
         val sb = StringBuilder()
-        sb.append("待下载视频信息: \n\n")
+        sb.append("视频信息: \n\n")
         sb.append("m3u8URL: ").append(m3u8URL).append("\n\n")
         sb.append("baseURL: ").append(baseURL).append("\n\n")
-        sb.append("分片数量: ").append(tsList.size).append("\n\n")
-        sb.append("实际分片数量: ").append(getTsSize()).append("\n\n")
+        sb.append("保存地址: ").append(M3U8ModuleManager.getDownloadPath(m3u8URL)).append("\n\n")
+        sb.append("视频地址: ").append(M3U8ModuleManager.getFinalVideoPath(m3u8URL)).append("\n\n")
+        sb.append("分片数量: ").append(tsList.size).append(",").append("实际分片数量: ").append(getTsSize()).append("\n\n")
         if (tsList.isNotEmpty()) {
             sb.append("第一分片信息: ").append(tsList.get(0).toString())
         }

@@ -10,7 +10,9 @@ import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.download.DownloadItem
+import com.bihe0832.android.lib.download.core.DownloadManager
 import com.bihe0832.android.lib.download.core.list.DownloadingList
+import com.bihe0832.android.lib.download.dabase.DownloadInfoDBManager
 import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.DownloadTools
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
@@ -18,6 +20,10 @@ import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.thread.ThreadManager
+import com.bihe0832.android.lib.ui.dialog.OnDialogListener
+import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
+import com.bihe0832.android.lib.utils.time.DateUtil
+import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -39,20 +45,26 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
     private var mDownloadKeyURLList = ConcurrentHashMap<String, Boolean>()
     private val mDownloadListener = object : SimpleDownloadListener() {
 
-        override fun onComplete(filePath: String, item: DownloadItem): String {
-            ZLog.d(TAG, "onComplete-> $filePath")
+        fun notifyFinish(url: String, filePath: String) {
+            ZLog.d(TAG, "notifyFinish-> $filePath")
             if (filePath.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
-                mDownloadTSURLList[item.downloadURL] = true
+                mDownloadTSURLList[url] = true
                 startNew(0)
             }
             msgHandler.sendEmptyMessageDelayed(MSG_TYPE_NOTIFY, 0)
+        }
+
+        override fun onComplete(filePath: String, item: DownloadItem): String {
+            ZLog.w(TAG, "onComplete-> $filePath")
+            notifyFinish(item.downloadURL, filePath)
+            DownloadInfoDBManager.clearDownloadInfoByID(item.downloadID)
             return filePath
         }
 
         override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
             ZLog.d(TAG, "onFail-> errorCode:$errorCode, msg:$msg ")
             mM3U8Listener.onFail(errorCode, msg)
-            startNew(1000)
+            startNew(100)
         }
 
         override fun onProgress(item: DownloadItem) {
@@ -74,7 +86,7 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
                             }
                         }
                     } else {
-                        startNew(1000)
+                        startNew(50)
                     }
                 }
 
@@ -86,7 +98,7 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
     }
 
     private fun notifyProcess() {
-        if (System.currentTimeMillis() - lastNotify > 200) {
+        if (System.currentTimeMillis() - lastNotify > 50) {
             lastNotify = System.currentTimeMillis()
             var finished = mDownloadTSURLList.values.size
             mM3U8Listener.onProcess(finished, mM3U8Info?.getTsSize() ?: 1)
@@ -107,17 +119,24 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
 
     @Synchronized
     private fun addNewItem(tsInfo: M3U8TSInfo) {
-        if (System.currentTimeMillis() - lastStart > 1000) {
+        if (!hasStop && System.currentTimeMillis() - lastStart > 100) {
             lastStart = System.currentTimeMillis()
             var fileDir = M3U8ModuleManager.getDownloadPath(mM3U8Info?.getM3u8URL() ?: "")
             if (!mDownloadTSURLList.containsKey(tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL()))) {
-                ZLog.d(TAG, "addNewItem-> ${tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL())}")
-                ZLog.d(TAG, "addNewItem-> ${fileDir + tsInfo.localFileName}")
-                DownloadFile.download(context, tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL()), fileDir + tsInfo.localFileName, true, null)
-                downloadKey(tsInfo, fileDir)
+                (fileDir + tsInfo.localFileName).let {
+                    if (!FileUtils.checkFileExist(it)) {
+                        ZLog.d(TAG, "addNewItem-> ${tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL())}")
+                        ZLog.d(TAG, "addNewItem-> ${FileUtils.checkFileExist(it)} $it")
+                        DownloadFile.download(context, tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL()), it, true, null)
+                        downloadKey(tsInfo, fileDir)
+                    } else {
+                        ZLog.d(TAG, "addNewItem->  skip ${tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL())}")
+                        mDownloadListener.notifyFinish(tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL()), it)
+                    }
+                }
             }
         } else {
-            startNew(1000)
+            startNew(50)
         }
     }
 
@@ -132,22 +151,46 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
         }
     }
 
-    fun startDownload(m3u8: M3U8Info) {
+    fun startDownload(m3u8: M3U8Info, needDeleteOld: Boolean) {
         mM3U8Info = m3u8
-        hasStop = false
-        notifyProcess()
-        DownloadTools.addGlobalDownloadListener(mDownloadListener)
-        ThreadManager.getInstance().start {
-            if (mM3U8Info?.getTsSize() ?: 0 > MAX_DOWNLOAD) {
-                mM3U8Info?.getTsSize() ?: 0
-            } else {
-                mM3U8Info?.getTsSize() ?: 0
-            }.let {
-                for (i in 0..it) {
-                    startNew(0)
+        cancelDownload()
+        ThreadManager.getInstance().start({
+            mDownloadTSURLList.clear()
+            DownloadTools.addGlobalDownloadListener(mDownloadListener)
+            hasStop = false
+            mM3U8Info?.let { m3U8Info ->
+                File(M3U8ModuleManager.getDownloadPath(m3U8Info.getM3u8URL())).let { folder ->
+                    folder.listFiles().filter { it.absolutePath.endsWith(M3U8TSInfo.FILE_EXTENTION) && it.length() < 100 }.forEach { file ->
+                        ZLog.d(TAG, "startDownload->  remove bad file ${file.absolutePath} ${file.length()}")
+                        FileUtils.deleteFile(file.absolutePath)
+                    }
+                    if (needDeleteOld) {
+                        folder.listFiles().filter { it.absolutePath.endsWith(M3U8TSInfo.FILE_EXTENTION) }.sortedBy { it.length() }.take(5).forEach { file ->
+                            ZLog.d(TAG, "startDownload->  remove old small ${file.absolutePath} ${file.length()}")
+                            FileUtils.deleteFile(file.absolutePath)
+                        }
+
+                        folder.listFiles().filter { it.absolutePath.endsWith(M3U8TSInfo.FILE_EXTENTION) }.sortedByDescending { it.lastModified() }.take(5).forEach { file ->
+                            ZLog.d(TAG, "startDownload->  remove old last modify file ${file.absolutePath} ${DateUtil.getDateEN(file.lastModified())}")
+                            if (file.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
+                                FileUtils.deleteFile(file.absolutePath)
+                            }
+                        }
+                    }
                 }
+
+                if (m3U8Info.getTsSize() > MAX_DOWNLOAD) {
+                    MAX_DOWNLOAD
+                } else {
+                    m3U8Info.getTsSize()
+                }.let {
+                    for (i in 0..it) {
+                        startNew(0)
+                    }
+                }
+
             }
-        }
+        }, 1)
     }
 
     fun cancelDownload() {
