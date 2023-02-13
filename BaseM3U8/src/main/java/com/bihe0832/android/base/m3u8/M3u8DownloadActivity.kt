@@ -229,14 +229,14 @@ class M3u8DownloadActivity : BaseActivity() {
         downloadPart.setOnClickListener {
             File(M3U8ModuleManager.getDownloadPath(getM3U8URL())).let { folder ->
                 if (folder.isDirectory && folder.listFiles().size > 3) {
-                    DialogUtils.showConfirmDialog(this, "当前已存在部分下载内容,是否删除？", "", "继续下载", "重新下载", object : OnDialogListener {
+                    DialogUtils.showConfirmDialog(this, "当前已存在部分下载内容,是否删除最近下载的部分确保内容完整？", "", "继续下载", "重新下载", object : OnDialogListener {
                         override fun onPositiveClick() {
                             downloadM3u8()
                         }
 
                         override fun onNegativeClick() {
                             ThreadManager.getInstance().run {
-                                folder.listFiles().map { it.absolutePath }.forEach { file ->
+                                folder.listFiles().toList().sortedByDescending { it.lastModified() }.map { it.absolutePath }.take(10).forEach{ file ->
                                     if (file.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
                                         FileUtils.deleteFile(file)
                                     }
@@ -269,8 +269,9 @@ class M3u8DownloadActivity : BaseActivity() {
 
                 override fun onComplete() {
                     ThreadManager.getInstance().runOnUIThread {
-                        if (!TextUtils.isEmpty(M3U8ModuleManager.getFinalVideoPath(getM3U8URL()))) {
-                            showResult("<b>视频合并已经完成</b>，保存地址为：${M3U8ModuleManager.getFinalVideoPath(getM3U8URL())}")
+                        val path = M3U8ModuleManager.getFinalVideoPath(getM3U8URL())
+                        if (!TextUtils.isEmpty(path)) {
+                            showResult("<b>视频合并已经完成</b>，文件大小：${FileUtils.getFileLength(File(path).length())},保存地址为：${path}")
                         } else {
                             showResult("<b>合并失败</b>")
                         }

@@ -15,15 +15,11 @@ import java.io.File
 object M3U8ModuleManager {
 
     fun getBasePath(): String {
-        var path = ZixieContext.getZixieFolder() + "m3u8" + File.separator
-        FileUtils.checkAndCreateFolder(path)
-        return path
+        return FileUtils.getFolderPathWithSeparator(ZixieContext.getZixieFolder())
     }
 
     fun getDownloadPath(m3u8Url: String): String {
-        var path = getBasePath() + MD5.getMd5(m3u8Url) + File.separator
-        FileUtils.checkAndCreateFolder(path)
-        return path
+        return FileUtils.getFolderPathWithSeparator(getBasePath() + MD5.getMd5(m3u8Url) + File.separator)
     }
 
     fun getFinalVideoPath(m3u8Url: String): String {

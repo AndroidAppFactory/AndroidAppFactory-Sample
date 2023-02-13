@@ -32,6 +32,13 @@ public class M3U8TSInfo implements Comparable<M3U8TSInfo> {
 		return getFullUrl(baseURL, m3u8TSURL);
 	}
 
+	public String getM3u8TSKeyURL() {
+		return m3u8TSKeyURL;
+	}
+
+	public String getM3u8TSKKeyFullURL(String baseURL) {
+		return getFullUrl(baseURL, m3u8TSKeyURL);
+	}
 
 	public static final String getFullUrl(String baseURL, String path) {
 		if (TextUtils.isEmpty(path)) {
@@ -72,9 +79,6 @@ public class M3U8TSInfo implements Comparable<M3U8TSInfo> {
 		return seconds;
 	}
 
-	public String getM3u8TSKeyURL() {
-		return m3u8TSKeyURL;
-	}
 
 	public String getLocalFileName() {
 		if (TextUtils.isEmpty(m3u8TSURL)) {

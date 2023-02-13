@@ -15,6 +15,7 @@ import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.DownloadTools
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
+import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.thread.ThreadManager
 import java.util.concurrent.ConcurrentHashMap
@@ -35,15 +36,16 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
     private val MAX_DOWNLOAD = 10
     private var hasStop = true
     private var mDownloadTSURLList = ConcurrentHashMap<String, Boolean>()
-    private val mGlobalDownloadListener = object : SimpleDownloadListener() {
+    private var mDownloadKeyURLList = ConcurrentHashMap<String, Boolean>()
+    private val mDownloadListener = object : SimpleDownloadListener() {
 
         override fun onComplete(filePath: String, item: DownloadItem): String {
             ZLog.d(TAG, "onComplete-> $filePath")
             if (filePath.endsWith(M3U8TSInfo.FILE_EXTENTION)) {
                 mDownloadTSURLList[item.downloadURL] = true
                 startNew(0)
-                msgHandler.sendEmptyMessageDelayed(MSG_TYPE_NOTIFY, 0)
             }
+            msgHandler.sendEmptyMessageDelayed(MSG_TYPE_NOTIFY, 0)
             return filePath
         }
 
@@ -84,7 +86,7 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
     }
 
     private fun notifyProcess() {
-        if (System.currentTimeMillis() - lastNotify > 1000) {
+        if (System.currentTimeMillis() - lastNotify > 200) {
             lastNotify = System.currentTimeMillis()
             var finished = mDownloadTSURLList.values.size
             mM3U8Listener.onProcess(finished, mM3U8Info?.getTsSize() ?: 1)
@@ -93,7 +95,7 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
                 mM3U8Listener.onComplete()
             }
         } else {
-            msgHandler.sendEmptyMessageDelayed(MSG_TYPE_START, 1000)
+            msgHandler.sendEmptyMessageDelayed(MSG_TYPE_START, 100)
         }
     }
 
@@ -110,20 +112,31 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
             var fileDir = M3U8ModuleManager.getDownloadPath(mM3U8Info?.getM3u8URL() ?: "")
             if (!mDownloadTSURLList.containsKey(tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL()))) {
                 ZLog.d(TAG, "addNewItem-> ${tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL())}")
+                ZLog.d(TAG, "addNewItem-> ${fileDir + tsInfo.localFileName}")
                 DownloadFile.download(context, tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL()), fileDir + tsInfo.localFileName, true, null)
-                if (!TextUtils.isEmpty(tsInfo.m3u8TSKeyURL)) {
-                    DownloadFile.download(context, tsInfo.getM3u8TSFullURL(mM3U8Info?.getBaseURL()), fileDir + tsInfo.localKeyName, true, null)
-                }
+                downloadKey(tsInfo, fileDir)
             }
         } else {
             startNew(1000)
         }
     }
 
+    private fun downloadKey(tsInfo: M3U8TSInfo, fileDir: String) {
+        if (!TextUtils.isEmpty(tsInfo.m3u8TSKeyURL)) {
+            val localKey = fileDir + tsInfo.localKeyName
+            val finalURL = tsInfo.getM3u8TSKKeyFullURL(mM3U8Info?.getBaseURL())
+            if (!mDownloadKeyURLList.containsKey(finalURL) || !FileUtils.checkFileExist(localKey)) {
+                mDownloadKeyURLList[finalURL] = true
+                DownloadFile.download(context, "", "", finalURL, localKey, true, "", "", forceDownloadNew = true, UseMobile = true, downloadListener = null)
+            }
+        }
+    }
+
     fun startDownload(m3u8: M3U8Info) {
         mM3U8Info = m3u8
         hasStop = false
-        DownloadTools.addGlobalDownloadListener(mGlobalDownloadListener)
+        notifyProcess()
+        DownloadTools.addGlobalDownloadListener(mDownloadListener)
         ThreadManager.getInstance().start {
             if (mM3U8Info?.getTsSize() ?: 0 > MAX_DOWNLOAD) {
                 mM3U8Info?.getTsSize() ?: 0
@@ -139,7 +152,7 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
 
     fun cancelDownload() {
         hasStop = true
+        DownloadTools.removeGlobalDownloadListener(mDownloadListener)
         DownloadUtils.pauseAll()
-        DownloadTools.removeGlobalDownloadListener(mGlobalDownloadListener)
     }
 }
