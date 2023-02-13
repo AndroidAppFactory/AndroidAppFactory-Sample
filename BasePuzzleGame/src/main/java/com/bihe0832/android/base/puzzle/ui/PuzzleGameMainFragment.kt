@@ -80,22 +80,19 @@ class PuzzleGameMainFragment : BaseFragment() {
             override fun onGameSuccess(level: Int, gameMode: GameMode) {
                 DialogUtils.showConfirmDialog(
                         context!!,
-                        getString(R.string.success_title),
                         "你已完成<b><font color='#38ADFF'> " + gameMode.desc + " </font>的 $level 级</b>挑战，要换张图继续么？",
-                        getString(R.string.success_negative),
-                        getString(R.string.success_positive),
                         true,
                         object : OnDialogListener {
                             override fun onPositiveClick() {
+
+                            }
+
+                            override fun onNegativeClick() {
                                 try {
                                     activity?.finish()
                                 } catch (e: Exception) {
                                     e.printStackTrace()
                                 }
-                            }
-
-                            override fun onNegativeClick() {
-
                             }
 
                             override fun onCancel() {}

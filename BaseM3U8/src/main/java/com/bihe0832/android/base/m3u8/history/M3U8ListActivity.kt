@@ -58,6 +58,7 @@ open class M3U8ListActivity : CommonListActivity() {
                             override fun onDelete() {
                                 DialogUtils.showConfirmDialog(this@M3U8ListActivity, "删除M3U8下载历史", "确定删除该条下载记录么？<BR>" + m3u8Info.getM3u8URL(), "再想想", "删除", true, object : OnDialogListener {
                                     override fun onPositiveClick() {
+
                                     }
 
                                     override fun onNegativeClick() {

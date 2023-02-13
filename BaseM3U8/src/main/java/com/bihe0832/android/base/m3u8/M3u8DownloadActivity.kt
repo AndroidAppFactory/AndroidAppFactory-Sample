@@ -67,27 +67,10 @@ class M3u8DownloadActivity : BaseActivity() {
         initGuide()
     }
 
-    fun close() {
-        super.onBack()
+    override fun onDestroy() {
+        super.onDestroy()
+        mM3U8DownloadImpl.cancelDownload()
     }
-
-    override fun onBack() {
-        DialogUtils.showConfirmDialog(this, "温馨提示", "资源下载中，退出时是否继续下载？", "继续下载", "暂停下载", false, object : OnDialogListener {
-            override fun onPositiveClick() {
-                close()
-            }
-
-            override fun onNegativeClick() {
-                mM3U8DownloadImpl.cancelDownload()
-                close()
-            }
-
-            override fun onCancel() {
-                close()
-            }
-        })
-    }
-
 
     override fun onResume() {
         super.onResume()
@@ -246,13 +229,13 @@ class M3u8DownloadActivity : BaseActivity() {
         downloadPart.setOnClickListener {
             File(M3U8ModuleManager.getDownloadPath(getM3U8URL())).let { folder ->
                 if (folder.isDirectory && folder.listFiles().size > 3) {
-                    DialogUtils.showConfirmDialog(this, "当前已存在部分下载内容,是否删除最近下载的部分确保内容完整？", "", "不删除", "删除", object : OnDialogListener {
+                    DialogUtils.showConfirmDialog(this, "当前已存在部分下载内容,是否删除最近下载的部分确保内容完整？", false, object : OnDialogListener {
                         override fun onPositiveClick() {
-                            downloadM3u8(false)
+                            downloadM3u8(true)
                         }
 
                         override fun onNegativeClick() {
-                            downloadM3u8(true)
+                            downloadM3u8(false)
                         }
 
                         override fun onCancel() {
