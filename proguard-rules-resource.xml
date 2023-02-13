@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resproguard>
     <issue id="property">
-        
         <!-- 是否保留资源文件夹目录名称，如果选false，例如res/drawable 会被压缩为 r/s-->
-        <keeproot value="false" />
+        <keeproot value="true" />
         <!-- V1版本的签名信息保存位置，建议不修改-->
         <metaname value="META-INF" />
         <!--是否开启7zip压缩，由于Android的V2签名的关系，建议关闭，不开启-->
