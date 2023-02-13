@@ -67,9 +67,25 @@ class M3u8DownloadActivity : BaseActivity() {
         initGuide()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mM3U8DownloadImpl.cancelDownload()
+    fun close(){
+       super.finish()
+    }
+    override fun finish() {
+        // 存在内存泄露，后续将下载抽离后解决
+        DialogUtils.showConfirmDialog(this, "资源下载中，退出时是否继续下载？",  false, object : OnDialogListener {
+            override fun onPositiveClick() {
+                close()
+            }
+
+            override fun onNegativeClick() {
+                mM3U8DownloadImpl.cancelDownload()
+                close()
+            }
+
+            override fun onCancel() {
+                close()
+            }
+        })
     }
 
     override fun onResume() {
