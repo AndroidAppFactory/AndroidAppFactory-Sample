@@ -79,7 +79,7 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
                 MSG_TYPE_START -> {
                     if (!hasStop && DownloadingList.getDownloadingNum() < MAX_DOWNLOAD) {
                         mM3U8Info?.getTsList()?.filter { !mDownloadTSURLList.containsKey(it.getM3u8TSFullURL(mM3U8Info?.getBaseURL())) }?.let {
-                            it.shuffled().firstOrNull()?.let { item ->
+                            it.firstOrNull()?.let { item ->
                                 if (!mDownloadTSURLList.containsKey(item.getM3u8TSFullURL(mM3U8Info?.getBaseURL()))) {
                                     addNewItem(item)
                                 }
