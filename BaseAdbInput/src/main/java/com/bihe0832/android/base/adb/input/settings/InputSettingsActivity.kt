@@ -21,7 +21,7 @@ class InputSettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_input_settings)
-        initToolbar(R.id.common_toolbar, "输入法设置引导", true)
+        initToolbar(R.id.common_toolbar, "输入法设置引导", needTitleCenter = false, needBack = true, iconRes = R.mipmap.icon_left_arrow_white)
         showInputMethodPicker(intent)
         if (findFragment(InputSettingsFragment::class.java) == null) {
             loadRootFragment(R.id.common_fragment_content, InputSettingsFragment())

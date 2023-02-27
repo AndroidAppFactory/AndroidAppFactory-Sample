@@ -38,6 +38,11 @@ object InputSwitchTools {
         return false
     }
 
+    fun isSelected(context: Context?): Boolean {
+        return Settings.Secure.getString(context?.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD).equals(ZixieIME.IME_NAME)
+
+    }
+
     fun closeNotify(context: Context?) {
         context?.let {
             NotifyManager.cancelNotify(it, NOTIFYL_ID)
