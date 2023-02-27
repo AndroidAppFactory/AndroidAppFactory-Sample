@@ -30,7 +30,7 @@ object InputSwitchTools {
     fun hasInstall(context: Context?): Boolean {
         (context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)?.let {
             it.enabledInputMethodList.forEach { inputMethodInfo ->
-                if (inputMethodInfo.id.equals(ZixieIME.IME_NAME)) {
+                if (inputMethodInfo.id.equals(getIMEName(context))) {
                     return true
                 }
             }
@@ -38,8 +38,12 @@ object InputSwitchTools {
         return false
     }
 
+    private fun getIMEName(context: Context?): String {
+        return context?.packageName + "/" + ZixieIME::class.java.name
+    }
+
     fun isSelected(context: Context?): Boolean {
-        return Settings.Secure.getString(context?.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD).equals(ZixieIME.IME_NAME)
+        return Settings.Secure.getString(context?.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD).equals(getIMEName(context))
 
     }
 

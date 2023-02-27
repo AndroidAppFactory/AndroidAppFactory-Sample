@@ -19,8 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class ZixieIME extends InputMethodService {
 
     public String IME_ADB_INPUT_ACTION = "ZIXIE_ADB_INPUT";
-    public static final String IME_NAME = "com.bihe0832.adb.input/com.bihe0832.android.base.adb.input.ZixieIME";
-
+    
     public static final String TAG = "InputService";
     private InputServiceActionListener mInputServiceActionListener = null;
 
