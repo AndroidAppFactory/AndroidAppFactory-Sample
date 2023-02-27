@@ -18,6 +18,8 @@ AAF Sample 是所有基于AAF开发的应用的集合。用于日常功能开发
 
 - PubGetAPKInfo：获取设备已安装应用基本信息
 
+- PubAdbInput：基于ADB的快捷输入法
+
 - PubPuzzleGame：拼图
 
 - PubM3U8：M3U8文件下载工具
