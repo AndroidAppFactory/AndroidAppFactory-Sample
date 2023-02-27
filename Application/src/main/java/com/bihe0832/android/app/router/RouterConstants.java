@@ -23,4 +23,9 @@ public class RouterConstants extends com.bihe0832.android.framework.router.Route
     public static final String MODULE_NAME_BROWSER_LIST = "weblist";
 
 
+    public static final String MODULE_NAME_INPUT_GUIDE = "guide";
+    public static final String INTENT_EXTRA_KEY_INPUT_GUIDE_TYPE = "type";
+    public static final String INTENT_EXTRA_VALUE_INPUT_SWITCH = "1";
+
+
 }

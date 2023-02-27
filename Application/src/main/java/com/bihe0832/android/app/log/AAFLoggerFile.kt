@@ -15,10 +15,13 @@ import com.bihe0832.android.framework.log.LoggerFile
 object AAFLoggerFile {
 
     const val MODULE_UPDATE = "udpate"
+    const val MODULE_INPUT = "input"
 
     fun logUpdate(msg: String) {
         log(MODULE_UPDATE, msg)
     }
+
+
 
     fun log(module: String, msg: String) {
         LoggerFile.log(LoggerFile.getZixieFileLogPathByModule(module), msg)

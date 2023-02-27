@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bihe0832.android.base.adb.input">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- New Android Q permission -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
+
+    <application>
+        <activity
+            android:name=".settings.InputSettingsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.bihe0832.android.input.diff"
+            android:theme="@style/AAF.ActivityTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+            </intent-filter>
+        </activity>
+
+
+        <!--核心 继承自InputMethodService-->
+        <service
+            android:name="com.bihe0832.android.base.adb.input.ZixieIME"
+            android:label="子勰ADB快速输入"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+    </application>
+</manifest>

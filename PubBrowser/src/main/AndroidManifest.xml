@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.bihe0832.android.app.getapk">
+    package="com.bihe0832.android.app.browser">
 
     <application
-            android:name="com.bihe0832.android.app.Application"
-            android:allowBackup="true"
-            android:icon="@mipmap/icon"
-            android:label="@string/app_name"
-            android:supportsRtl="true">
+        android:name="com.bihe0832.android.app.Application"
+        android:allowBackup="true"
+        android:icon="@mipmap/icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
         <activity
-                android:name="com.bihe0832.android.app.browser.SplashActivity"
-                android:configChanges="orientation|screenSize|keyboardHidden"
-                android:screenOrientation="portrait"
-                android:theme="@style/AAF.ActivityTheme.Fullscreen">
+            android:name="com.bihe0832.android.app.browser.SplashActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/AAF.ActivityTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -20,12 +20,12 @@
         </activity>
 
         <activity
-                android:name="com.bihe0832.android.app.browser.MainActivity"
-                android:configChanges="orientation|screenSize|keyboardHidden"
-                android:label="@string/app_name"
-                android:screenOrientation="portrait"
-                android:launchMode="singleInstance"
-                android:theme="@style/AAF.ActivityTheme">
+            android:name="com.bihe0832.android.app.browser.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AAF.ActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -40,10 +40,10 @@
 
 
         <activity
-                android:name="com.bihe0832.android.app.browser.BrowserListActivity"
-                android:configChanges="orientation|screenSize|keyboardHidden"
-                android:screenOrientation="portrait"
-                android:theme="@style/AAF.ActivityTheme"></activity>
+            android:name="com.bihe0832.android.app.browser.BrowserListActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/AAF.ActivityTheme"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="keyboard_background">#80000000</color>
+    <color name="keyboard_item_background">#00000000</color>
+    <color name="keyboard_item_pressed">#ACACAC</color>
+    <color name="keyboard_enter_default">#3F51B5</color>
+    <color name="keyboard_enter_pressed">#536DFE</color>
+    <color name="keyboard_content_default">#E0FFFFFF</color>
+    <color name="keyboard_content_pressed">#FFFFFF</color>
+    <color name="keyboard_content_color">#000000</color>
+
+</resources>

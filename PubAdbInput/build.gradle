@@ -1,27 +1,37 @@
-apply plugin: 'com.android.application'
+if (rootProject.ext.pubModuleIsApplication as boolean) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+
 // 不同类型的包，仅仅修改下面两项即可，其余内容保持一致
-project.ext.applicationID = "com.bihe0832.android.app.test"
-project.ext.applicationPrefix = "ZSample"
-project.ext.routerSchema = "ztest"
-project.ext.applicationName = project.ext.applicationPrefix + "内测"
-project.ext.test_activity_name = project.ext.applicationPrefix + "调试"
+project.ext.applicationID = "com.bihe0832.adb.input"
+project.ext.applicationName = "子勰ADB输入"
+project.ext.applicationPrefix = "ZINPUT"
+project.ext.routerSchema = "zinput"
 
 android {
+
     compileSdkVersion project.compileSdkVersion
     buildToolsVersion project.buildToolsVersion
 
     defaultConfig {
-        applicationId applicationID
+        if (rootProject.ext.pubModuleIsApplication as boolean) {
+            applicationId applicationID
+        }
+        multiDexEnabled true
         minSdkVersion project.appMinSdkVersion
         targetSdkVersion project.targetSdkVersion
         versionName project.versionName
         versionCode project.versionCode
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
-
+        ndk {
+            abiFilters project.ndk_abiFilters_project.split(",")
+            stl "stlport_static"
+        }
     }
 
     packagingOptions {
@@ -40,6 +50,11 @@ android {
         project.excludeList.each { item ->
             exclude item
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     lintOptions {
@@ -66,13 +81,10 @@ android {
         }
     }
 
-
     buildTypes {
         debug {
             resValue "string", "app_name", applicationName
             resValue "string", "router_schema", routerSchema
-            resValue "string", "test_activity_name", test_activity_name
-
             signingConfig signingConfigs.debug
             minifyEnabled false
             shrinkResources false
@@ -81,7 +93,6 @@ android {
         release {
             resValue "string", "app_name", applicationName
             resValue "string", "router_schema", routerSchema
-            resValue "string", "test_activity_name", test_activity_name
 
             signingConfig signingConfigs.release
             minifyEnabled project.minifyEnabled as boolean
@@ -89,15 +100,17 @@ android {
             shrinkResources false
         }
     }
-    android.applicationVariants.all { variant ->
-        def finalFileName = applicationPrefix + "_V${defaultConfig.versionName}_${defaultConfig.versionCode}"
-        variant.outputs.all {
-            if (variant.buildType.name == 'debug') {
-                outputFileName = finalFileName + "_debug.apk"
-            } else {
-                outputFileName = finalFileName + "_release.apk"
+
+    if (rootProject.ext.pubModuleIsApplication as boolean) {
+        applicationVariants.all { variant ->
+            def finalFileName = applicationPrefix + "_V${defaultConfig.versionName}_${defaultConfig.versionCode}"
+            variant.outputs.all {
+                if (variant.buildType.name == 'debug') {
+                    outputFileName = finalFileName + "_debug.apk"
+                } else {
+                    outputFileName = finalFileName + "_release.apk"
+                }
             }
         }
     }
 }
-
