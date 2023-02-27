@@ -37,3 +37,9 @@ if [ "$appNo"x = "ZM3U8"x ];then
   /bin/bash ./build_apk.sh ZM3U8 PubM3U8 com.bihe0832.m3u8 com.bihe0832.android.app.Application
   checkResult
 fi
+
+#ADB Input APP
+if [ "$appNo"x = "ZINPUT"x ];then
+  /bin/bash ./build_apk.sh ZINPUT PubAdbInput com.bihe0832.adb.input com.bihe0832.android.app.Application
+  checkResult
+fi
