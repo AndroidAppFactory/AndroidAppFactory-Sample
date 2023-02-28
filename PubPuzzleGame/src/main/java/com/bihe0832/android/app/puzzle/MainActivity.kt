@@ -3,6 +3,7 @@ package com.bihe0832.android.app.puzzle
 import android.os.Bundle
 import android.text.Html
 import androidx.core.content.ContextCompat
+import com.bihe0832.android.app.message.AAFMessageManager
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
@@ -31,6 +32,11 @@ class MainActivity : BaseActivity() {
                         " 1. <b><font color='#38ADFF'>点击</font>下方图标</b>，选择拼图的素材<BR>" +
                         " 2. 选择图片后，进入<b><font color='#38ADFF'>拼图游戏</font>页面，可自由切换模式和难度</b>"
         )
+        AAFMessageManager.getMessageLiveData().observe(this) { t ->
+            t?.filter { it.canShow(true) }?.forEach {
+                AAFMessageManager.showNotice(this@MainActivity, it, true)
+            }
+        }
     }
 
     override fun getStatusBarColor(): Int {

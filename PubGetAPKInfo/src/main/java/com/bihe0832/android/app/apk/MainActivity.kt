@@ -5,8 +5,10 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.bihe0832.android.app.getapk.R
+import com.bihe0832.android.app.message.AAFMessageManager
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
@@ -15,6 +17,7 @@ import com.bihe0832.android.base.card.tips.TipsData
 import com.bihe0832.android.common.list.CardItemForCommonList
 import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.swiperefresh.CommonListActivity
+import com.bihe0832.android.common.message.data.MessageInfoItem
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.debug.DebugTools
@@ -72,6 +75,11 @@ class MainActivity : CommonListActivity() {
         initAdapter()
         showTips()
         UpdateManager.checkUpdateAndShowDialog(this, false)
+        AAFMessageManager.getMessageLiveData().observe(this) { t ->
+            t?.filter { it.canShow(true) }?.forEach {
+                AAFMessageManager.showNotice(this@MainActivity, it, true)
+            }
+        }
     }
 
     override fun getStatusBarColor(): Int {

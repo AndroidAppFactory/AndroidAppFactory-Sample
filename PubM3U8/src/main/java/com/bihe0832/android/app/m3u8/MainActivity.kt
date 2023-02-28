@@ -1,7 +1,7 @@
 package com.bihe0832.android.app.m3u8
 
 import android.os.Bundle
-import com.bihe0832.android.app.getapk.R
+import com.bihe0832.android.app.message.AAFMessageManager
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
@@ -26,7 +26,11 @@ class MainActivity : M3U8ListActivity() {
         }
         M3U8DBManager.init(this)
 
-
+        AAFMessageManager.getMessageLiveData().observe(this) { t ->
+            t?.filter { it.canShow(true) }?.forEach {
+                AAFMessageManager.showNotice(this@MainActivity, it, true)
+            }
+        }
     }
 
 }

@@ -3,15 +3,16 @@ package com.bihe0832.android.base.adb.input.settings
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import com.bihe0832.android.app.message.AAFMessageManager
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
 import com.bihe0832.android.base.adb.input.R
+import com.bihe0832.android.base.adb.input.ZixieIME
+import com.bihe0832.android.base.adb.input.switcher.InputSwitchTools
 import com.bihe0832.android.framework.ui.BaseActivity
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.router.annotation.Module
-import com.bihe0832.android.base.adb.input.ZixieIME
-import com.bihe0832.android.base.adb.input.switcher.InputSwitchTools
 import kotlinx.android.synthetic.main.activity_input_settings.*
 
 
@@ -30,6 +31,11 @@ class InputSettingsActivity : BaseActivity() {
             RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_BASE_ABOUT)
         }
         UpdateManager.checkUpdateAndShowDialog(this, false)
+        AAFMessageManager.getMessageLiveData().observe(this) { t ->
+            t?.filter { it.canShow(true) }?.forEach {
+                AAFMessageManager.showNotice(this@InputSettingsActivity, it, true)
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
