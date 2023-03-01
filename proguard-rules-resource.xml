@@ -24,7 +24,6 @@
         <path value="*.jpg" />
         <path value="*.jpeg" />
         <path value="*.gif" />
-        <path value="resources.arsc" />
     </issue>
 
     <!-- 签名相关的信息，因为涉及到安全，因此建议这部分内容不集成在混淆中，可以在混淆完成以后用命令行重新签名 -->
