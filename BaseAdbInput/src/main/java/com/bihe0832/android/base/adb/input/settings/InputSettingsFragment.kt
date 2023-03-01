@@ -65,11 +65,15 @@ class InputSettingsFragment : BaseFragment() {
             })
         }
 
-        var color = resources.getColor(R.color.colorPrimary)
-        var tips = "1. 手机通过<b><font color='$color'>ADB</font>连接到电脑</b>，并将手机输入法<b>切换为<font color='$color'>${APKUtils.getAppName(context)}</font></b>" + "<BR>2. 激活需要输入内容的输入框" + "<BR>3. 在电脑端用命令行输入 <b><font color='$color'>adb shell am broadcast -a ZIXIE_ADB_INPUT --es msg \"DATA\"</font></b>，DATA 即为要输入的内容" + "<BR>4. <b>ADB 常用命令使用方法可以点击查看： <font color='$color'>https://blog.bihe0832.com/review_adb.html</font></b>"
+
+        var tips = "1. 手机通过<b>${getColorText("ADB")}连接到电脑</b>，并将手机输入法<b>切换为${getColorText(APKUtils.getAppName(context))}</b>" +
+                "<BR>2. 激活需要输入内容的输入框" +
+                "<BR>3. 对于<b>${getColorText("简单文本")}</b>，在电脑端用命令行输入 <b>${getColorText("adb shell am broadcast -a ZIXIE_ADB_INPUT_TEXT --es msg \"DATA\"")}</b>，DATA 即为要<b>输入内容</b>" +
+                "<BR>4. 对于<b>${getColorText("复杂文本")}</b>，在电脑端用命令行输入 <b>${getColorText("adb shell am broadcast -a ZIXIE_ADB_INPUT_BASE64 --es msg \"DATA\"")}</b>，DATA 即为要<b>输入内容的Base64编码</b>" +
+                "<BR>5. <b>更多使用方法介绍及、ADB 常用命令使用方法可以点击查看： ${getColorText("https://blog.bihe0832.com/input.html")}</b>"
         val list = HashMap<String, View.OnClickListener>().apply {
-            put("https://blog.bihe0832.com/review_adb.html", View.OnClickListener {
-                openWebPage("https://blog.bihe0832.com/review_adb.html")
+            put("https://blog.bihe0832.com/input.html", View.OnClickListener {
+                openWebPage("https://blog.bihe0832.com/input.html")
             })
         }
         input_settings_input_help_tips.apply {
@@ -78,6 +82,11 @@ class InputSettingsFragment : BaseFragment() {
         }
 
         updateView()
+    }
+
+    private fun getColorText(content: String): String {
+        var color = resources.getColor(R.color.colorPrimary)
+        return TextFactoryUtils.getSpecialText(content, color)
     }
 
     private fun updateView() {

@@ -52,7 +52,7 @@ ext.moduleInfo = [
     "BaseDebug"       : [
         "apidependenciesList"  : [
             "com.bihe0832.android:common-debug:${project.aaf_test_version}",
-            "Application", "BaseCard", "BaseAdbInput"
+            "Application", "BaseCard"
 //                        , "BasePuzzleGame","BaseM3U8"
         ],
         specialdependenciesList: [

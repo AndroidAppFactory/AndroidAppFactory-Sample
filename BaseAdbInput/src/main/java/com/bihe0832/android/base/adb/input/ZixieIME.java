@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.inputmethodservice.InputMethodService;
+import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
@@ -18,8 +19,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ZixieIME extends InputMethodService {
 
-    public String IME_ADB_INPUT_ACTION = "ZIXIE_ADB_INPUT";
-    
+    public String IME_ADB_INPUT_ACTION_TEXT = "ZIXIE_ADB_INPUT_TEXT";
+    public String IME_ADB_INPUT_ACTION_BASE64 = "ZIXIE_ADB_INPUT_BASE64";
+
     public static final String TAG = "InputService";
     private InputServiceActionListener mInputServiceActionListener = null;
 
@@ -37,8 +39,9 @@ public class ZixieIME extends InputMethodService {
         View mInputView = getLayoutInflater().inflate(R.layout.layout_input_keyboard_global, null);
         initView(mInputView);
         if (mReceiver == null) {
-            IntentFilter filter = new IntentFilter(IME_ADB_INPUT_ACTION);
-            filter.addAction(IME_ADB_INPUT_ACTION);
+            IntentFilter filter = new IntentFilter(IME_ADB_INPUT_ACTION_TEXT);
+            filter.addAction(IME_ADB_INPUT_ACTION_TEXT);
+            filter.addAction(IME_ADB_INPUT_ACTION_BASE64);
             mReceiver = new AdbReceiver();
             registerReceiver(mReceiver, filter);
         }
@@ -113,10 +116,15 @@ public class ZixieIME extends InputMethodService {
     class AdbReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(IME_ADB_INPUT_ACTION)) {
+            if (intent.getAction().equals(IME_ADB_INPUT_ACTION_TEXT)) {
                 String msg = intent.getStringExtra("msg");
                 if (msg != null) {
                     InputManager.INSTANCE.commitResultText(msg);
+                }
+            }else  if (intent.getAction().equals(IME_ADB_INPUT_ACTION_BASE64)) {
+                String msg = intent.getStringExtra("msg");
+                if (msg != null) {
+                    InputManager.INSTANCE.commitResultText(new String(Base64.decode(msg, Base64.DEFAULT)));
                 }
             }
         }
