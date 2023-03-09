@@ -18,28 +18,32 @@ localPath=`pwd`
 echo "localPath:"$localPath
 chmod +x ./build_apk.sh
 echo "appNo:${appNo}"
+echo "param:${1}"
 
+moduleKey=${1}
+if [ "$moduleKey"x = ""x ];then
+  moduleKey=$appNo
+fi
 #获取应用基本信息的APP
-if [ "$appNo"x = "ZAPK"x ];then
+if [ "$moduleKey"x = "ZAPK"x ];then
   /bin/bash ./build_apk.sh ZAPK PubGetAPKInfo com.bihe0832.getsignature com.bihe0832.android.app.Application
   checkResult
 fi
 
-
 #拼图APP
-if [ "$appNo"x = "ZPUZZLE"x ];then
+if [ "$moduleKey"x = "ZPUZZLE"x ];then
   /bin/bash ./build_apk.sh ZPUZZLE PubPuzzleGame com.bihe0832.puzzle com.bihe0832.android.app.Application
   checkResult
 fi
 
 #M3u8 APP
-if [ "$appNo"x = "ZM3U8"x ];then
+if [ "$moduleKey"x = "ZM3U8"x ];then
   /bin/bash ./build_apk.sh ZM3U8 PubM3U8 com.bihe0832.m3u8 com.bihe0832.android.app.Application
   checkResult
 fi
 
 #ADB Input APP
-if [ "$appNo"x = "ZINPUT"x ];then
+if [ "$moduleKey"x = "ZINPUT"x ];then
   /bin/bash ./build_apk.sh ZINPUT PubAdbInput com.bihe0832.adb.input com.bihe0832.android.app.Application
   checkResult
 fi
