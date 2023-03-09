@@ -52,7 +52,7 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-    <com.bihe0832.android.lib.ui.recycleview.ext.MyEasyRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/activity_list_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -63,6 +63,6 @@
             android:layout_height="match_parent"
             android:clipChildren="false" />
 
-    </com.bihe0832.android.lib.ui.recycleview.ext.MyEasyRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

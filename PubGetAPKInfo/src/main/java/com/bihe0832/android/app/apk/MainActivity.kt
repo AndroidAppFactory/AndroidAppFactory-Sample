@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bihe0832.android.app.getapk.R
@@ -17,7 +16,7 @@ import com.bihe0832.android.base.card.apk.APPItemData
 import com.bihe0832.android.base.card.tips.TipsData
 import com.bihe0832.android.common.list.CardItemForCommonList
 import com.bihe0832.android.common.list.CommonListLiveData
-import com.bihe0832.android.common.list.easyrefresh.CommonListActivity
+import com.bihe0832.android.common.list.swiperefresh.CommonListActivity
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.debug.DebugTools

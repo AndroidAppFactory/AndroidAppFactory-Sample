@@ -21,7 +21,7 @@ import com.bihe0832.android.lib.utils.os.DisplayUtil
 private val mAutoShowMessageList = mutableListOf<String>()
 
 fun BaseActivity.addMessageAction(messageView: ImageView, unreadView: TextViewWithBackground) {
-    AAFMessageManager.getMessageLiveData().value?.let { updateMessageMenuAndShowFace(it, this, unreadView) }
+    AAFMessageManager.getMessageLiveData().value.let { updateMessageMenuAndShowFace(it, this, unreadView) }
     AAFMessageManager.getMessageLiveData().observe(this) { t ->
         updateMessageMenuAndShowFace(t, this, unreadView)
     }
@@ -35,17 +35,22 @@ fun BaseActivity.addMessageAction(messageView: ImageView, unreadView: TextViewWi
 }
 
 @Synchronized
-fun updateMessageMenuAndShowFace(noticeList: List<MessageInfoItem>, activity: BaseActivity, unreadView: TextViewWithBackground) {
-    noticeList.filter { !it.hasRead() }.let {
-        if (it.isNotEmpty()) {
-            unreadView.changeStatusWithUnreadMsg(it.size, DisplayUtil.dip2px(activity, 8f))
-        } else {
-            unreadView.changeStatusWithUnreadMsg(-1, DisplayUtil.dip2px(activity, 8f))
+fun updateMessageMenuAndShowFace(noticeList: List<MessageInfoItem>?, activity: BaseActivity, unreadView: TextViewWithBackground) {
+    if (noticeList.isNullOrEmpty()) {
+        unreadView.changeStatusWithUnreadMsg(-1, DisplayUtil.dip2px(activity, 8f))
+    } else {
+        noticeList.filter { !it.hasRead() }.let {
+            if (it.isNotEmpty()) {
+                unreadView.changeStatusWithUnreadMsg(it.size, DisplayUtil.dip2px(activity, 8f))
+            } else {
+                unreadView.changeStatusWithUnreadMsg(-1, DisplayUtil.dip2px(activity, 8f))
+            }
+        }
+
+        noticeList.distinctBy { it.messageID }.filter { !mAutoShowMessageList.contains(it.messageID) && AAFMessageManager.canShowFace(it, false) }.forEach {
+            mAutoShowMessageList.add(it.messageID)
+            AAFMessageManager.showMessage(activity, it, true)
         }
     }
 
-    noticeList.distinctBy { it.messageID }.filter { !mAutoShowMessageList.contains(it.messageID) && AAFMessageManager.canShowFace(it, false) }.forEach {
-        mAutoShowMessageList.add(it.messageID)
-        AAFMessageManager.showMessage(activity, it, true)
-    }
 }

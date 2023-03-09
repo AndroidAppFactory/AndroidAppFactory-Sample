@@ -104,7 +104,8 @@ cd $localPath
 if [ ! -d "$localPath/bin" ]; then
   mkdir "$localPath/bin"
 fi
-rm -fr $localPath/bin/*
+#rm -fr $localPath/bin/*
+rm -fr $localPath/bin/temp
 mkdir $localPath/bin/temp
 
 echo "********APK build touch tag *******"
@@ -260,7 +261,8 @@ if [ "$isOfficial"x = "true"x ]; then
   java -jar $localPath/AndResGuard-cli-1.2.0.jar $localPath/${appModule}/build/outputs/apk/release/${appPrefix}_V${versionWithCode}_release.apk -config $localPath/proguard-rules-resource.xml -out $localPath/bin/temp/official
   # 签名完整包
   $ANDROID_HOME/build-tools/32.0.0/zipalign -p -v 4 $localPath/bin/temp/official/${appPrefix}_V${versionWithCode}_release_unsigned.apk $localPath/bin/temp/official/${appPrefix}_V${versionWithCode}_official_unsigned_zipalign.apk
-  $ANDROID_HOME/build-tools/32.0.0/apksigner sign --ks $localPath/debug.keystore --out $localPath/bin/${appPrefix}_V${versionWithCode}_${timeinfo}_official.apk --ks-pass pass:android $localPath/bin/temp/official/${appPrefix}_V${versionWithCode}_official_unsigned_zipalign.apk
+  $ANDROID_HOME/build-tools/32.0.0/apksigner sign --ks $localPath/debug.keystore --out $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_official.apk --ks-pass pass:android $localPath/bin/temp/official/${appPrefix}_V${versionWithCode}_official_unsigned_zipalign.apk
+  cp -fr $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_official.apk $localPath/bin/${appPrefix}_V${versionWithCode}_${timeinfo}_official.apk
   checkResult
 
   echo "********APK build start add mapping and hash*******"
