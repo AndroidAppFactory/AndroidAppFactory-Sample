@@ -32,6 +32,7 @@ AAF Sample 是所有基于AAF开发的应用的集合。用于日常功能开发
 
 ## 运行工程
 
+
 - 环境配置
 
 	根据开发者的Android Studio 版本以及网络环境修改maven依赖等配置。具体设置方法可以参考：[终端基于gradle的开源项目运行环境配置指引](https://blog.bihe0832.com/android-as-gradle-config.html)
@@ -41,3 +42,9 @@ AAF Sample 是所有基于AAF开发的应用的集合。用于日常功能开发
 	对于基于AAF的项目，目前已经整理了对应的文档，可以点击下面的链接查看运行Demo的指引：
 	
 	[https://android.bihe0832.com/doc/sample/start.html](https://android.bihe0832.com/doc/sample/start.html)
+
+- **基于项目基本框架搭建Demo**
+
+	**由于AAF 对于Android的构建方式做了一定范围的重构与定制。为了更贴近实际开发的场景，这里提供两种开发模式的使用事例。可以参考下面的指引独立运行**：
+	
+	[**https://android.bihe0832.com/doc/sample/customize.html**](https://android.bihe0832.com/doc/sample/customize.html)

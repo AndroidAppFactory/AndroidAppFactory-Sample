@@ -99,7 +99,7 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
                 "图片加载",
                 "正在加载网络图片，加载结束将直接进入游戏",
                 url,
-                "", "", "",
+                "", false, "", "",
                 canCancel = true,
                 forceDownloadNew = false,
                 useMobile = true,
@@ -118,7 +118,7 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
                     }
                 },
                 downloadListener = object : SimpleDownloadListener() {
-                    override fun onComplete(filePath: String, item: DownloadItem) {
+                    override fun onComplete(filePath: String, item: DownloadItem): String {
                         ZLog.d("onComplete:$item")
                         ThreadManager.getInstance().runOnUIThread {
                             mCropUri = activity?.getAutoChangedCropUri()
@@ -127,6 +127,7 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
                                     mCropUri
                             )
                         }
+                        return filePath
                     }
 
                     override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {

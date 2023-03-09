@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/windowBackground"
     android:fitsSystemWindows="true"
     android:gravity="center"
@@ -13,13 +14,55 @@
         style="@style/AAF.AppTheme.Toolbar.Light"
         app:title="">
 
-        <ImageView
-            android:id="@+id/about"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_marginRight="16dp"
-            android:src="@mipmap/ic_menu_white" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end">
+
+            <ImageView
+                android:id="@+id/about"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginRight="16dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_menu_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/message"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/message"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="16dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/message_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.bihe0832.android.lib.ui.textview.TextViewWithBackground
+                android:id="@+id/message_unread"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-2dp"
+                android:layout_marginEnd="-2dp"
+                android:gravity="center"
+                android:minWidth="8dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="8dp"
+                app:bgtv_backgroundColor="@color/red_dot"
+                app:bgtv_isRadiusHalfHeight="true"
+                app:layout_constraintEnd_toEndOf="@+id/message"
+                app:layout_constraintTop_toTopOf="@+id/message"
+                tools:text="99+"
+                tools:visibility="visible" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
 

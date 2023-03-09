@@ -3,7 +3,7 @@ package com.bihe0832.android.base.adb.input.settings
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
-import com.bihe0832.android.app.message.AAFMessageManager
+import com.bihe0832.android.app.message.addMessageAction
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
@@ -30,12 +30,9 @@ class InputSettingsActivity : BaseActivity() {
         about.setOnClickListener {
             RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_BASE_ABOUT)
         }
+        addMessageAction(findViewById(R.id.message), findViewById(R.id.message_unread))
         UpdateManager.checkUpdateAndShowDialog(this, false)
-        AAFMessageManager.getMessageLiveData().observe(this) { t ->
-            t?.filter { it.canShow(true) }?.forEach {
-                AAFMessageManager.showNotice(this@InputSettingsActivity, it, true)
-            }
-        }
+
     }
 
     override fun onNewIntent(intent: Intent?) {

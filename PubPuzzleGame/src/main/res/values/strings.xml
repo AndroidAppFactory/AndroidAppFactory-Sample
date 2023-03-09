@@ -1,4 +1,6 @@
 <resources>
     <string name="update_url">https://cdn.bihe0832.com/app/update/get_puzzle.json</string>
     <string name="version_url">https://cdn.bihe0832.com/app/help/zpuzzle.html</string>
+    <string name="message_url">https://cdn.bihe0832.com/app/msg/zpuzzle.json</string>
+
 </resources>

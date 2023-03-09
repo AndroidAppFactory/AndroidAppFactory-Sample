@@ -1,5 +1,7 @@
 <resources>
     <string name="update_url">https://cdn.bihe0832.com/app/update/get_apk.json</string>
     <string name="version_url">https://cdn.bihe0832.com/app/help/zapk.html</string>
+    <string name="message_url">https://cdn.bihe0832.com/app/msg/zapk.json</string>
+
     <string name="privacy_agreement_content">为了向你提供应用信息获取等服务以及优化我们的应用体验，我们需要收集你的设备信息、操作日志等个人信息。你可以在「设置」中管理你的授权。&lt;BR&gt;如你同意，请点击「同意」授权后开始使用我们的服务</string>
 </resources>

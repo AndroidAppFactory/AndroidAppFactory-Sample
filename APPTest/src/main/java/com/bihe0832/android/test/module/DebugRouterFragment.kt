@@ -11,6 +11,7 @@ class DebugRouterFragment : com.bihe0832.android.common.debug.module.DebugRouter
             add(RouterItem("zixie://m3u8"))
             add(RouterItem("zixie://m3u8list"))
             add(RouterItem("zixie://guide"))
+            add(RouterItem("zixie://message"))
         }
     }
 

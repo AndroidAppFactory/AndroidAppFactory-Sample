@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import androidx.core.content.ContextCompat
+import com.bihe0832.android.app.message.addMessageAction
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.update.UpdateManager
 import com.bihe0832.android.framework.ui.main.CommonActivity
@@ -20,9 +21,14 @@ import com.bihe0832.android.lib.utils.os.BuildUtils
 @APPMain
 @Module(RouterConstants.MODULE_NAME_DEBUG)
 class DebugMainActivity : CommonActivity() {
+
+    override fun getLayoutID(): Int {
+        return R.layout.activity_debug_main
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar("DebugMainActivity", false)
+        initToolbar(R.id.common_toolbar, "DebugMainActivity", false, needBack = true, iconRes = R.mipmap.ic_left_arrow_white)
         if (BuildUtils.SDK_INT > Build.VERSION_CODES.GINGERBREAD) {
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         }
@@ -39,7 +45,7 @@ class DebugMainActivity : CommonActivity() {
         })
         hideBottomUIMenu()
         CommonDBManager.init(this)
-
+        addMessageAction(findViewById(R.id.message), findViewById(R.id.message_unread))
     }
 
     override fun getStatusBarColor(): Int {

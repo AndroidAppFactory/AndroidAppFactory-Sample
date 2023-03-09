@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -49,19 +49,8 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/start_new"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="点击开启新下载"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.bihe0832.android.lib.ui.recycleview.ext.MyEasyRefreshLayout
         android:id="@+id/activity_list_refresh"
