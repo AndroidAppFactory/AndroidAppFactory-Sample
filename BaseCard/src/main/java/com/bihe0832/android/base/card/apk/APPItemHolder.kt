@@ -10,6 +10,7 @@ import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.time.DateUtil
+import java.util.*
 
 /**
  * @author zixie code@bihe0832.com
@@ -51,17 +52,10 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
         app_install?.text = "安装时间：${DateUtil.getDateEN(data.app_install_time)}"
         app_update?.text = "最后更新：${DateUtil.getDateEN(data.app_update_time)}"
         app_md5?.text = TextFactoryUtils.getSpannedTextByHtml("<B> APK MD5</B>：${data.app_md5}")
-        signature_md5?.text =
-            TextFactoryUtils.getSpannedTextByHtml(
-                "<B> 签名 ${data.signature_type}</B>：${
-                    APKUtils.getSigMessageDigestByPkgName(
-                        context,
-                        data.signature_type,
-                        data.app_package,
-                        true
-                    ).toUpperCase()
-                }"
-            )
+        if (data.signature_value.isNullOrBlank()) {
+            data.signature_value = APKUtils.getSigMessageDigestByPkgName(context, data.signature_type, data.app_package, true).uppercase(Locale.getDefault())
+        }
+        signature_md5?.text = TextFactoryUtils.getSpannedTextByHtml("<B> 签名 ${data.signature_type}</B>：${data.signature_value}")
     }
 
 }

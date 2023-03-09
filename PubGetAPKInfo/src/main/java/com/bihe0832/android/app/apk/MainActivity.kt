@@ -31,6 +31,7 @@ import com.bihe0832.android.lib.ui.dialog.input.InputDialogCompletedCallback
 import com.bihe0832.android.lib.ui.recycleview.ext.SafeLinearLayoutManager
 import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.encrypt.MD5
+import java.util.*
 
 @APPMain
 @Module(RouterConstants.MODULE_NAME_APK_LIST)
@@ -195,6 +196,7 @@ class MainActivity : CommonListActivity() {
                             this.app_package = info.packageName
                             this.app_install_time = packageInfo.firstInstallTime
                             this.app_update_time = packageInfo.lastUpdateTime
+                            this.signature_value = APKUtils.getSigMessageDigestByPkgName(this@MainActivity, signature_type, app_package, false).uppercase(Locale.getDefault())
                         })
                     } catch (e: Exception) {
                         e.printStackTrace()
