@@ -208,7 +208,8 @@ checkResult
 
 # 签名完整包
 $ANDROID_HOME/build-tools/32.0.0/zipalign -p -v 4 $localPath/APPTest/build/outputs/apk/debug/${appPrefix}_V${versionWithCode}_debug.apk $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta_unsigned_zipalign.apk
-$ANDROID_HOME/build-tools/32.0.0/apksigner sign --ks $localPath/debug.keystore --out $localPath/bin/${appPrefix}_V${versionWithCode}_${timeinfo}_beta.apk --ks-pass pass:android $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta_unsigned_zipalign.apk
+$ANDROID_HOME/build-tools/32.0.0/apksigner sign --ks $localPath/debug.keystore --out $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta.apk --ks-pass pass:android $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta_unsigned_zipalign.apk
+cp -fr $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta.apk $localPath/bin/${appPrefix}_V${versionWithCode}_${timeinfo}_beta.apk
 checkResult
 
 echo "********APK build debug with end*******"
