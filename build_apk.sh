@@ -76,13 +76,6 @@ echo "MajorVersion before:"$MajorVersion
 echo "MinorVersion before:"$MinorVersion
 echo "FixVersion before:"$FixVersion
 echo "isOfficial:${isOfficial}"
-echo "isCompletedBuild:${isCompletedBuild}"
-
-if [ "$isOfficial"x = "true"x ]; then
-  isCompletedBuild="true"
-fi
-echo "isOfficial:${isOfficial}"
-echo "isCompletedBuild:${isCompletedBuild}"
 
 timeinfo=$(date +'%m%d')
 version_code=$(git rev-list HEAD --count)
@@ -109,8 +102,8 @@ rm -fr $localPath/bin/temp
 mkdir $localPath/bin/temp
 
 echo "********APK build touch tag *******"
-echo -e "${version} info：\n-----------------------------\n\nVERSION_NAME=${version}\nVERSION_CODE=${version_code}\nTAG=${tag}\nDATETIME=${timeinfo}\nCOMMIT=${commitId}\nisCompletedBuild=${isCompletedBuild}\nisOfficial=${isOfficial}\n\n-----------------------------" >$localPath/bin/${tag}
-echo -e "${version} info：\n-----------------------------\n\nVERSION_NAME=${version}\nVERSION_CODE=${version_code}\nTAG=${tag}\nDATETIME=${timeinfo}\nCOMMIT=${commitId}\nisCompletedBuild=${isCompletedBuild}\nisOfficial=${isOfficial}\n\n-----------------------------" >$localPath/Application/src/main/assets/app.ini
+echo -e "${version} info：\n-----------------------------\n\nVERSION_NAME=${version}\nVERSION_CODE=${version_code}\nTAG=${tag}\nDATETIME=${timeinfo}\nCOMMIT=${commitId}\nisOfficial=${isOfficial}\n\n-----------------------------" >$localPath/bin/${tag}
+echo -e "${version} info：\n-----------------------------\n\nVERSION_NAME=${version}\nVERSION_CODE=${version_code}\nTAG=${tag}\nDATETIME=${timeinfo}\nCOMMIT=${commitId}\nisOfficial=${isOfficial}\n\n-----------------------------" >$localPath/Application/src/main/assets/app.ini
 echo "********APK build modify version *******"
 
 # 修改版本号
