@@ -78,6 +78,10 @@ object InputManager {
         mInputMethodService?.sendKeyChar('\n')
     }
 
+    fun setKeyChar(charCode: Char) {
+        mInputMethodService?.sendKeyChar(charCode)
+    }
+
     fun clearText() {
         ZLog.d("清空输入框")
         val totalNum: Int = getTotalNum()

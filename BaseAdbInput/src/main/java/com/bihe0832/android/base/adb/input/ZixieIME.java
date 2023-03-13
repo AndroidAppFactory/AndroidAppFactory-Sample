@@ -20,7 +20,10 @@ import org.jetbrains.annotations.NotNull;
 public class ZixieIME extends InputMethodService {
 
     public String IME_ADB_INPUT_ACTION_TEXT = "ZIXIE_ADB_INPUT_TEXT";
+    public String IME_ADB_INPUT_ACTION_TEXT_COMMIT = "ZIXIE_ADB_INPUT_TEXT_COMMIT";
+
     public String IME_ADB_INPUT_ACTION_BASE64 = "ZIXIE_ADB_INPUT_BASE64";
+    public String IME_ADB_INPUT_ACTION_BASE64_COMMIT = "ZIXIE_ADB_INPUT_BASE64_COMMIT";
 
     public static final String TAG = "InputService";
     private InputServiceActionListener mInputServiceActionListener = null;
@@ -40,8 +43,9 @@ public class ZixieIME extends InputMethodService {
         initView(mInputView);
         if (mReceiver == null) {
             IntentFilter filter = new IntentFilter(IME_ADB_INPUT_ACTION_TEXT);
-            filter.addAction(IME_ADB_INPUT_ACTION_TEXT);
+            filter.addAction(IME_ADB_INPUT_ACTION_TEXT_COMMIT);
             filter.addAction(IME_ADB_INPUT_ACTION_BASE64);
+            filter.addAction(IME_ADB_INPUT_ACTION_BASE64_COMMIT);
             mReceiver = new AdbReceiver();
             registerReceiver(mReceiver, filter);
         }
@@ -116,15 +120,23 @@ public class ZixieIME extends InputMethodService {
     class AdbReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(IME_ADB_INPUT_ACTION_TEXT)) {
+            String action = intent.getAction();
+            if (action.startsWith(IME_ADB_INPUT_ACTION_TEXT)){
                 String msg = intent.getStringExtra("msg");
                 if (msg != null) {
                     InputManager.INSTANCE.commitResultText(msg);
                 }
-            }else  if (intent.getAction().equals(IME_ADB_INPUT_ACTION_BASE64)) {
+                if (intent.getAction().equals(IME_ADB_INPUT_ACTION_TEXT_COMMIT)) {
+                    InputManager.INSTANCE.sendEnterAction();
+                }
+            }else if (action.startsWith(IME_ADB_INPUT_ACTION_BASE64)){
                 String msg = intent.getStringExtra("msg");
                 if (msg != null) {
-                    InputManager.INSTANCE.commitResultText(new String(Base64.decode(msg, Base64.DEFAULT)));
+                    String result = new String(Base64.decode(msg, Base64.DEFAULT));
+                    InputManager.INSTANCE.commitResultText(result);
+                }
+                if (intent.getAction().equals(IME_ADB_INPUT_ACTION_BASE64_COMMIT)) {
+                    InputManager.INSTANCE.sendEnterAction();
                 }
             }
         }
