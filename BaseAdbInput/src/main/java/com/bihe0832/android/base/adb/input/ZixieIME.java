@@ -1,16 +1,14 @@
 package com.bihe0832.android.base.adb.input;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.inputmethodservice.InputMethodService;
-import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import com.bihe0832.android.base.adb.input.keyboard.InputManager;
 import com.bihe0832.android.base.adb.input.keyboard.InputManager.InputServiceActionListener;
+import com.bihe0832.android.base.adb.input.service.AdbReceiver;
 import com.bihe0832.android.framework.log.LoggerTrace;
 import com.bihe0832.android.lib.log.ZLog;
 
@@ -19,12 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ZixieIME extends InputMethodService {
 
-    public String IME_ADB_INPUT_ACTION_TEXT = "ZIXIE_ADB_INPUT_TEXT";
-    public String IME_ADB_INPUT_ACTION_TEXT_COMMIT = "ZIXIE_ADB_INPUT_TEXT_COMMIT";
-
-    public String IME_ADB_INPUT_ACTION_BASE64 = "ZIXIE_ADB_INPUT_BASE64";
-    public String IME_ADB_INPUT_ACTION_BASE64_COMMIT = "ZIXIE_ADB_INPUT_BASE64_COMMIT";
-
+    public static final String SPECIAL_CHAR_ENTER = "\n";
     public static final String TAG = "InputService";
     private InputServiceActionListener mInputServiceActionListener = null;
 
@@ -42,10 +35,8 @@ public class ZixieIME extends InputMethodService {
         View mInputView = getLayoutInflater().inflate(R.layout.layout_input_keyboard_global, null);
         initView(mInputView);
         if (mReceiver == null) {
-            IntentFilter filter = new IntentFilter(IME_ADB_INPUT_ACTION_TEXT);
-            filter.addAction(IME_ADB_INPUT_ACTION_TEXT_COMMIT);
-            filter.addAction(IME_ADB_INPUT_ACTION_BASE64);
-            filter.addAction(IME_ADB_INPUT_ACTION_BASE64_COMMIT);
+            IntentFilter filter = new IntentFilter(AdbReceiver.IME_ADB_INPUT_ACTION_TEXT);
+            filter.addAction(AdbReceiver.IME_ADB_INPUT_ACTION_BASE64);
             mReceiver = new AdbReceiver();
             registerReceiver(mReceiver, filter);
         }
@@ -117,29 +108,5 @@ public class ZixieIME extends InputMethodService {
         });
     }
 
-    class AdbReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.startsWith(IME_ADB_INPUT_ACTION_TEXT)){
-                String msg = intent.getStringExtra("msg");
-                if (msg != null) {
-                    InputManager.INSTANCE.commitResultText(msg);
-                }
-                if (intent.getAction().equals(IME_ADB_INPUT_ACTION_TEXT_COMMIT)) {
-                    InputManager.INSTANCE.sendEnterAction();
-                }
-            }else if (action.startsWith(IME_ADB_INPUT_ACTION_BASE64)){
-                String msg = intent.getStringExtra("msg");
-                if (msg != null) {
-                    String result = new String(Base64.decode(msg, Base64.DEFAULT));
-                    InputManager.INSTANCE.commitResultText(result);
-                }
-                if (intent.getAction().equals(IME_ADB_INPUT_ACTION_BASE64_COMMIT)) {
-                    InputManager.INSTANCE.sendEnterAction();
-                }
-            }
-        }
-    }
 
 }
