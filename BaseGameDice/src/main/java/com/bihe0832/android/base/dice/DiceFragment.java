@@ -2,7 +2,6 @@ package com.bihe0832.android.base.dice;
 
 import android.app.Service;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -247,12 +246,15 @@ public class DiceFragment extends BaseShakeGameFragment {
         diceTopLayout.removeAllViews();
         diceTopLayout.setVisibility(View.VISIBLE);
         for (int result : resultList) {
-            ImageView img = new ImageView(getActivity());
-            LinearLayout.LayoutParams tempParams = new LinearLayout.LayoutParams(diceWidth, diceWidth);
-            img.setLayoutParams(tempParams);
-            img.setImageURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/drawable/dice_" + result));
-            diceTopLayout.addView(img);
-            diceNumSum += result;
+            int id = DiceConfig.INSTANCE.getDiceResIDByNum(result);
+            if (id > 0) {
+                ImageView img = new ImageView(getActivity());
+                LinearLayout.LayoutParams tempParams = new LinearLayout.LayoutParams(diceWidth, diceWidth);
+                img.setLayoutParams(tempParams);
+                img.setImageResource(DiceConfig.INSTANCE.getDiceResIDByNum(result));
+                diceTopLayout.addView(img);
+                diceNumSum += result;
+            }
         }
         showTotalDice(diceNumSum);
     }
@@ -273,24 +275,23 @@ public class DiceFragment extends BaseShakeGameFragment {
         diceBottomLayout.removeAllViews();
         diceBottomLayout.setVisibility(View.VISIBLE);
         for (int result : resultList) {
-            if (topNum < resultList.size() / 2) {
+            int id = DiceConfig.INSTANCE.getDiceResIDByNum(result);
+            if (id > 0) {
                 ImageView img = new ImageView(getActivity());
                 LinearLayout.LayoutParams tempParams = new LinearLayout.LayoutParams(diceWidth, diceWidth);
                 img.setLayoutParams(tempParams);
-                img.setImageURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/drawable/dice_" + result));
-                diceTopLayout.addView(img);
-            } else {
-                ImageView img = new ImageView(getActivity());
-                LinearLayout.LayoutParams tempParams = new LinearLayout.LayoutParams(diceWidth, diceWidth);
-                img.setLayoutParams(tempParams);
-                img.setImageURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/drawable/dice_" + result));
-                diceBottomLayout.addView(img);
+                img.setImageResource(DiceConfig.INSTANCE.getDiceResIDByNum(result));
+                if (topNum < resultList.size() / 2) {
+                    diceTopLayout.addView(img);
+                } else {
+                    diceBottomLayout.addView(img);
+                }
+                topNum++;
+                diceNumSum += result;
             }
-            topNum++;
-            diceNumSum += result;
+
         }
         showTotalDice(diceNumSum);
-
     }
 
     private void showTotalDice(int diceNumSum) {

@@ -39,4 +39,16 @@ object DiceConfig {
     fun setAutoSorted(mIsSort: Boolean): Boolean {
         return Config.writeConfig(GAME_RESULT_IS_SORTED, mIsSort)
     }
+
+    fun getDiceResIDByNum(num: Int): Int {
+        return when (num) {
+            1 -> R.mipmap.dice_1
+            2 -> R.mipmap.dice_2
+            3 -> R.mipmap.dice_3
+            4 -> R.mipmap.dice_4
+            5 -> R.mipmap.dice_5
+            6 -> R.mipmap.dice_6
+            else -> -1
+        }
+    }
 }

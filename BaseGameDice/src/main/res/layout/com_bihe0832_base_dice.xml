@@ -152,7 +152,7 @@
         android:layout_height="0dp"
         android:layout_margin="100dp"
         android:scaleType="centerInside"
-        android:src="@drawable/dice_barrel"
+        android:src="@mipmap/dice_barrel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
