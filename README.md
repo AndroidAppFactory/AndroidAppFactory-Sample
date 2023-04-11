@@ -20,9 +20,11 @@ AAF Sample 是所有基于AAF开发的应用的集合。用于日常功能开发
 
 - PubAdbInput：基于ADB的快捷输入法
 
-- PubPuzzleGame：拼图
+- PubGamePuzzle：拼图
 
 - PubM3U8：M3U8文件下载工具
+
+- PubGameShakeba：摇骰子的小游戏
 
 **如果想下载体验对应的应用可前往**：
 
@@ -31,7 +33,6 @@ AAF Sample 是所有基于AAF开发的应用的集合。用于日常功能开发
 - AAF 应用事例下载：[https://cdn.bihe0832.com/app/download.html](https://cdn.bihe0832.com/app/download.html)
 
 ## 运行工程
-
 
 - 环境配置
 

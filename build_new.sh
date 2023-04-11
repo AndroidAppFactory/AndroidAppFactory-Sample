@@ -32,7 +32,7 @@ fi
 
 #拼图APP
 if [ "$moduleKey"x = "ZPUZZLE"x ];then
-  /bin/bash ./build_apk.sh ZPUZZLE PubPuzzleGame com.bihe0832.puzzle com.bihe0832.android.app.Application
+  /bin/bash ./build_apk.sh ZPUZZLE PubGamePuzzle com.bihe0832.puzzle com.bihe0832.android.app.Application
   checkResult
 fi
 
@@ -45,5 +45,11 @@ fi
 #ADB Input APP
 if [ "$moduleKey"x = "ZINPUT"x ];then
   /bin/bash ./build_apk.sh ZINPUT PubAdbInput com.bihe0832.adb.input com.bihe0832.android.app.Application
+  checkResult
+fi
+
+#ADB Input APP
+if [ "$moduleKey"x = "ZSHAKE"x ];then
+  /bin/bash ./build_apk.sh ZSHAKE PubGameShakeba com.bihe0832.shakeba com.bihe0832.android.app.Application
   checkResult
 fi
