@@ -6,13 +6,12 @@ def project = ext
  * 当前开发中，最终运行的主工程，多个用 "," 分隔
  * 当前如果全量填"APPTest"
  */
-ext.mainProject = "APPTest,PubGameShakeba,BaseGamePuzzle"
+ext.mainProject = "APPTest,PubGameShakeba"
 /**
  * 当前开发中，涉及到修改的工程（仅填写直接修改的即可，依赖他的会自动添加），多个用 "," 分隔。
  * 当前如果全量填"Application"
  */
 ext.developModule = "Application"
-
 /**
  * 应用组件 （Pub 开头，各个外发APP的发布模块）是否以application模式运行，当需要独立运行应用组件时修改，默认为false
  * true 表示以 application 模式运行
@@ -24,7 +23,7 @@ ext.pubModuleIsApplication = true
  *  true 全都加载，
  *  false 仅加载与 mainProject 相关的模块
  */
-ext.includeALLDependOnDevelopModule = true
+ext.includeALLDependOnDevelopModule = false
 /**
  * 组件所有模块的最新版本
  */
