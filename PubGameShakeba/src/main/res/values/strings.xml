@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_desc">来到摇吧 你就摇吧</string>
+
+    <string name="update_url">https://cdn.bihe0832.com/app/update/get_shakeba.json</string>
+    <string name="version_url">https://cdn.bihe0832.com/app/help/shakeba.html</string>
+    <string name="message_url">https://cdn.bihe0832.com/app/msg/shakeba.json</string>
+
+    <string name="privacy_agreement_content">为了向你提供摇骰子等服务以及优化我们的应用体验，我们需要收集你的设备信息、操作日志等个人信息。&lt;BR&gt;如你同意，请点击「同意」授权后开始使用我们的服务</string>
+</resources>

@@ -2,6 +2,7 @@ package com.bihe0832.android.base.photos
 
 import android.Manifest
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import com.bihe0832.android.base.card.photo.IconTextData
@@ -10,11 +11,14 @@ import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.swiperefresh.CommonListFragment
 import com.bihe0832.android.common.photos.choosePhoto
 import com.bihe0832.android.common.photos.getAutoChangedPhotoUri
+import com.bihe0832.android.common.photos.getPhotoContent
 import com.bihe0832.android.common.photos.takePhoto
 import com.bihe0832.android.framework.ZixieContext
+import com.bihe0832.android.framework.permission.PermissionResultOfAAF
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.ui.recycleview.ext.SafeGridLayoutManager
+import com.bihe0832.android.lib.utils.os.BuildUtils
 
 open class PhotosSelectFragment : CommonListFragment() {
     protected val mDataList = ArrayList<CardBaseModule>()
@@ -23,8 +27,6 @@ open class PhotosSelectFragment : CommonListFragment() {
     protected val ID_CLOUD = 3
     protected val ID_CUSTOM = 4
 
-    val takePhotoPermission = mutableListOf(Manifest.permission.CAMERA)
-    val selectPhotoPermission = mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     var mTakePhotoUri: Uri? = null
 
     init {
@@ -113,34 +115,20 @@ open class PhotosSelectFragment : CommonListFragment() {
                     }
 
                 },
-                takePhotoPermission
+                com.bihe0832.android.common.photos.takePhotoPermission
         )
     }
 
     open fun choosePhoto() {
-        PermissionManager.checkPermission(
-                context,
-                "choosePhoto",
-                false,
-                object : PermissionManager.OnPermissionResult {
-                    override fun onFailed(msg: String) {
-                    }
-
-                    override fun onSuccess() {
-                        activity!!.choosePhoto()
-                    }
-
-                    override fun onUserCancel(scene: String, permissionGroupID: String, permission: String) {
-
-                    }
-
-                    override fun onUserDeny(scene: String, permissionGroupID: String, permission: String) {
-
-                    }
-
-                },
-                selectPhotoPermission
-        )
+        if (BuildUtils.SDK_INT >= Build.VERSION_CODES.Q) {
+            activity!!.getPhotoContent()
+        } else {
+            PermissionManager.checkPermission(activity!!, "PhotoSelect", false, object : PermissionResultOfAAF(false) {
+                override fun onSuccess() {
+                    activity!!.getPhotoContent()
+                }
+            }, com.bihe0832.android.common.photos.selectPhotoPermission)
+        }
     }
 
     open fun cloudPhoto() {

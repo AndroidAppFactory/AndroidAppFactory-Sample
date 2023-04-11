@@ -159,6 +159,8 @@ class M3u8DownloadActivity : BaseActivity() {
                     ZLog.d(m3u8Info.toString())
                     downloadPart.isEnabled = true
                 }
+            } else {
+                showResult("<b>解析异常</b>：$localIndexFinalPath  不存在，请重新解析")
             }
         }
 
@@ -196,7 +198,7 @@ class M3u8DownloadActivity : BaseActivity() {
             if (!TextUtils.isEmpty(getM3U8URL()) && URLUtils.isHTTPUrl(getM3U8URL())) {
                 var finalPath = getLocalIndexFile()
 
-                showResult("<b><font color='#8e44ad'>开始下载</font></b>：${getM3U8URL()}")
+                showResult("<b><font color='#8e44ad'>开始下载</font></b>：${getM3U8URL()} 到 $finalPath")
                 DownloadFile.download(this, getM3U8URL(), finalPath, true, object : SimpleDownloadListener() {
 
                     override fun onComplete(filePath: String, item: DownloadItem): String {
@@ -208,12 +210,11 @@ class M3u8DownloadActivity : BaseActivity() {
                                     if (line.contains("m3u8")) {
                                         showResult("<b>下载失败，M3U8地址已发生变化，请再次点击<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${FileUtils.getFileContent(filePath)}")
                                         urlText.setText(M3U8TSInfo.getFullUrl(getBaseURL(), line))
-
+                                    } else {
+                                        showResult("<b>下载成功，点击 <font color='#8e44ad'>解析M3U8</font></b> 开始解析 <BR> $filePath<BR>：${FileUtils.getFileContent(finalPath)} ")
                                     }
                                 }
                             }
-                            showResult("<b>下载成功，点击 <font color='#8e44ad'>解析M3U8</font></b> 开始解析 <BR> $filePath<BR>：${FileUtils.getFileContent(filePath)} ")
-                            updateM3U8Info()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

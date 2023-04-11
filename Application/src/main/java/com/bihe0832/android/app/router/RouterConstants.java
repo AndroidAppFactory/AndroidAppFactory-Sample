@@ -17,16 +17,15 @@ public class RouterConstants extends com.bihe0832.android.framework.router.Route
     public static final String MODULE_NAME_M3U8 = "m3u8";
     public static final String INTENT_EXTRA_KEY_M3U8_BASE_URL = "baseurl";
 
-    public static final String MODULE_NAME_M3U8_LIST = "m3u8list";
     public static final String MODULE_NAME_MAIN = "main";
 	public static final String MODULE_NAME_MESSAGE = "message";
 
     public static final String MODULE_NAME_BROWSER_LIST = "weblist";
 
-
     public static final String MODULE_NAME_INPUT_GUIDE = "guide";
     public static final String INTENT_EXTRA_KEY_INPUT_GUIDE_TYPE = "type";
     public static final String INTENT_EXTRA_VALUE_INPUT_SWITCH = "1";
 
+    public static final String MODULE_NAME_GAME_ROOT = "game";
 
 }

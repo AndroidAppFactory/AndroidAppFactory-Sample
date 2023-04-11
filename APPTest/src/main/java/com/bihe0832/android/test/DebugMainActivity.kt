@@ -1,15 +1,12 @@
 package com.bihe0832.android.test
 
 import android.Manifest
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import androidx.core.content.ContextCompat
-import com.bihe0832.android.app.message.addMessageAction
 import com.bihe0832.android.app.router.RouterConstants
-import com.bihe0832.android.app.update.UpdateManager
-import com.bihe0832.android.framework.ui.main.CommonActivity
+import com.bihe0832.android.app.ui.AAFCommonMainActivity
 import com.bihe0832.android.lib.adapter.CardInfoHelper
 import com.bihe0832.android.lib.immersion.hideBottomUIMenu
 import com.bihe0832.android.lib.permission.PermissionManager
@@ -20,11 +17,8 @@ import com.bihe0832.android.lib.utils.os.BuildUtils
 
 @APPMain
 @Module(RouterConstants.MODULE_NAME_DEBUG)
-class DebugMainActivity : CommonActivity() {
+class DebugMainActivity : AAFCommonMainActivity() {
 
-    override fun getLayoutID(): Int {
-        return R.layout.activity_debug_main
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +26,6 @@ class DebugMainActivity : CommonActivity() {
         if (BuildUtils.SDK_INT > Build.VERSION_CODES.GINGERBREAD) {
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         }
-
 
         CardInfoHelper.getInstance().setAutoAddItem(true)
 
@@ -45,32 +38,10 @@ class DebugMainActivity : CommonActivity() {
         })
         hideBottomUIMenu()
         CommonDBManager.init(this)
-        addMessageAction(findViewById(R.id.message), findViewById(R.id.message_unread))
-    }
-
-    override fun getStatusBarColor(): Int {
-        return ContextCompat.getColor(this, R.color.colorPrimary)
-    }
-
-    override fun getNavigationBarColor(): Int {
-        return ContextCompat.getColor(this, R.color.transparent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (findFragment(DebugMainFragment::class.java) == null) {
-            loadRootFragment(R.id.common_fragment_content, DebugMainFragment())
-        }
-        UpdateManager.checkUpdateAndShowDialog(this, false)
-//        hideBottomUIMenu()
     }
 
 
-    override fun onBackPressedSupport() {
-        super.onBackPressedSupport()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    override fun getRootFragmentClassName(): String {
+        return DebugMainFragment::class.java.name
     }
 }

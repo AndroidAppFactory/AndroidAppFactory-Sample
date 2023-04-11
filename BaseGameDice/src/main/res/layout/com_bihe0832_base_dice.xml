@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackground"
+    android:padding="16dp">
+
+    <SeekBar
+        android:id="@+id/diceSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:max="7"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:progress="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/diceTextViewSeekBarNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/dice_seekbar_default"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/diceSeekBar" />
+
+    <CheckBox
+        android:id="@+id/diceCheckBoxLock"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/dice_checkbox_lock"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="@+id/diceTextViewSeekBarNum"
+        app:layout_constraintTop_toBottomOf="@+id/diceTextViewSeekBarNum" />
+
+    <CheckBox
+        android:id="@+id/diceCheckBoxSort"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:checked="true"
+        android:text="@string/dice_checkbox_sort"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/diceCheckBoxLock"
+        app:layout_constraintEnd_toEndOf="@+id/diceTextViewSeekBarNum" />
+
+    <LinearLayout
+        android:id="@+id/diceImgLayoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/diceImgLayoutBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/diceCheckBoxLock"
+        app:layout_constraintVertical_chainStyle="packed">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/diceImgLayoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/diceTextViewDiceNumSum"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/diceImgLayoutTop"
+        app:layout_constraintVertical_chainStyle="packed">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/diceTextViewDiceNumSum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical|left"
+        android:text="@string/dice_tips_dice_result"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/diceBtnLock"
+        app:layout_constraintEnd_toEndOf="@+id/diceTextViewSeekBarNum"
+        app:layout_constraintStart_toStartOf="@+id/diceTextViewSeekBarNum"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/diceBtnLock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_bg_shape"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/dice_btn_lock_lock"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/diceBtnSort"
+        app:layout_constraintEnd_toEndOf="@+id/diceTextViewSeekBarNum"
+        app:layout_constraintStart_toStartOf="@+id/diceTextViewSeekBarNum"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/diceBtnSort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_bg_shape"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/dice_btn_sort_sort"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/diceTextViewSeekBarNum"
+        app:layout_constraintStart_toStartOf="@+id/diceTextViewSeekBarNum"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/diceBarrleImg"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="100dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/dice_barrel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/diceCheckBoxLock" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

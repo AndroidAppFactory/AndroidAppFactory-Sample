@@ -6,7 +6,7 @@ def project = ext
  * 当前开发中，最终运行的主工程，多个用 "," 分隔
  * 当前如果全量填"APPTest"
  */
-ext.mainProject = "PubAdbInput"
+ext.mainProject = "APPTest,PubGameShakeba,BaseGamePuzzle"
 /**
  * 当前开发中，涉及到修改的工程（仅填写直接修改的即可，依赖他的会自动添加），多个用 "," 分隔。
  * 当前如果全量填"Application"
@@ -49,52 +49,66 @@ ext.moduleInfo = [
             "kapt"      : ["com.bihe0832.android:lib-router-compiler:5.1.7"]
         ]
     ],
-    "BaseDebug"       : [
+    "BaseDebug"     : [
         "apidependenciesList"  : [
             "com.bihe0832.android:common-debug:${project.aaf_test_version}",
-            "Application", "BaseCard"
-//                        , "BasePuzzleGame","BaseM3U8"
+            "Application", "BaseCard", "BaseGamePuzzle","BaseGameDice"
         ],
         specialdependenciesList: [
 
         ]
     ],
-    "BaseCard"        : [
+    "BaseCard"      : [
         "apidependenciesList": [
             "Application"
         ]
     ],
-    "BaseM3U8"        : [
+    "BaseM3U8"      : [
         "apidependenciesList": [
             "Application", "BaseCard"
         ]
     ],
-    "BasePhotos"      : [
+    "BasePhotos"    : [
         "apidependenciesList": [
             "BaseCard"
         ]
     ],
-    "BaseAdbInput"    : [
+    "BaseAdbInput"  : [
         "apidependenciesList": [
             "BaseCard"
         ]
     ],
-    "BasePuzzleGame"  : [
+    "BaseGame": [
+        "apidependenciesList": [
+            "Application"
+        ]
+    ],
+    "BaseGamePuzzle": [
         "apidependenciesList": [
             "BasePhotos"
         ]
     ],
-    "PubGetAPKInfo"   : [
+    "BaseGameDice": [
+        "apidependenciesList": [
+            "BaseGame"
+        ]
+    ],
+    "PubGetAPKInfo" : [
         "apidependenciesList": [
             "BaseCard"
         ]
     ],
-    "PubPuzzleGame"   : [
+    "PubGamePuzzle" : [
         "apidependenciesList": [
-            "BasePuzzleGame", "BaseCard"
+            "BaseGamePuzzle", "BaseCard"
         ]
     ],
-    "PubM3U8"         : [
+    "PubGameShakeba" : [
+        "apidependenciesList": [
+            "BaseGameDice"
+        ]
+    ],
+    "PubM3U8"       : [
         "apidependenciesList": [
             "BaseM3U8"
         ]

@@ -11,10 +11,10 @@ import com.bihe0832.android.common.network.NetworkChangeManager
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.ZixieCoreInit
 import com.bihe0832.android.framework.privacy.AgreementPrivacy
+import com.bihe0832.android.lib.device.shake.ShakeManager
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.network.MobileUtil
-import com.bihe0832.android.lib.network.WifiManagerWrapper
 import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.utils.os.ManufacturerUtil
@@ -67,10 +67,10 @@ object AppFactoryInit {
     @Synchronized
     private fun initExtra(application: android.app.Application) {
         // 初始化网络变量和监听
-        NetworkChangeManager.getInstance().init(application.applicationContext, true)
-        WifiManagerWrapper.init(application.applicationContext, !ZixieContext.isOfficial())
+        NetworkChangeManager.init(application.applicationContext, true)
         // 监听信号变化，统一到MobileUtil
         MobileUtil.registerMobileSignalListener(application.applicationContext)
+        ShakeManager.init(application.applicationContext)
     }
 
     fun initAll(application: android.app.Application) {

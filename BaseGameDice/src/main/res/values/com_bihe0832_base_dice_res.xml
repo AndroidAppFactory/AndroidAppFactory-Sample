@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_back_text">骰子战争</string>
+
+    <string name="dice_checkbox_lock">自动锁定结果</string>
+    <string name="dice_checkbox_sort">自动排序结果</string>
+
+    <string name="dice_btn_lock_lock">点击锁定</string>
+    <string name="dice_btn_lock_unlock">点击解锁</string>
+    <string name="dice_btn_sort_unsort">点击还原</string>
+    <string name="dice_btn_sort_sort">点击整理</string>
+    <string name="dice_btn_restart">再来一次</string>
+
+    <string name="dice_tips_dice_result">您本次摇一摇的点数之和为：</string>
+    <string name="dice_seekbar_default">您选择同时摇动 5 个骰子</string>
+    <string name="dice_seekbar_stop">您选择同时摇动 %1$s 个骰子</string>
+    <string name="dice_seekbar_start">您要选择同时摇动 %1$s 个骰子</string>
+    <string name="dice_seekbar_changed">您当前选择同时摇动 %1$s 个骰子</string>
+
+</resources>
