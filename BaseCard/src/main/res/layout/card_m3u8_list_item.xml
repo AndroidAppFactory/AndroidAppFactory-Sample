@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title_info" />
 
     <TextView
-        android:id="@+id/download_url"
+        android:id="@+id/video_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -51,9 +51,23 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textSize="10dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/download_delete"
         app:layout_constraintTop_toBottomOf="@+id/title_info"
+        tools:text="视频名称：" />
+
+    <TextView
+        android:id="@+id/download_url"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/video_name"
+        app:layout_constraintStart_toStartOf="@+id/video_name"
+        app:layout_constraintTop_toBottomOf="@+id/video_name"
         tools:text="下载地址：" />
 
     <TextView
@@ -61,26 +75,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:ellipsize="end"
+        android:ellipsize="middle"
         android:singleLine="true"
         android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="@+id/download_url"
         app:layout_constraintStart_toStartOf="@+id/download_url"
         app:layout_constraintTop_toBottomOf="@+id/download_url"
         tools:text="本地路径：" />
-
-    <TextView
-        android:id="@+id/video_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textSize="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/download_url"
-        app:layout_constraintStart_toStartOf="@+id/download_url"
-        app:layout_constraintTop_toBottomOf="@+id/local_path"
-        tools:text="视频名称：" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

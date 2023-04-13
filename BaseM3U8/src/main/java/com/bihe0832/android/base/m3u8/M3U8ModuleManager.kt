@@ -23,8 +23,12 @@ object M3U8ModuleManager {
     }
 
     fun getFinalVideoPath(m3u8Url: String): String {
-        val finalOutPutFile = getBasePath() + "pictures" + File.separator + "m3u8" + File.separator + MD5.getMd5(m3u8Url) + ".mp4"
+        val finalOutPutFile = getBasePath() + "pictures" + File.separator + "m3u8" + File.separator + getFinalVideoName(m3u8Url)
         FileUtils.checkAndCreateFolder(File(finalOutPutFile).parentFile.absolutePath)
         return finalOutPutFile
+    }
+
+    fun getFinalVideoName(m3u8Url: String): String {
+        return MD5.getMd5(m3u8Url) + ".mp4"
     }
 }

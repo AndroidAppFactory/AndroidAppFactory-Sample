@@ -7,6 +7,7 @@ import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.log.ZLog
+import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.utils.encrypt.AESUtils
 import java.io.*
@@ -17,6 +18,36 @@ import java.io.*
  * Description: Description
  */
 object M3U8Tools {
+
+    fun getIndexContent(filePath: String): String {
+        return TextFactoryUtils.getTextHtmlAfterTransform(getIndexContent(filePath, 10))
+    }
+
+    fun getIndexContent(filePath: String, maxLine: Int): String {
+        val result = StringBuffer()
+        try {
+            if (FileUtils.checkFileExist(filePath)) {
+                // 创建 BufferedReader 对象以读取文件中的文本
+                val reader = BufferedReader(FileReader(filePath))
+                // 定义变量用于记录行号和存储每行的文本
+                var lineNumber = 0
+                var line: String?
+
+                // 使用循环读取每一行文本，最多读取前5行
+                while (reader.readLine().also { line = it } != null && lineNumber < maxLine) {
+                    lineNumber++
+                    result.append(line).append("\n")
+                }
+                // 关闭 BufferedReader 对象
+                reader.close()
+            }
+
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+
+        return result.toString()
+    }
 
     fun parseIndex(m3u8URL: String, baseURL: String, filePath: String): M3U8Info {
         return M3U8Info().apply {

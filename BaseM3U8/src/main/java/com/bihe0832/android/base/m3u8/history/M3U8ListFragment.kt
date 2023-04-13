@@ -9,6 +9,7 @@ import com.bihe0832.android.base.card.tips.TipsData
 import com.bihe0832.android.base.m3u8.M3U8ModuleManager
 import com.bihe0832.android.base.m3u8.R
 import com.bihe0832.android.base.m3u8.db.M3U8DBManager
+import com.bihe0832.android.base.m3u8.tools.M3U8Tools
 import com.bihe0832.android.common.list.CardItemForCommonList
 import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.easyrefresh.CommonListFragment
@@ -53,7 +54,7 @@ open class M3U8ListFragment : CommonListFragment() {
 
                             override fun onDelete() {
                                 activity?.let {
-                                    DialogUtils.showConfirmDialog(it.applicationContext, "删除M3U8下载历史", "确定删除该条下载记录么？<BR>" + m3u8Info.getM3u8URL(), "再想想", "删除", true, object : OnDialogListener {
+                                    DialogUtils.showConfirmDialog(it, "删除M3U8下载历史", "确定删除视频<BR>${m3u8Info.getFinalVideoName()}<BR>的下载记录么？<BR>" + m3u8Info.getM3u8URL(), "再想想", "删除", true, object : OnDialogListener {
                                         override fun onPositiveClick() {
 
                                         }

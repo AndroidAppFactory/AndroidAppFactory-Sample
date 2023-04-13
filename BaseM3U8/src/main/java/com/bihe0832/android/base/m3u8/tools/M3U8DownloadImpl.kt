@@ -10,7 +10,6 @@ import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.download.DownloadItem
-import com.bihe0832.android.lib.download.core.DownloadManager
 import com.bihe0832.android.lib.download.core.list.DownloadingList
 import com.bihe0832.android.lib.download.dabase.DownloadInfoDBManager
 import com.bihe0832.android.lib.download.wrapper.DownloadFile
@@ -20,8 +19,6 @@ import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.thread.ThreadManager
-import com.bihe0832.android.lib.ui.dialog.OnDialogListener
-import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
 import com.bihe0832.android.lib.utils.time.DateUtil
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -151,12 +148,18 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
         }
     }
 
+    fun init(m3u8: M3U8Info) {
+        if (m3u8 == mM3U8Info) {
+            DownloadTools.addGlobalDownloadListener(mDownloadListener)
+        }
+    }
+
     fun startDownload(m3u8: M3U8Info, needDeleteOld: Boolean) {
         mM3U8Info = m3u8
         cancelDownload()
         ThreadManager.getInstance().start({
             mDownloadTSURLList.clear()
-            DownloadTools.addGlobalDownloadListener(mDownloadListener)
+            init(m3u8)
             hasStop = false
             mM3U8Info?.let { m3U8Info ->
                 File(M3U8ModuleManager.getDownloadPath(m3U8Info.getM3u8URL())).let { folder ->
@@ -197,5 +200,12 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
         hasStop = true
         DownloadTools.removeGlobalDownloadListener(mDownloadListener)
         DownloadUtils.pauseAll()
+    }
+
+    fun isDownloading(m3U8URL: String): Boolean {
+        if (mM3U8Info?.getM3u8URL().equals(m3U8URL, ignoreCase = true)) {
+            return true
+        }
+        return false
     }
 }

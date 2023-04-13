@@ -182,6 +182,9 @@ class M3u8DownloadActivity : BaseActivity() {
 
     private fun showResult(tipsText: String) {
         runOnUiThread {
+            if (!TextUtils.isEmpty(getM3U8URL())) {
+                updateTitle("当前下载：" + M3U8ModuleManager.getFinalVideoName(getM3U8URL()))
+            }
             tips.text = TextFactoryUtils.getSpannedTextByHtml("下载提示：<BR> $tipsText <BR><BR>")
         }
     }
@@ -208,10 +211,10 @@ class M3u8DownloadActivity : BaseActivity() {
                                 lines.forEach {
                                     var line = it
                                     if (line.contains("m3u8")) {
-                                        showResult("<b>下载失败，M3U8地址已发生变化，请再次点击<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${FileUtils.getFileContent(filePath)}")
+                                        showResult("<b>下载失败，M3U8地址已发生变化，请再次点击<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${M3U8Tools.getIndexContent(filePath)}")
                                         urlText.setText(M3U8TSInfo.getFullUrl(getBaseURL(), line))
                                     } else {
-                                        showResult("<b>下载成功，点击 <font color='#8e44ad'>解析M3U8</font></b> 开始解析 <BR> $filePath<BR>：${FileUtils.getFileContent(finalPath)} ")
+                                        showResult("<b>下载成功，点击 <font color='#8e44ad'>解析M3U8</font></b> 开始解析 <BR> $filePath<BR>：${M3U8Tools.getIndexContent(finalPath)} ")
                                     }
                                 }
                             }

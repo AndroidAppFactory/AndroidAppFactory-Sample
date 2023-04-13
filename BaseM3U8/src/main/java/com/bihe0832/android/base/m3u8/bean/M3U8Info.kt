@@ -113,6 +113,13 @@ class M3U8Info {
         return sb.toString()
     }
 
+    fun getFinalVideoPath(): String {
+        return M3U8ModuleManager.getFinalVideoPath(m3u8URL)
+    }
+
+    fun getFinalVideoName(): String {
+        return M3U8ModuleManager.getFinalVideoName(m3u8URL)
+    }
 
     override fun equals(other: Any?): Boolean {
         if (other is M3U8Info) {
