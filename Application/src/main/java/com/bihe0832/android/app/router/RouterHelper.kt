@@ -1,7 +1,9 @@
 package com.bihe0832.android.app.router
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.privacy.AgreementPrivacy
 import com.bihe0832.android.framework.router.RouterAction
 import com.bihe0832.android.framework.router.RouterAction.SCHEME
@@ -77,10 +79,15 @@ object RouterHelper {
 
             override fun notFound(context: Context, uri: Uri, source: String) {
                 super.notFound(context, uri, source)
-                if (Routers.ROUTERS_VALUE_PARSE_SOURCE.equals(source, ignoreCase = true)) {
-                    goSplash(null)
-                } else {
-                    IntentUtils.jumpToOtherApp(uri.toString(), context)
+                ZixieContext.applicationContext?.let {
+                    if (Routers.ROUTERS_VALUE_PARSE_SOURCE.equals(source, ignoreCase = true)) {
+                        goSplash(null)
+                    } else {
+                        val resolveActivityPackage = Intent.parseUri(uri.toString(), Intent.URI_INTENT_SCHEME).resolveActivity(it.packageManager).packageName
+                        if (!resolveActivityPackage.equals(it.packageName, ignoreCase = true)) {
+                            IntentUtils.jumpToOtherApp(uri.toString(), context)
+                        }
+                    }
                 }
             }
         })
