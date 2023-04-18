@@ -90,7 +90,7 @@ class M3u8DownloadActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        PermissionManager.checkPermission(this, mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+//        PermissionManager.checkPermission(this, mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
     }
 
     private fun initPermission() {

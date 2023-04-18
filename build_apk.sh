@@ -119,7 +119,7 @@ cat $localPath/config.gradle | sed "s/$src/$dst/g" >$localPath/bin/temp/config.g
 mv -f $localPath/bin/temp/config.gradle $localPath/config.gradle
 
 #修改tag
-src="VERSION_TAG *= *\\\"Tag_ZIXIE_[0-9]*\.[0-9]*\.[0-9]*_[0-9]*\\\""
+src="VERSION_TAG *= *\\\"Tag_[a-zA-Z]_[0-9]*\.[0-9]*\.[0-9]*_[0-9]*\\\""
 dst="VERSION_TAG = \\\"$tag"\\\"
 cat $localPath/Application/src/main/java/com/bihe0832/android/app/Application.java | sed "s/$src/$dst/g" >$localPath/bin/temp/Application.java
 mv -f $localPath/bin/temp/Application.java $localPath/Application/src/main/java/com/bihe0832/android/app/Application.java

@@ -22,8 +22,4 @@ class MainFragment : BaseFragment() {
         )
         loadRootFragment(R.id.puzzle_content, PuzzlePhotosFragment())
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 }

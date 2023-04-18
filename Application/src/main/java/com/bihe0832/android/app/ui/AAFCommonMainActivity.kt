@@ -24,6 +24,7 @@ open class AAFCommonMainActivity : CommonActivityWithNavigationDrawer() {
         addRedDotAction(findViewById(R.id.title_icon_unread))
         checkMsgAndShowFace(this)
         updateTitle(titleName)
+        showQrcodeScan(needSound = true, needVibrate = true)
     }
 
     override fun onResume() {

@@ -13,9 +13,4 @@ class MainActivity : AAFCommonMainActivity() {
     override fun getRootFragmentClassName(): String {
         return MainFragment::class.java.name
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
 }

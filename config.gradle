@@ -42,6 +42,6 @@ ext {
     //使用kotlin版本
     kotlin_version = '1.7.10'
 
-    aaf_test_version = '5.12.8'
-    aaf_version = '5.12.8'
+    aaf_test_version = '5.12.10'
+    aaf_version = '5.12.10'
 }

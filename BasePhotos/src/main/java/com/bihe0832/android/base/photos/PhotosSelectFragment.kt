@@ -9,18 +9,24 @@ import com.bihe0832.android.base.card.photo.IconTextData
 import com.bihe0832.android.common.list.CardItemForCommonList
 import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.swiperefresh.CommonListFragment
-import com.bihe0832.android.common.photos.choosePhoto
 import com.bihe0832.android.common.photos.getAutoChangedPhotoUri
 import com.bihe0832.android.common.photos.getPhotoContent
 import com.bihe0832.android.common.photos.takePhoto
+import com.bihe0832.android.common.photos.takePhotoPermission
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.permission.PermissionResultOfAAF
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.permission.PermissionManager
+import com.bihe0832.android.lib.permission.ui.PermissionsActivityV2
 import com.bihe0832.android.lib.ui.recycleview.ext.SafeGridLayoutManager
 import com.bihe0832.android.lib.utils.os.BuildUtils
 
 open class PhotosSelectFragment : CommonListFragment() {
+
+    val SCENE_TAKE_PHOTO = "takePhoto"
+    val SCENE_SELECT_PHOTO = "PhotoSelect"
+
+
     protected val mDataList = ArrayList<CardBaseModule>()
     protected val ID_CAMERA = 1
     protected val ID_PHOTO = 2
@@ -30,13 +36,9 @@ open class PhotosSelectFragment : CommonListFragment() {
     var mTakePhotoUri: Uri? = null
 
     init {
-        PermissionManager.addPermissionGroupDesc(HashMap<String, String>().apply {
-            put(Manifest.permission.CAMERA, "相机")
-        })
-
-        PermissionManager.addPermissionGroupScene(HashMap<String, String>().apply {
-            put(Manifest.permission.CAMERA, "拍摄拼图原图")
-        })
+        PermissionManager.addPermissionGroup(SCENE_TAKE_PHOTO, Manifest.permission.CAMERA, takePhotoPermission)
+        PermissionManager.addPermissionGroupScene(SCENE_TAKE_PHOTO, Manifest.permission.CAMERA, "扫描二维码、拍照")
+        PermissionManager.addPermissionGroupDesc(SCENE_TAKE_PHOTO, Manifest.permission.CAMERA, "相机")
     }
 
     open fun getHorizontalItemNum(): Int {
@@ -93,37 +95,35 @@ open class PhotosSelectFragment : CommonListFragment() {
     }
 
     open fun takePhoto() {
-        mTakePhotoUri = requireActivity().getAutoChangedPhotoUri()
-        PermissionManager.checkPermission(
-                context,
-                "takePhoto",
-                false,
-                object : PermissionManager.OnPermissionResult {
-                    override fun onFailed(msg: String) {
-                    }
+        mTakePhotoUri = activity!!.getAutoChangedPhotoUri()
+        if (PermissionManager.isAllPermissionOK(context!!, takePhotoPermission)) {
+            activity!!.takePhoto(mTakePhotoUri)
+        } else {
+            PermissionManager.checkPermission(activity, SCENE_TAKE_PHOTO, true, PermissionsActivityV2::class.java, object : PermissionResultOfAAF(false) {
+                override fun onFailed(msg: String) {
+                }
 
-                    override fun onSuccess() {
-                        activity!!.takePhoto(mTakePhotoUri)
-                    }
+                override fun onSuccess() {
 
-                    override fun onUserCancel(scene: String, permissionGroupID: String, permission: String) {
+                }
 
-                    }
+                override fun onUserCancel(scene: String, permissionGroupID: String, permission: String) {
 
-                    override fun onUserDeny(scene: String, permissionGroupID: String, permission: String) {
+                }
 
-                    }
+                override fun onUserDeny(scene: String, permissionGroupID: String, permission: String) {
 
-                },
-                com.bihe0832.android.common.photos.takePhotoPermission
-        )
+                }
+
+            }, takePhotoPermission)
+        }
     }
 
     open fun choosePhoto() {
         if (BuildUtils.SDK_INT >= Build.VERSION_CODES.Q) {
             activity!!.getPhotoContent()
         } else {
-            PermissionManager.checkPermission(activity!!, "PhotoSelect", false, object : PermissionResultOfAAF(false) {
+            PermissionManager.checkPermission(activity!!, SCENE_SELECT_PHOTO, false, object : PermissionResultOfAAF(false) {
                 override fun onSuccess() {
                     activity!!.getPhotoContent()
                 }

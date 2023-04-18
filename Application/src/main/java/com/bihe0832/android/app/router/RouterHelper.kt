@@ -10,8 +10,8 @@ import com.bihe0832.android.framework.router.RouterInterrupt
 import com.bihe0832.android.lib.lifecycle.ApplicationObserver
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.request.URLUtils
+import com.bihe0832.android.lib.router.Routers
 import com.bihe0832.android.lib.utils.intent.IntentUtils
-import java.util.*
 
 
 /**
@@ -53,11 +53,11 @@ object RouterHelper {
         //路由拦截初始化
         RouterInterrupt.init(object : RouterInterrupt.RouterProcess {
 
-            override fun needLogin(uri: Uri): Boolean {
+            override fun needLogin(uri: Uri, source: String): Boolean {
                 return needLoginInterceptHostList.contains(uri.host)
             }
 
-            override fun needInterrupt(uri: Uri): Boolean {
+            override fun needInterrupt(uri: Uri, source: String): Boolean {
                 return if (skipListHostList.contains(uri.host)) {
                     false
                 } else {
@@ -66,7 +66,7 @@ object RouterHelper {
                 }
             }
 
-            override fun doInterrupt(uri: Uri): Boolean {
+            override fun doInterrupt(uri: Uri, source: String): Boolean {
                 return if (!AgreementPrivacy.hasAgreedPrivacy()) {
                     goSplash(uri)
                     true
@@ -75,9 +75,13 @@ object RouterHelper {
                 }
             }
 
-            override fun notFound(context: Context, uri: Uri) {
-                super.notFound(context, uri)
-                IntentUtils.jumpToOtherApp(uri.toString(), context)
+            override fun notFound(context: Context, uri: Uri, source: String) {
+                super.notFound(context, uri, source)
+                if (Routers.ROUTERS_VALUE_PARSE_SOURCE.equals(source, ignoreCase = true)) {
+                    goSplash(null)
+                } else {
+                    IntentUtils.jumpToOtherApp(uri.toString(), context)
+                }
             }
         })
     }
