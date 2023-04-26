@@ -1,11 +1,12 @@
 package com.bihe0832.android.app
 
-import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import com.bihe0832.android.app.leakcanary.LeakCanaryManager
 import com.bihe0832.android.app.message.AAFMessageManager
+import com.bihe0832.android.app.permission.AAFPermissionManager
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.common.network.NetworkChangeManager
 import com.bihe0832.android.framework.ZixieContext
@@ -15,8 +16,8 @@ import com.bihe0832.android.lib.device.shake.ShakeManager
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.network.MobileUtil
-import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.thread.ThreadManager
+import com.bihe0832.android.lib.utils.os.BuildUtils
 import com.bihe0832.android.lib.utils.os.ManufacturerUtil
 import com.bihe0832.android.lib.web.WebViewHelper
 import com.tencent.smtt.sdk.TbsPrivacyAccess
@@ -40,13 +41,22 @@ object AppFactoryInit {
         if (!hasInit) {
             hasInit = true
             ZixieCoreInit.initAfterAgreePrivacy(application)
+            Log.e(ZixieCoreInit.TAG, "———————————————————————— 设备信息 ————————————————————————")
+            Log.e(ZixieCoreInit.TAG, "设备ID: ${ZixieContext.deviceId}")
+            Log.e(ZixieCoreInit.TAG, "厂商型号: ${ManufacturerUtil.MANUFACTURER}, ${ManufacturerUtil.MODEL}, ${ManufacturerUtil.BRAND}")
+            Log.e(ZixieCoreInit.TAG, "系统版本: Android ${BuildUtils.RELEASE}, API  ${BuildUtils.SDK_INT}" + if (ManufacturerUtil.isHarmonyOs()) {
+                ", Harmony(${ManufacturerUtil.getHarmonyVersion()})"
+            } else {
+                ""
+            })
+            Log.e(ZixieCoreInit.TAG, "———————————————————————— 设备信息 ————————————————————————")
 
             if (ZixieContext.isDebug()) {
                 LeakCanaryManager.init(application)
             }
 
             RouterHelper.initRouter()
-            initPermission()
+            AAFPermissionManager.initPermission()
             AAFMessageManager.initModule(application)
             ThreadManager.getInstance().start {
                 DownloadUtils.init(ctx, 10, ZixieContext.isDebug())
@@ -93,14 +103,6 @@ object AppFactoryInit {
     fun initUserLoginRetBeforeGetUser(openid: String) {
     }
 
-    private fun initPermission() {
-        PermissionManager.addPermissionGroupDesc(HashMap<String, String>().apply {
-            put(Manifest.permission.READ_PHONE_STATE, "读取手机状态")
-        })
 
-        PermissionManager.addPermissionGroupScene(HashMap<String, String>().apply {
-            put(Manifest.permission.READ_PHONE_STATE, "获取应用安装时间等")
-        })
-    }
 
 }

@@ -23,20 +23,8 @@ open class AAFCommonMainActivity : CommonActivityWithNavigationDrawer() {
         super.onCreate(savedInstanceState)
         addRedDotAction(findViewById(R.id.title_icon_unread))
         checkMsgAndShowFace(this)
+        UpdateManager.checkUpdateAndShowDialog(this, false, ZixieContext.isOfficial())
         updateTitle(titleName)
         showQrcodeScan(needSound = true, needVibrate = true)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        UpdateManager.checkUpdateAndShowDialog(this, false, ZixieContext.isOfficial())
-    }
-
-    fun disableDrawerGesture() {
-        mAAFNavigationDrawerFragment.disableDrawerGesture()
-    }
-
-    override fun getTitleName(): String {
-        return getString(R.string.app_name)
     }
 }

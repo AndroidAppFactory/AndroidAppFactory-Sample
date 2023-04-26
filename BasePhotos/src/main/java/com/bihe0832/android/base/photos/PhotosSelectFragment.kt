@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
+import com.bihe0832.android.app.permission.AAFPermissionManager.SCENE_SELECT_PHOTO
+import com.bihe0832.android.app.permission.AAFPermissionManager.SCENE_TAKE_PHOTO
 import com.bihe0832.android.base.card.photo.IconTextData
 import com.bihe0832.android.common.list.CardItemForCommonList
 import com.bihe0832.android.common.list.CommonListLiveData
@@ -23,9 +25,6 @@ import com.bihe0832.android.lib.utils.os.BuildUtils
 
 open class PhotosSelectFragment : CommonListFragment() {
 
-    val SCENE_TAKE_PHOTO = "takePhoto"
-    val SCENE_SELECT_PHOTO = "PhotoSelect"
-
 
     protected val mDataList = ArrayList<CardBaseModule>()
     protected val ID_CAMERA = 1
@@ -34,12 +33,6 @@ open class PhotosSelectFragment : CommonListFragment() {
     protected val ID_CUSTOM = 4
 
     var mTakePhotoUri: Uri? = null
-
-    init {
-        PermissionManager.addPermissionGroup(SCENE_TAKE_PHOTO, Manifest.permission.CAMERA, takePhotoPermission)
-        PermissionManager.addPermissionGroupScene(SCENE_TAKE_PHOTO, Manifest.permission.CAMERA, "扫描二维码、拍照")
-        PermissionManager.addPermissionGroupDesc(SCENE_TAKE_PHOTO, Manifest.permission.CAMERA, "相机")
-    }
 
     open fun getHorizontalItemNum(): Int {
         return 2
@@ -183,7 +176,7 @@ open class PhotosSelectFragment : CommonListFragment() {
         return IconTextData().apply {
             mIconID = ID_CAMERA
             mContentText = "相机拍摄"
-            mContentResID = R.mipmap.icon_camera
+            mContentResID = R.drawable.icon_camera
             mHorizontalNum = getHorizontalItemNum()
             mVerticalNum = getVerticalItemNum()
             mHorizontalFix = getHorizontalFix()
@@ -207,7 +200,7 @@ open class PhotosSelectFragment : CommonListFragment() {
         return IconTextData().apply {
             mIconID = ID_CLOUD
             mContentText = "网络图片"
-            mContentResID = R.mipmap.icon_cloud
+            mContentResID = R.drawable.icon_cloud
             mHorizontalNum = getHorizontalItemNum()
             mVerticalNum = getVerticalItemNum()
             mHorizontalFix = getHorizontalFix()
@@ -219,7 +212,7 @@ open class PhotosSelectFragment : CommonListFragment() {
         return IconTextData().apply {
             mIconID = ID_CUSTOM
             mContentText = "系统推荐"
-            mContentResID = R.mipmap.icon_cycle
+            mContentResID = R.drawable.icon_cycle
             mHorizontalNum = getHorizontalItemNum()
             mVerticalNum = getVerticalItemNum()
             mHorizontalFix = getHorizontalFix()
