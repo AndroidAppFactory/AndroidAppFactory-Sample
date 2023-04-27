@@ -188,7 +188,7 @@ open class PhotosSelectFragment : CommonListFragment() {
         return IconTextData().apply {
             mIconID = ID_PHOTO
             mContentText = "相册选取"
-            mContentResID = R.mipmap.icon_photos
+            mContentResID = R.drawable.icon_photos
             mHorizontalNum = getHorizontalItemNum()
             mVerticalNum = getVerticalItemNum()
             mHorizontalFix = getHorizontalFix()

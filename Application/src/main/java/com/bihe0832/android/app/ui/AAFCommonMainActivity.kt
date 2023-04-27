@@ -27,4 +27,8 @@ open class AAFCommonMainActivity : CommonActivityWithNavigationDrawer() {
         updateTitle(titleName)
         showQrcodeScan(needSound = true, needVibrate = true)
     }
+
+    fun disableDrawerGesture() {
+        mAAFNavigationDrawerFragment.disableDrawerGesture()
+    }
 }

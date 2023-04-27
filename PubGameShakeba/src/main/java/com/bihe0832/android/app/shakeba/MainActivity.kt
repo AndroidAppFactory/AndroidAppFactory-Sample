@@ -15,6 +15,7 @@ open class MainActivity : AAFCommonMainActivity() {
         super.onCreate(savedInstanceState)
         disableDrawerGesture()
     }
+
     override fun getRootFragmentClassName(): String {
         return DiceFragment::class.java.name
     }

@@ -53,7 +53,7 @@ open class AAFNavigationContentFragment : CommonNavigationContentFragment() {
     }
     fun getAboutAPP(cloud: UpdateDataFromCloud?, listener: View.OnClickListener): SettingsData {
         return SettingsData("关于应用").apply {
-            mItemIconRes = R.mipmap.icon_android
+            mItemIconRes = R.drawable.icon_android
             mHeaderTextBold = true
             mShowDriver = true
             mShowGo = true
