@@ -52,6 +52,7 @@ object RouterHelper {
             }
         })
 
+
         //路由拦截初始化
         RouterInterrupt.init(object : RouterInterrupt.RouterProcess {
 

@@ -6,8 +6,8 @@ import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.common.message.data.MessageInfoItem
 import com.bihe0832.android.framework.ui.BaseActivity
-import com.bihe0832.android.lib.ui.textview.TextViewWithBackground
-import com.bihe0832.android.lib.ui.textview.ext.changeStatusWithUnreadMsg
+import com.bihe0832.android.lib.ui.custom.view.background.TextViewWithBackground
+import com.bihe0832.android.lib.ui.custom.view.background.changeStatusWithUnreadMsg
 import com.bihe0832.android.lib.utils.os.DisplayUtil
 
 /**

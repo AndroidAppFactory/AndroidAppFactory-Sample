@@ -1,7 +1,6 @@
 package com.bihe0832.android.app.router
 
 import com.bihe0832.android.lib.request.URLUtils
-import java.util.*
 
 
 /**
@@ -25,7 +24,7 @@ fun getNeedLoginInterceptHostList(): List<String> {
 //不需要检查，直接跳过的路由
 fun getSkipListHostList(): List<String> {
     return listOf<String>(
-        com.bihe0832.android.framework.router.RouterConstants.MODULE_NAME_SPLASH
+            RouterConstants.MODULE_NAME_SPLASH
     )
 }
 
@@ -35,6 +34,3 @@ fun openWebPage(url: String) {
     RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_WEB_PAGE, map)
 }
 
-fun openFeedback(){
-    openWebPage("https://support.qq.com/embed/phone/290858/large/")
-}

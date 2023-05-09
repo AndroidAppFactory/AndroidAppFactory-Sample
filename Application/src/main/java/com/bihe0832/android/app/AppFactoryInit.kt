@@ -12,10 +12,12 @@ import com.bihe0832.android.common.network.NetworkChangeManager
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.ZixieCoreInit
 import com.bihe0832.android.framework.privacy.AgreementPrivacy
+import com.bihe0832.android.lib.adapter.CardInfoHelper
 import com.bihe0832.android.lib.device.shake.ShakeManager
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.network.MobileUtil
+import com.bihe0832.android.lib.theme.ThemeManager
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.utils.os.BuildUtils
 import com.bihe0832.android.lib.utils.os.ManufacturerUtil
@@ -68,7 +70,7 @@ object AppFactoryInit {
                     putString(TbsPrivacyAccess.ConfigurablePrivacy.MODEL.name, ManufacturerUtil.MODEL)
                     putString(TbsPrivacyAccess.ConfigurablePrivacy.ANDROID_ID.name, ZixieContext.deviceId)
                     putString(TbsPrivacyAccess.ConfigurablePrivacy.SERIAL.name, ZixieContext.deviceId)
-                }, true)
+                }, false)
             }, 5)
             ZLog.d("Application process $processName initCore ManufacturerUtil:" + ManufacturerUtil.MODEL)
         }
@@ -80,7 +82,9 @@ object AppFactoryInit {
         NetworkChangeManager.init(application.applicationContext, true)
         // 监听信号变化，统一到MobileUtil
         MobileUtil.registerMobileSignalListener(application.applicationContext)
+        CardInfoHelper.getInstance().enableDebug(!ZixieContext.isOfficial())
         ShakeManager.init(application.applicationContext)
+        ThemeManager.init(application, !ZixieContext.isOfficial())
     }
 
     fun initAll(application: android.app.Application) {
