@@ -2,6 +2,7 @@ package com.bihe0832.android.app.permission
 
 import android.Manifest
 import com.bihe0832.android.common.photos.takePhotoPermission
+import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.permission.PermissionManager
 
 /**
@@ -16,7 +17,7 @@ object AAFPermissionManager {
 
     val SCENE_TAKE_PHOTO = "takePhoto"
     val SCENE_SELECT_PHOTO = "PhotoSelect"
-
+    val SCENE_GAME_ACCESSIBILITY = "Accessibility"
 
     fun initPermission() {
 
@@ -33,5 +34,19 @@ object AAFPermissionManager {
         })
         PermissionManager.addPermissionGroupDesc("", Manifest.permission.READ_PHONE_STATE, "读取手机状态")
         PermissionManager.addPermissionGroupScene("", Manifest.permission.READ_PHONE_STATE, "获取应用安装时间等")
+
+        PermissionManager.addPermissionGroupDesc(SCENE_GAME_ACCESSIBILITY, Manifest.permission.SYSTEM_ALERT_WINDOW, "悬浮窗")
+        PermissionManager.addPermissionGroupScene(SCENE_GAME_ACCESSIBILITY, Manifest.permission.SYSTEM_ALERT_WINDOW, "按键精灵需要通过<font color ='#38ADFF'><b>悬浮窗实时展示</b></font>")
+        PermissionManager.addPermissionGroupContent(
+                SCENE_GAME_ACCESSIBILITY,
+                Manifest.permission.SYSTEM_ALERT_WINDOW,
+                "按键精灵需要通过<font color ='#38ADFF'><b>悬浮窗实时展示</b></font>。当前手机尚未授权，请点击「" + PermissionManager.getPositiveText(ZixieContext.applicationContext!!) + "」前往设置！"
+        )
     }
+
+    fun hasFloatPermission(): Boolean {
+        return PermissionManager.isAllPermissionOK(ZixieContext.applicationContext!!, Manifest.permission.SYSTEM_ALERT_WINDOW)
+    }
+
+
 }

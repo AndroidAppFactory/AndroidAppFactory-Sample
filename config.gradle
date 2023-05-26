@@ -8,7 +8,7 @@ ext {
     //APK 最低适配Android 版本
     appMinSdkVersion = 21
     //Android 最佳适配Android 版本
-    targetSdkVersion = 30
+    targetSdkVersion = 31
     //版本号，正式版本会由自动构建替换
     versionCode = 1
     //版本名，正式版本会由自动构建替换
@@ -42,6 +42,6 @@ ext {
     //使用kotlin版本
     kotlin_version = '1.7.10'
 
-    aaf_test_version = '5.14.0'
-    aaf_version = '5.14.1'
+    aaf_test_version = '5.15.3'
+    aaf_version = '5.15.3'
 }

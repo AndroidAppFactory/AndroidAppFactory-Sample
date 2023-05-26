@@ -200,7 +200,7 @@ cd $localPath && ./gradlew :APPTest:assembleDebug -x lint -x verifyReleaseResour
 checkResult
 
 # 签名完整包
-$ANDROID_HOME/build-tools/32.0.0/zipalign -p -v 4 $localPath/APPTest/build/outputs/apk/debug/${appPrefix}_V${versionWithCode}_debug.apk $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta_unsigned_zipalign.apk
+$ANDROID_HOME/build-tools/32.0.0/zipalign -p -v 4 $localPath/APPTest/build/outputs/apk/debug/${appPrefix}_V${versionWithCode}-debug.apk $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta_unsigned_zipalign.apk
 $ANDROID_HOME/build-tools/32.0.0/apksigner sign --ks $localPath/debug.keystore --out $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta.apk --ks-pass pass:android $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta_unsigned_zipalign.apk
 cp -fr $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_beta.apk $localPath/bin/${appPrefix}_V${versionWithCode}_${timeinfo}_beta.apk
 checkResult
@@ -252,16 +252,16 @@ if [ "$isOfficial"x = "true"x ]; then
   mkdir $localPath/bin/temp/official
   rm -fr $localPath/bin/temp/official/*
   #添加资源混淆
-  java -jar $localPath/AndResGuard-cli-1.2.0.jar $localPath/${appModule}/build/outputs/apk/release/${appPrefix}_V${versionWithCode}_release.apk -config $localPath/proguard-rules-resource.xml -out $localPath/bin/temp/official
+  java -jar $localPath/AndResGuard-cli-1.2.0.jar $localPath/${appModule}/build/outputs/apk/release/${appPrefix}_V${versionWithCode}-release.apk -config $localPath/proguard-rules-resource.xml -out $localPath/bin/temp/official
   # 签名完整包
-  $ANDROID_HOME/build-tools/32.0.0/zipalign -p -v 4 $localPath/bin/temp/official/${appPrefix}_V${versionWithCode}_release_unsigned.apk $localPath/bin/temp/official/${appPrefix}_V${versionWithCode}_official_unsigned_zipalign.apk
+  $ANDROID_HOME/build-tools/32.0.0/zipalign -p -v 4 $localPath/bin/temp/official/${appPrefix}_V${versionWithCode}-release_unsigned.apk $localPath/bin/temp/official/${appPrefix}_V${versionWithCode}_official_unsigned_zipalign.apk
   $ANDROID_HOME/build-tools/32.0.0/apksigner sign --ks $localPath/debug.keystore --out $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_official.apk --ks-pass pass:android $localPath/bin/temp/official/${appPrefix}_V${versionWithCode}_official_unsigned_zipalign.apk
   cp -fr $localPath/bin/temp/${appPrefix}_V${versionWithCode}_${timeinfo}_official.apk $localPath/bin/${appPrefix}_V${versionWithCode}_${timeinfo}_official.apk
   checkResult
 
   echo "********APK build start add mapping and hash*******"
   mkdir $localPath/bin/temp/official/mapping
-  cp -r $localPath/bin/temp/official/resource_mapping_${appPrefix}_V${versionWithCode}_release.txt $localPath/bin/temp/official/mapping/${tag}_mapping_resource.txt
+  cp -r $localPath/bin/temp/official/resource_mapping_${appPrefix}_V${versionWithCode}-release.txt $localPath/bin/temp/official/mapping/${tag}_mapping_resource.txt
   checkResult
   cp -r $localPath/${appModule}/build/outputs/mapping/release/* $localPath/bin/temp/official/mapping/
   checkResult

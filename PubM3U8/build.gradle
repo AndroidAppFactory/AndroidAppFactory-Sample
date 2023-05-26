@@ -81,6 +81,9 @@ android {
         }
     }
 
+    archivesBaseName = applicationPrefix + "_V${defaultConfig.versionName}_${defaultConfig.versionCode}"
+
+
     buildTypes {
         debug {
             resValue "string", "app_name", applicationName
@@ -98,19 +101,6 @@ android {
             minifyEnabled project.minifyEnabled as boolean
             proguardFiles "./../proguard-rules-common.pro"
             shrinkResources false
-        }
-    }
-
-    if (rootProject.ext.pubModuleIsApplication as boolean) {
-        applicationVariants.all { variant ->
-            def finalFileName = applicationPrefix + "_V${defaultConfig.versionName}_${defaultConfig.versionCode}"
-            variant.outputs.all {
-                if (variant.buildType.name == 'debug') {
-                    outputFileName = finalFileName + "_debug.apk"
-                } else {
-                    outputFileName = finalFileName + "_release.apk"
-                }
-            }
         }
     }
 }

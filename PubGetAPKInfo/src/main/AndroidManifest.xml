@@ -15,6 +15,7 @@
             android:name="com.bihe0832.android.app.apk.SplashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AAF.ActivityTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,12 +26,7 @@
             android:name="com.bihe0832.android.app.apk.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@style/AAF.ActivityTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-
+            android:theme="@style/AAF.ActivityTheme" />
 
     </application>
     <queries>

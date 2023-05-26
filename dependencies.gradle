@@ -6,7 +6,7 @@ def project = ext
  * 当前开发中，最终运行的主工程，多个用 "," 分隔
  * 当前如果全量填"APPTest"
  */
-ext.mainProject = "PubM3U8"
+ext.mainProject = "PubGetAPKInfo"
 /**
  * 当前开发中，涉及到修改的工程（仅填写直接修改的即可，依赖他的会自动添加），多个用 "," 分隔。
  * 当前如果全量填"Application"
@@ -48,10 +48,10 @@ ext.moduleInfo = [
             "kapt"      : ["com.bihe0832.android:lib-router-compiler:5.1.7"]
         ]
     ],
-    "BaseDebug"     : [
+    "BaseDebug"        : [
         "apidependenciesList"  : [
             "com.bihe0832.android:common-debug:${project.aaf_test_version}",
-            "Application", "BaseCard", "BaseGamePuzzle","BaseGameDice","BaseAdbInput"
+            "Application", "BaseCard", "BaseGamePuzzle", "BaseGameDice", "BaseAdbInput", "BaseAccessibility"
         ],
         specialdependenciesList: [
 
@@ -67,42 +67,48 @@ ext.moduleInfo = [
             "Application", "BaseCard"
         ]
     ],
-    "BasePhotos"    : [
+    "BasePhotos"       : [
         "apidependenciesList": [
             "BaseCard"
         ]
     ],
-    "BaseAdbInput"  : [
+    "BaseAdbInput"     : [
         "apidependenciesList": [
             "BaseCard"
         ]
     ],
-    "BaseGame": [
+    "BaseGame"         : [
         "apidependenciesList": [
             "Application"
         ]
     ],
-    "BaseGamePuzzle": [
+    "BaseGamePuzzle"   : [
         "apidependenciesList": [
             "BasePhotos"
         ]
     ],
-    "BaseGameDice": [
+    "BaseAccessibility": [
+        "apidependenciesList": [
+            "Application",
+            "com.bihe0832.android:common-debug:${project.aaf_test_version}"
+        ]
+    ],
+    "BaseGameDice"     : [
         "apidependenciesList": [
             "BaseGame"
         ]
     ],
-    "PubGetAPKInfo" : [
+    "PubGetAPKInfo"    : [
         "apidependenciesList": [
             "BaseCard"
         ]
     ],
-    "PubGamePuzzle" : [
+    "PubGamePuzzle"    : [
         "apidependenciesList": [
             "BaseGamePuzzle", "BaseCard"
         ]
     ],
-    "PubGameShakeba" : [
+    "PubGameShakeba"   : [
         "apidependenciesList": [
             "BaseGameDice"
         ]
