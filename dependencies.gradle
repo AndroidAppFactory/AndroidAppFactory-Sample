@@ -43,15 +43,14 @@ ext.moduleInfo = [
 
         ],
         "specialdependenciesList": [
-            "debugApi"  : ["com.squareup.leakcanary:leakcanary-android:1.5.1"],
-            "releaseApi": ["com.squareup.leakcanary:leakcanary-android-no-op:1.5.1"],
+            "debugImplementation": ["com.squareup.leakcanary:leakcanary-android:2.11"],
             "kapt"      : ["com.bihe0832.android:lib-router-compiler:5.1.7"]
         ]
     ],
     "BaseDebug"        : [
         "apidependenciesList"  : [
             "com.bihe0832.android:common-debug:${project.aaf_test_version}",
-            "Application", "BaseCard", "BaseGamePuzzle", "BaseGameDice", "BaseAdbInput", "BaseAccessibility"
+            "Application", "BaseCard", "BaseGamePuzzle", "BaseGameDice", "BaseAdbInput"
         ],
         specialdependenciesList: [
 
@@ -85,12 +84,6 @@ ext.moduleInfo = [
     "BaseGamePuzzle"   : [
         "apidependenciesList": [
             "BasePhotos"
-        ]
-    ],
-    "BaseAccessibility": [
-        "apidependenciesList": [
-            "Application",
-            "com.bihe0832.android:common-debug:${project.aaf_test_version}"
         ]
     ],
     "BaseGameDice"     : [

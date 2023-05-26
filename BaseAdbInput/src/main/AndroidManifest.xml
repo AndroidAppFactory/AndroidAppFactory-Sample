@@ -13,6 +13,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:taskAffinity="com.bihe0832.android.input.diff"
             android:theme="@style/AAF.ActivityTheme">
@@ -27,6 +28,7 @@
         <service
             android:name="com.bihe0832.android.base.adb.input.ZixieIME"
             android:label="子勰ADB快速输入"
+            android:exported="true"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <intent-filter>
                 <action android:name="android.view.InputMethod" />

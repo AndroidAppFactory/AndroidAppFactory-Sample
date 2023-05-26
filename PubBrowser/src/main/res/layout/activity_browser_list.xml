@@ -10,6 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/common_activity_list_toolbar"
         style="@style/AAF.AppTheme.Toolbar.Light"
+        tools:layout_height="30dp"
         app:title="浏览记录">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,12 +24,13 @@
                 android:layout_height="24dp"
                 android:layout_marginRight="16dp"
                 android:scaleType="centerInside"
-                android:src="@mipmap/icon_message"
+                android:src="@drawable/icon_message"
+                android:tint="@color/colorOnPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.bihe0832.android.lib.ui.textview.TextViewWithBackground
+            <com.bihe0832.android.lib.ui.custom.view.background.TextViewWithBackground
                 android:id="@+id/message_unread"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="16dp"
-        android:background="@drawable/button_bg_shape"
+        android:background="@drawable/common_button_bg_shape"
         android:gravity="center"
         android:text="打开新页面"
         android:textSize="16dp"

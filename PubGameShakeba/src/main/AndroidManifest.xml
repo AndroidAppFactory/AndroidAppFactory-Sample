@@ -12,6 +12,7 @@
             android:name="com.bihe0832.android.app.shakeba.SplashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AAF.ActivityTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +24,7 @@
             android:name="com.bihe0832.android.app.shakeba.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
+            android:exported="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AAF.ActivityTheme">

@@ -12,10 +12,11 @@
             android:supportsRtl="true">
 
         <activity
-                android:name="com.bihe0832.android.app.puzzle.SplashActivity"
-                android:configChanges="orientation|screenSize|keyboardHidden"
-                android:screenOrientation="portrait"
-                android:theme="@style/AAF.ActivityTheme.Fullscreen">
+            android:name="com.bihe0832.android.app.puzzle.SplashActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AAF.ActivityTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,14 +24,10 @@
         </activity>
 
         <activity
-                android:name="com.bihe0832.android.app.puzzle.MainActivity"
-                android:configChanges="orientation|screenSize|keyboardHidden"
-                android:screenOrientation="portrait"
-                android:theme="@style/AAF.ActivityTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+            android:name="com.bihe0832.android.app.puzzle.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/AAF.ActivityTheme" />
     </application>
 
 </manifest>

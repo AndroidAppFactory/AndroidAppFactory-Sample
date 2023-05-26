@@ -12,6 +12,7 @@
             android:name="com.bihe0832.android.app.m3u8.SplashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AAF.ActivityTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
