@@ -1,7 +1,9 @@
 package com.bihe0832.android.test.module
 
+import android.view.View
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
+import com.bihe0832.android.base.debug.webview.DebugWebviewActivity
 import com.bihe0832.android.common.debug.base.BaseDebugListFragment
 import com.bihe0832.android.common.debug.item.DebugItemData
 import com.bihe0832.android.lib.adapter.CardBaseModule
@@ -20,6 +22,9 @@ class DebugTempFragment : BaseDebugListFragment() {
             add(DebugItemData("测试自定义请求") { testOneRequest() })
             add(DebugItemData("默认关于页") { RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_BASE_ABOUT) })
             add(DebugItemData("APP设置") { IntentUtils.startAppDetailSettings(context) })
+            add(DebugItemData("WebView 调试", View.OnClickListener {
+                startActivityWithException(DebugWebviewActivity::class.java)
+            }))
         }
     }
 
@@ -33,7 +38,6 @@ class DebugTempFragment : BaseDebugListFragment() {
     }
 
     private fun testFunc() {
-        ZLog.d(DownloadingList.getDownloadingNum().toString())
 //        CommonDBManager.saveData("sss", "Fsdfsd")
     }
 
