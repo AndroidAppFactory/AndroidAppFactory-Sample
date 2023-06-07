@@ -44,7 +44,7 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
         addOnClickListener(R.id.app_layout)
         addOnClickListener(R.id.uninstall)
         addOnClickListener(R.id.app_icon)
-
+        addOnLongClickListener(R.id.app_icon)
         app_icon?.setImageDrawable(data.app_icon)
         app_name?.text = data.app_name
         app_version?.text = "当前版本：${data.app_version}"

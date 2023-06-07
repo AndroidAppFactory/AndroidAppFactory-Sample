@@ -2,8 +2,10 @@ package com.bihe0832.android.app
 
 import android.app.ActivityManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.webkit.WebView
 import com.bihe0832.android.app.message.AAFMessageManager
 import com.bihe0832.android.app.permission.AAFPermissionManager
 import com.bihe0832.android.app.router.RouterHelper
@@ -20,7 +22,8 @@ import com.bihe0832.android.lib.theme.ThemeManager
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.utils.os.BuildUtils
 import com.bihe0832.android.lib.utils.os.ManufacturerUtil
-import com.bihe0832.android.lib.web.WebViewHelper
+import com.bihe0832.android.lib.webview.tbs.WebViewHelper
+import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.TbsPrivacyAccess
 
 /**
@@ -58,15 +61,6 @@ object AppFactoryInit {
             ThreadManager.getInstance().start {
                 DownloadUtils.init(ctx, 10, ZixieContext.isDebug())
             }
-
-            ThreadManager.getInstance().start({
-                ZLog.e("Application process initCore web start")
-                WebViewHelper.init(ctx, null, Bundle().apply {
-                    putString(TbsPrivacyAccess.ConfigurablePrivacy.MODEL.name, ManufacturerUtil.MODEL)
-                    putString(TbsPrivacyAccess.ConfigurablePrivacy.ANDROID_ID.name, ZixieContext.deviceId)
-                    putString(TbsPrivacyAccess.ConfigurablePrivacy.SERIAL.name, ZixieContext.deviceId)
-                }, false)
-            }, 5)
             ZLog.d("Application process $processName initCore ManufacturerUtil:" + ManufacturerUtil.MODEL)
         }
     }
@@ -82,6 +76,7 @@ object AppFactoryInit {
         ThemeManager.init(application, !ZixieContext.isOfficial())
     }
 
+
     fun initAll(application: android.app.Application) {
         if (AgreementPrivacy.hasAgreedPrivacy()) {
             val am = application.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -95,6 +90,7 @@ object AppFactoryInit {
                         initExtra(application)
                     }
                 }
+                initWebview(application, it)
             }
         }
     }
@@ -102,6 +98,27 @@ object AppFactoryInit {
     fun initUserLoginRetBeforeGetUser(openid: String) {
     }
 
+    /**
+     * 如果使用系统原生内核，直接删除
+     */
+    private fun initWebview(application: android.app.Application, processInfo: ActivityManager.RunningAppProcessInfo) {
+        if (processInfo.processName.equals(application.packageName, ignoreCase = true)) {
+            ThreadManager.getInstance().start({
+                ZLog.e("Application process initCore web start")
+                ZLog.d("" + QbSdk.getTbsVersion(application.applicationContext))
 
+                WebViewHelper.init(application.applicationContext, null, Bundle().apply {
+                    putString(
+                            TbsPrivacyAccess.ConfigurablePrivacy.MODEL.name, ManufacturerUtil.MODEL)
+                    putString(TbsPrivacyAccess.ConfigurablePrivacy.ANDROID_ID.name, ZixieContext.deviceId)
+                    putString(TbsPrivacyAccess.ConfigurablePrivacy.SERIAL.name, ZixieContext.deviceId)
+                }, false)
+            }, 5)
+        } else {
+            if (BuildUtils.SDK_INT >= Build.VERSION_CODES.P) {
+                WebView.setDataDirectorySuffix(processInfo.processName)
+            }
+        }
+    }
 
 }

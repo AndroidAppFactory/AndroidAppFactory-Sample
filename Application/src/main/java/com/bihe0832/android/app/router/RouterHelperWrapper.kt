@@ -31,6 +31,6 @@ fun getSkipListHostList(): List<String> {
 fun openWebPage(url: String) {
     val map = HashMap<String, String>()
     map[RouterConstants.INTENT_EXTRA_KEY_WEB_URL] = URLUtils.encode(url)
-    RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_WEB_PAGE, map)
+    RouterHelper.openPageByRouter(RouterConstants.MODULE_NAME_WEB_PAGE_TBS, map)
 }
 
