@@ -6,7 +6,7 @@ def project = ext
  * 当前开发中，最终运行的主工程，多个用 "," 分隔
  * 当前如果全量填"APPTest"
  */
-ext.mainProject = "PubGetAPKInfo"
+ext.mainProject = "APPTest"
 /**
  * 当前开发中，涉及到修改的工程（仅填写直接修改的即可，依赖他的会自动添加），多个用 "," 分隔。
  * 当前如果全量填"Application"
@@ -41,8 +41,8 @@ ext.moduleInfo = [
         "apidependenciesList"    : [
             "com.bihe0832.android:common-wrapper:${project.aaf_version}",
             "com.bihe0832.android:common-wrapper-tbs:${project.aaf_tbs_version}",
+            "com.bihe0832.android:lib-wrapper-screen:${project.aaf_screen_version}",
             "androidx.work:work-runtime:2.7.1"
-
         ],
         "specialdependenciesList": [
             "debugImplementation": ["com.squareup.leakcanary:leakcanary-android:2.11"],

@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.Process
 import android.util.Log
 import android.webkit.WebView
 import com.bihe0832.android.app.message.AAFMessageManager
@@ -23,6 +24,7 @@ import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.utils.os.BuildUtils
 import com.bihe0832.android.lib.utils.os.ManufacturerUtil
 import com.bihe0832.android.lib.webview.tbs.WebViewHelper
+import com.bihe0832.android.lib.widget.WidgetUpdateManager
 import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.TbsPrivacyAccess
 
@@ -65,38 +67,6 @@ object AppFactoryInit {
         }
     }
 
-    @Synchronized
-    private fun initExtra(application: android.app.Application) {
-        // 初始化网络变量和监听
-        NetworkChangeManager.init(application.applicationContext, true)
-        // 监听信号变化，统一到MobileUtil
-        MobileUtil.registerMobileSignalListener(application.applicationContext)
-        CardInfoHelper.getInstance().enableDebug(!ZixieContext.isOfficial())
-        ShakeManager.init(application.applicationContext)
-        ThemeManager.init(application, !ZixieContext.isOfficial())
-    }
-
-
-    fun initAll(application: android.app.Application) {
-        if (AgreementPrivacy.hasAgreedPrivacy()) {
-            val am = application.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            val runningApps = am.runningAppProcesses
-            for (it in runningApps) {
-                if (it.pid == android.os.Process.myPid() && it.processName != null && it.processName.contains(application.getPackageName())) {
-                    ZLog.e("Application initCore process: name:" + it.processName + " and id:" + it.pid)
-                    val processName = it.processName
-                    initCore(application, processName)
-                    if (processName.equals(application.packageName, ignoreCase = true)) {
-                        initExtra(application)
-                    }
-                }
-                initWebview(application, it)
-            }
-        }
-    }
-
-    fun initUserLoginRetBeforeGetUser(openid: String) {
-    }
 
     /**
      * 如果使用系统原生内核，直接删除
@@ -121,4 +91,38 @@ object AppFactoryInit {
         }
     }
 
+    @Synchronized
+    private fun initExtra(application: android.app.Application) {
+        // 初始化网络变量和监听
+        NetworkChangeManager.init(application.applicationContext, true)
+        // 监听信号变化，统一到MobileUtil
+        MobileUtil.registerMobileSignalListener(application.applicationContext)
+        CardInfoHelper.getInstance().enableDebug(!ZixieContext.isOfficial())
+        ShakeManager.init(application.applicationContext)
+        ThemeManager.init(application, !ZixieContext.isOfficial())
+    }
+
+    fun initAll(application: android.app.Application) {
+        if (AgreementPrivacy.hasAgreedPrivacy()) {
+            val am = application.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val runningApps = am.runningAppProcesses
+            for (it in runningApps) {
+                if (it.pid == Process.myPid() && it.processName != null &&
+                        it.processName.contains(application.getPackageName())) {
+                    ZLog.e("Application initCore process: name:" + it.processName + " and id:" + it.pid)
+                    val processName = it.processName
+                    initCore(application, processName)
+                    if (processName.equals(application.packageName, ignoreCase = true)) {
+                        initExtra(application)
+                    } else if (processName.equals(application.packageName + application.applicationContext.getString(R.string.com_bihe0832_widgets_process_name), ignoreCase = true)) {
+                        WidgetUpdateManager.initModule(application.applicationContext)
+                    }
+                    initWebview(application, it)
+                }
+            }
+        }
+    }
+
+    fun initUserLoginRetBeforeGetUser(openid: String) {
+    }
 }
