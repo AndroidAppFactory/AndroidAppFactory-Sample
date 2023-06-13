@@ -6,7 +6,7 @@ import com.bihe0832.android.common.debug.item.DebugItemData
 import com.bihe0832.android.common.debug.log.DebugLogActivity
 import com.bihe0832.android.common.debug.log.SectionDataContent
 import com.bihe0832.android.common.debug.log.SectionDataHeader
-import com.bihe0832.android.common.webview.core.WebviewLoggerFile
+import com.bihe0832.android.common.webview.core.WebViewLoggerFile
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.router.RouterInterrupt
 import com.bihe0832.android.lib.adapter.CardBaseModule
@@ -29,7 +29,7 @@ class DebugLogActivity : DebugLogActivity() {
 //            add(DebugItemData("上传日志") { })
             add(SectionDataHeader("基础通用日志"))
             add(SectionDataContent("路由跳转", RouterInterrupt.getRouterLogPath()))
-            add(SectionDataContent("Webview", WebviewLoggerFile.getWebviewLogPath()))
+            add(SectionDataContent("Webview", WebViewLoggerFile.getWebviewLogPath()))
             add(SectionDataContent("应用更新", AAFLoggerFile.getLogPathByModuleName(AAFLoggerFile.MODULE_UPDATE)))
         }
     }
