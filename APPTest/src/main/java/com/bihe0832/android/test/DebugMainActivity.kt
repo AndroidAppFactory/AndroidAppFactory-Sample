@@ -13,6 +13,7 @@ import com.bihe0832.android.lib.router.annotation.APPMain
 import com.bihe0832.android.lib.router.annotation.Module
 import com.bihe0832.android.lib.sqlite.impl.CommonDBManager
 import com.bihe0832.android.lib.utils.os.BuildUtils
+import com.bihe0832.android.test.widget.DebugWidget
 
 @APPMain
 @Module(RouterConstants.MODULE_NAME_DEBUG)
@@ -35,6 +36,7 @@ class DebugMainActivity : AAFCommonMainActivity() {
         })
         hideBottomUIMenu()
         CommonDBManager.init(this)
+        DebugWidget.showAddDebugWidgetTips(this)
     }
 
 
