@@ -26,7 +26,7 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
     private var app_install: TextView? = null
     private var app_update: TextView? = null
     private var app_md5: TextView? = null
-    private var signature_md5: TextView? = null
+    private var signature_value: TextView? = null
 
     override fun initView() {
         app_icon = getView(R.id.app_icon)
@@ -36,7 +36,7 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
         app_install = getView(R.id.local_path)
         app_update = getView(R.id.app_update)
         app_md5 = getView(R.id.app_md5)
-        signature_md5 = getView(R.id.signature_md5)
+        signature_value = getView(R.id.signature_value)
     }
 
     override fun initData(item: CardBaseModule) {
@@ -55,7 +55,8 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
         if (data.signature_value.isNullOrBlank()) {
             data.signature_value = APKUtils.getSigMessageDigestByPkgName(context, data.signature_type, data.app_package, true).uppercase(Locale.getDefault())
         }
-        signature_md5?.text = TextFactoryUtils.getSpannedTextByHtml("<B> 签名 ${data.signature_type}</B>：${data.signature_value}")
+
+        signature_value?.text = TextFactoryUtils.getSpannedTextByHtml("<B> 签名 ${data.signature_type}</B>：${data.signature_value}")
     }
 
 }

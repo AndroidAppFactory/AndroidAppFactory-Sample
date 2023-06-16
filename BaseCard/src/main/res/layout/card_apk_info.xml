@@ -120,7 +120,7 @@
             tools:text="安装包MD5：f7312bf1113af189cba98bbddcd4affe" />
 
     <TextView
-            android:id="@+id/signature_md5"
+            android:id="@+id/signature_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

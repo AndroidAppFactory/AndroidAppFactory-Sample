@@ -103,6 +103,7 @@ class MainFragment : CommonListFragment() {
                                 p0?.let {
                                     defaultSignatureType = it
                                     temp.signature_type = it
+                                    temp.signature_value = ""
                                     view.post {
                                         mAdapter.notifyDataSetChanged()
                                     }
