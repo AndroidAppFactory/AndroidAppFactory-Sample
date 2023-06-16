@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable
 import com.bihe0832.android.base.card.R
 import com.bihe0832.android.lib.adapter.CardBaseHolder
 import com.bihe0832.android.lib.adapter.CardBaseModule
-import com.bihe0832.android.lib.utils.encrypt.MD5
 
 /**
  * @author zixie code@bihe0832.com
@@ -12,6 +11,7 @@ import com.bihe0832.android.lib.utils.encrypt.MD5
  * Description: Description
  */
 class APPItemData : CardBaseModule() {
+
     override fun getResID(): Int {
         return R.layout.card_apk_info
     }
@@ -27,7 +27,7 @@ class APPItemData : CardBaseModule() {
     var app_install_time = 0L
     var app_update_time = 0L
     var app_md5 = ""
-    var signature_type = MD5.MESSAGE_DIGEST_TYPE_MD5
+    var signature_type = ""
     var signature_value = ""
     override fun toString(): String {
         return "应用：$app_name\n" +

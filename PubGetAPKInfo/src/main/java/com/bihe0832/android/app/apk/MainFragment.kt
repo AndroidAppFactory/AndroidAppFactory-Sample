@@ -3,6 +3,7 @@ package com.bihe0832.android.app.apk
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.view.View
+import com.bihe0832.android.app.constants.ConfigConstants
 import com.bihe0832.android.app.getapk.R
 import com.bihe0832.android.base.card.apk.APPItemData
 import com.bihe0832.android.base.card.tips.TipsData
@@ -12,6 +13,7 @@ import com.bihe0832.android.common.list.swiperefresh.CommonListFragment
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.file.AAFFileTools
 import com.bihe0832.android.lib.adapter.CardBaseModule
+import com.bihe0832.android.lib.config.Config
 import com.bihe0832.android.lib.debug.DebugTools
 import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.install.InstallUtils
@@ -157,7 +159,7 @@ class MainFragment : CommonListFragment() {
     }
 
     private fun getTipsContent(color: String): String {
-        return "1. <b><font color='$color'>点击</font>应用信息</b>，可以计算APK的MD5<BR>2. <b><font color='$color'>长按</font>应用信息</b>，可以复制到剪切板或对外分享<BR>3. <b><font color='$color'>点击</font>应用图标</b>，可以调整应用签名计算算法<BR>4. <b><font color='$color'>长按</font>应用图标</b>，可以将安装包分享给好友<BR>"
+        return "1. <b><font color='$color'>点击</font>应用信息</b>，可以计算APK的MD5<BR>2. <b><font color='$color'>长按</font>应用信息</b>，可以复制到剪切板或对外分享<BR>3. <b><font color='$color'>点击</font>应用图标</b>，可以调整应用签名计算算法<BR>4. <b><font color='$color'>长按</font>应用图标</b>，可以将安装包分享给好友"
     }
 
     private fun getTempData(): List<CardBaseModule> {
@@ -182,6 +184,7 @@ class MainFragment : CommonListFragment() {
                         this.app_package = info.packageName
                         this.app_install_time = packageInfo.firstInstallTime
                         this.app_update_time = packageInfo.lastUpdateTime
+                        this.signature_type = Config.readConfig(ConfigConstants.APK.KEY_SIGNATURE_TYPE, ConfigConstants.APK.VALUE_DEFAULT_SIGNATURE_TYPE)
                         this.signature_value = APKUtils.getSigMessageDigestByPkgName(context, signature_type, app_package, false).uppercase(Locale.getDefault())
                     })
                 } catch (e: Exception) {
