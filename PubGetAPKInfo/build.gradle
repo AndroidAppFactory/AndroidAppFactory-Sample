@@ -72,12 +72,12 @@ android {
         }
 
         release {
-            keyAlias project.signingConfigs.keyAlias
-            keyPassword project.signingConfigs.keyPassword
-            storeFile file(project.signingConfigs.storeFile)
-            storePassword project.signingConfigs.storePassword
-            v1SigningEnabled project.signingConfigs.v1SigningEnabled as boolean
-            v2SigningEnabled project.signingConfigs.v2SigningEnabled as boolean
+            keyAlias project.releaseSigningConfigs.keyAlias
+            keyPassword project.releaseSigningConfigs.keyPassword
+            storeFile file(project.releaseSigningConfigs.storeFile)
+            storePassword project.releaseSigningConfigs.storePassword
+            v1SigningEnabled project.releaseSigningConfigs.v1SigningEnabled as boolean
+            v2SigningEnabled project.releaseSigningConfigs.v2SigningEnabled as boolean
         }
     }
 

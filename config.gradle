@@ -39,6 +39,16 @@ ext {
         v2SigningEnabled: true,
     ]
 
+    //签名信息
+    releaseSigningConfigs = [
+        keyAlias        : ZixieSigKeyAlias,
+        keyPassword     : ZixieSigKeyPassword,
+        storeFile       : ZixieSigPath,
+        storePassword   : ZixieSigStorePassword,
+        v1SigningEnabled: true,
+        v2SigningEnabled: true,
+    ]
+
     //使用kotlin版本
     kotlin_version = '1.7.10'
 
