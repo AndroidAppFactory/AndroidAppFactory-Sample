@@ -120,14 +120,19 @@ class MainFragment : CommonListFragment() {
                 var temp = adapter.data[position] as APPItemData
                 when (view.id) {
                     R.id.app_icon -> {
-                        APKUtils.getAPKPath(view.context, temp.app_package).let {
-                            if (FileUtils.checkFileExist(it)) {
-                                if (File(it).length() > FileUtils.SPACE_MB * 100) {
-                                    ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_big)!!)
+                        if (ZixieContext.isOfficial()) {
+                            var temp = adapter.data[position] as APPItemData
+                            DebugTools.showInfo(context, temp.app_name + "基础信息", temp.toString(), "分享")
+                        } else {
+                            APKUtils.getAPKPath(view.context, temp.app_package).let {
+                                if (FileUtils.checkFileExist(it)) {
+                                    if (File(it).length() > FileUtils.SPACE_MB * 100) {
+                                        ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_big)!!)
+                                    }
+                                    AAFFileTools.sendFile(it)
+                                } else {
+                                    ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_faild)!!)
                                 }
-                                AAFFileTools.sendFile(it)
-                            } else {
-                                ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_faild)!!)
                             }
                         }
                         return@setOnItemChildLongClickListener true
@@ -159,7 +164,11 @@ class MainFragment : CommonListFragment() {
     }
 
     private fun getTipsContent(color: String): String {
-        return "1. <b><font color='$color'>点击</font>应用信息</b>，可以计算APK的MD5<BR>2. <b><font color='$color'>长按</font>应用信息</b>，可以复制到剪切板或对外分享<BR>3. <b><font color='$color'>点击</font>应用图标</b>，可以调整应用签名计算算法<BR>4. <b><font color='$color'>长按</font>应用图标</b>，可以将安装包分享给好友"
+        return "1. <b><font color='$color'>点击</font>应用信息</b>，可以计算APK的MD5<BR>2. <b><font color='$color'>长按</font>应用信息</b>，可以复制到剪切板或对外分享<BR>3. <b><font color='$color'>点击</font>应用图标</b>，可以调整应用签名计算算法<BR>" + if (ZixieContext.isOfficial()) {
+            ""
+        } else {
+            "4. <b><font color='$color'>长按</font>应用图标</b>，可以将安装包分享给好友"
+        }
     }
 
     private fun getTempData(): List<CardBaseModule> {

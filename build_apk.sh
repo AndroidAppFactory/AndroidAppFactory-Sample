@@ -248,9 +248,14 @@ if [ "$isOfficial"x = "true"x ]; then
   chmod +x $localPath/gradlew
   cd $localPath && ./gradlew clean
   cd $localPath && ./gradlew :${appModule}:assembleRelease -x lint
+  cd $localPath && ./gradlew :${appModule}:bundle
   checkResult
   mkdir $localPath/bin/temp/official
   rm -fr $localPath/bin/temp/official/*
+
+  # 复制aab
+  cp $localPath/${appModule}/build/outputs/bundle/release/${appPrefix}_V${versionWithCode}-release.aab $localPath/bin
+
   #添加资源混淆
   java -jar $localPath/AndResGuard-cli-1.2.0.jar $localPath/${appModule}/build/outputs/apk/release/${appPrefix}_V${versionWithCode}-release.apk -config $localPath/proguard-rules-resource.xml -out $localPath/bin/temp/official
   # 签名完整包
