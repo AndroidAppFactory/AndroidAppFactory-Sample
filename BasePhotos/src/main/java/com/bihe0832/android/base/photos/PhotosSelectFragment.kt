@@ -1,22 +1,21 @@
 package com.bihe0832.android.base.photos
 
-import android.Manifest
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
-import com.bihe0832.android.app.permission.AAFPermissionManager.SCENE_SELECT_PHOTO
-import com.bihe0832.android.app.permission.AAFPermissionManager.SCENE_TAKE_PHOTO
+import com.bihe0832.android.app.permission.SCENE_SELECT_PHOTO
+import com.bihe0832.android.app.permission.SCENE_TAKE_PHOTO
 import com.bihe0832.android.base.card.photo.IconTextData
 import com.bihe0832.android.common.list.CardItemForCommonList
 import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.swiperefresh.CommonListFragment
+import com.bihe0832.android.common.permission.AAFPermissionManager
+import com.bihe0832.android.common.permission.PermissionResultOfAAF
 import com.bihe0832.android.common.photos.getAutoChangedPhotoUri
 import com.bihe0832.android.common.photos.getPhotoContent
 import com.bihe0832.android.common.photos.takePhoto
-import com.bihe0832.android.common.photos.takePhotoPermission
 import com.bihe0832.android.framework.ZixieContext
-import com.bihe0832.android.framework.permission.PermissionResultOfAAF
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.permission.PermissionManager
 import com.bihe0832.android.lib.permission.ui.PermissionsActivityV2
@@ -89,7 +88,7 @@ open class PhotosSelectFragment : CommonListFragment() {
 
     open fun takePhoto() {
         mTakePhotoUri = activity!!.getAutoChangedPhotoUri()
-        if (PermissionManager.isAllPermissionOK(context!!, takePhotoPermission)) {
+        if (PermissionManager.isAllPermissionOK(context!!, AAFPermissionManager.takePhotoPermission)) {
             activity!!.takePhoto(mTakePhotoUri)
         } else {
             PermissionManager.checkPermission(activity, SCENE_TAKE_PHOTO, true, PermissionsActivityV2::class.java, object : PermissionResultOfAAF(false) {
@@ -108,7 +107,7 @@ open class PhotosSelectFragment : CommonListFragment() {
 
                 }
 
-            }, takePhotoPermission)
+            }, AAFPermissionManager.takePhotoPermission)
         }
     }
 
@@ -120,7 +119,7 @@ open class PhotosSelectFragment : CommonListFragment() {
                 override fun onSuccess() {
                     activity!!.getPhotoContent()
                 }
-            }, com.bihe0832.android.common.photos.selectPhotoPermission)
+            }, AAFPermissionManager.selectPhotoPermission)
         }
     }
 

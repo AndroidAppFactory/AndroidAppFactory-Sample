@@ -20,7 +20,7 @@ import com.bihe0832.android.test.widget.DebugWidget
 class DebugMainActivity : AAFCommonMainActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar(R.id.common_toolbar, "DebugMainActivity", false, needBack = true, iconRes = R.drawable.icon_left_arrow)
+        initToolbar(R.id.common_toolbar, "DebugMainActivity", false, needBack = true, iconRes = R.drawable.ic_left_arrow)
         if (BuildUtils.SDK_INT > Build.VERSION_CODES.GINGERBREAD) {
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         }

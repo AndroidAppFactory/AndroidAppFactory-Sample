@@ -8,7 +8,7 @@ import android.os.Process
 import android.util.Log
 import android.webkit.WebView
 import com.bihe0832.android.app.message.AAFMessageManager
-import com.bihe0832.android.app.permission.AAFPermissionManager
+import com.bihe0832.android.app.permission.initPermission
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.common.network.NetworkChangeManager
 import com.bihe0832.android.common.webview.tbs.WebViewHelper
@@ -58,7 +58,7 @@ object AppFactoryInit {
             Log.e(ZixieCoreInit.TAG, "———————————————————————— 设备信息 ————————————————————————")
 
             RouterHelper.initRouter()
-            AAFPermissionManager.initPermission()
+            initPermission()
             AAFMessageManager.initModule(application)
             ThreadManager.getInstance().start {
                 DownloadUtils.init(ctx, 10, ZixieContext.isDebug())

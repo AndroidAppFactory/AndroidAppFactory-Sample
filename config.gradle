@@ -10,7 +10,7 @@ ext {
     //Android 最佳适配Android 版本
     targetSdkVersion = 31
     //版本号，正式版本会由自动构建替换
-    versionCode = 1
+    versionCode = 111
     //版本名，正式版本会由自动构建替换
     versionName = "1.0.0"
     //Android 构建包时是否混淆代码
@@ -52,9 +52,9 @@ ext {
     //使用kotlin版本
     kotlin_version = '1.7.10'
 
-    aaf_version = '5.18.6'
-    aaf_test_version = '6.0.0'
-    aaf_screen_version = '6.0.0'
-    aaf_tbs_version = '5.18.6'
+    aaf_version = '6.2.2'
+    aaf_test_version = '6.2.2'
+    aaf_screen_version = '6.2.2'
+    aaf_tbs_version = '6.2.2'
 
 }

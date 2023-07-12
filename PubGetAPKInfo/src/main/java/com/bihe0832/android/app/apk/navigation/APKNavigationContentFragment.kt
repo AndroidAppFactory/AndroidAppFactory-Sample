@@ -5,6 +5,7 @@ import android.view.View
 import com.bihe0832.android.app.constants.ConfigConstants
 import com.bihe0832.android.app.message.AAFMessageManager
 import com.bihe0832.android.app.router.RouterConstants
+import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.ui.navigation.AAFNavigationContentFragment
 import com.bihe0832.android.common.about.R
 import com.bihe0832.android.common.settings.SettingsItem
@@ -27,9 +28,10 @@ open class APKNavigationContentFragment : AAFNavigationContentFragment() {
 
     override fun getDataList(): ArrayList<CardBaseModule> {
         return ArrayList<CardBaseModule>().apply {
-            add(getAboutAPP(UpdateInfoLiveData.value) {
+            add(SettingsItem.getAboutAPP(UpdateInfoLiveData.value) {
                 RouterAction.openPageByRouter(RouterConstants.MODULE_NAME_BASE_ABOUT)
             })
+
             add(SettingsItem.getMessage(AAFMessageManager.getUnreadNum()) {
                 RouterAction.openPageByRouter(RouterConstants.MODULE_NAME_MESSAGE)
             })
@@ -48,7 +50,6 @@ open class APKNavigationContentFragment : AAFNavigationContentFragment() {
             mHeaderTextBold = true
             mShowDriver = true
             mShowGo = true
-            mItemIsNew = false
             mHeaderListener = View.OnClickListener {
                 DialogUtils.showInputDialog(context!!, title, "在下方输入对应签名计算算法的Key值并点击确定即可切换默认签名算法", Config.readConfig(ConfigConstants.APK.KEY_SIGNATURE_TYPE, ConfigConstants.APK.VALUE_DEFAULT_SIGNATURE_TYPE)) { p0 ->
                     if (!TextUtils.isEmpty(p0)) {

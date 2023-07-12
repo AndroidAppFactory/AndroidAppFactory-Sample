@@ -53,7 +53,7 @@ class InputToolsBar : LinearLayout {
         }
 
         keyboard_logcat.setOnClickListener {
-            logInput(TAG + " 剪切板数据：\n \n" + ClipboardUtil.pasteFromClipboard(context) + "\n \n")
+//            logInput(TAG + " 剪切板数据：\n \n" + pasteFromClipboard(context) + "\n \n")
             ZixieContext.showToast("剪切板数据已经打印到Logcat，TAG 为：$TAG")
         }
 
