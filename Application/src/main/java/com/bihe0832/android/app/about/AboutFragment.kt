@@ -16,10 +16,13 @@ open class AboutFragment : com.bihe0832.android.common.about.AboutFragment() {
                 }
             }))
             add(SettingsItem.getVersionList())
-            add(SettingsItem.getFeedbackURL())
+            add(getFeedbackItem(activity))
         }.apply {
             processLastItemDriver()
         }
     }
+}
 
+fun getFeedbackItem(activity: Activity?): SettingsData {
+    return SettingsItem.getFeedbackURL()
 }

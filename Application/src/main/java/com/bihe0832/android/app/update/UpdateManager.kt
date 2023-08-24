@@ -45,7 +45,7 @@ object UpdateManager {
     private fun fetchUpdate(activity: Activity, successAction: (info: UpdateDataFromCloud) -> Unit, failedAction: () -> Unit) {
         object : HttpBasicRequest() {
             override fun getUrl(): String {
-                return AAFNetWorkApi.getCommonURL(activity.getString(R.string.update_url), "")
+                return AAFNetWorkApi.getCommonURL(ThemeResourcesManager.getString(R.string.update_url), "")
             }
 
             override fun getResponseHandler(): HttpResponseHandler {

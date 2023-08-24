@@ -13,7 +13,7 @@ import com.bihe0832.android.lib.adapter.CardBaseModule
 
 /**
  *
- * @author hardyshi code@bihe0832.com
+ * @author zixie code@bihe0832.com
  * Created on 2023/4/10.
  * Description: Description
  *
@@ -23,11 +23,10 @@ open class AAFNavigationContentFragment : CommonNavigationContentFragment() {
     override fun initView(view: View) {
         super.initView(view)
         AAFMessageManager.getMessageLiveData().observe(this) { t ->
-            mDataLiveData.initData()
+            changeMessageRedDot(ThemeResourcesManager.getString(R.string.settings_message_title), AAFMessageManager.getUnreadNum())
         }
-
         UpdateInfoLiveData.observe(this) { t ->
-            mDataLiveData.initData()
+            changeUpdateRedDot(SettingsItem.getAboutTitle(), t, false)
         }
     }
 
@@ -48,6 +47,7 @@ open class AAFNavigationContentFragment : CommonNavigationContentFragment() {
 
             add(PermissionItem.getPermission(PermissionFragment::class.java))
             add(SettingsItem.getFeedbackURL())
+            add(getFeedbackItem(activity))
             add(SettingsItem.getShareAPP(true))
             addAll(super.getDataList())
             add(SettingsItem.getZixie())
@@ -56,7 +56,5 @@ open class AAFNavigationContentFragment : CommonNavigationContentFragment() {
         }
     }
 
-    fun getBaseDataList(): ArrayList<CardBaseModule> {
-        return super.getDataList()
-    }
+
 }

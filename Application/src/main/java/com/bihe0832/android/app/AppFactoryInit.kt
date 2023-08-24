@@ -94,7 +94,7 @@ object AppFactoryInit {
     @Synchronized
     private fun initExtra(application: android.app.Application) {
         // 初始化网络变量和监听
-        NetworkChangeManager.init(application.applicationContext, true)
+        NetworkChangeManager.init(application.applicationContext, getNetType = true, getSSID = true, getBssID = true)
         // 监听信号变化，统一到MobileUtil
         MobileUtil.registerMobileSignalListener(application.applicationContext)
         CardInfoHelper.getInstance().enableDebug(!ZixieContext.isOfficial())
