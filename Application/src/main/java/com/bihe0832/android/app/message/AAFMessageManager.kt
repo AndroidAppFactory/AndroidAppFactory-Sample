@@ -29,26 +29,36 @@ object AAFMessageManager : MessageManager() {
     }
 
     override fun fetchNewMsg() {
-        fetchMessageByFile(AAFNetWorkApi.getCommonURL(ThemeResourcesManager.getString(R.string.message_url)
-                ?: "", ""))
+        fetchMessageByURLList(
+            AAFNetWorkApi.getCommonURL(
+                ThemeResourcesManager.getString(R.string.message_url)
+                    ?: "",
+                "",
+            ),
+        )
     }
 
     fun showMessage(activity: Activity, messageInfoItem: MessageInfoItem, showFace: Boolean) {
         mDependenceBlockDialogManager.getDependentTaskManager().addTask(messageInfoItem.messageID, {
             ThreadManager.getInstance().runOnUIThread {
-                showMessage(activity, messageInfoItem, showFace, object : OnDialogListener {
-                    override fun onPositiveClick() {
-                        mDependenceBlockDialogManager.getDependentTaskManager().finishTask(messageInfoItem.messageID)
-                    }
+                showMessage(
+                    activity,
+                    messageInfoItem,
+                    showFace,
+                    object : OnDialogListener {
+                        override fun onPositiveClick() {
+                            mDependenceBlockDialogManager.getDependentTaskManager().finishTask(messageInfoItem.messageID)
+                        }
 
-                    override fun onNegativeClick() {
-                        onPositiveClick()
-                    }
+                        override fun onNegativeClick() {
+                            onPositiveClick()
+                        }
 
-                    override fun onCancel() {
-                        onPositiveClick()
-                    }
-                })
+                        override fun onCancel() {
+                            onPositiveClick()
+                        }
+                    },
+                )
             }
         }, mutableListOf())
     }
