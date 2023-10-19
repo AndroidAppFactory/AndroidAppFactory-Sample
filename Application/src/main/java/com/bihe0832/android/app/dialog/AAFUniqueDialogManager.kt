@@ -1,9 +1,9 @@
 package com.bihe0832.android.app.dialog
 
 import android.content.Context
-import com.bihe0832.android.lib.ui.dialog.OnDialogListener
-import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
-import com.bihe0832.android.lib.ui.dialog.impl.UniqueDialogManager
+import com.bihe0832.android.lib.ui.dialog.callback.OnDialogListener
+import com.bihe0832.android.lib.ui.dialog.tools.DialogUtils
+import com.bihe0832.android.lib.ui.dialog.tools.UniqueDialogManager
 
 /**
  *
@@ -19,13 +19,13 @@ object AAFUniqueDialogManager {
             setShowDialogInterface(object : UniqueDialogManager.ShowDialogInterface {
                 override fun showDialog(context: Context, title: String, content: String, positiveText: String, negativeText: String, canCancel: Boolean, listener: OnDialogListener): Boolean {
                     DialogUtils.showConfirmDialog(
-                            context,
-                            title,
-                            content,
-                            positiveText,
-                            negativeText,
-                            canCancel,
-                            listener
+                        context,
+                        title,
+                        content,
+                        positiveText,
+                        negativeText,
+                        canCancel,
+                        listener,
 
                     )
                     return true

@@ -36,7 +36,7 @@ class AAFNavigationContentFragment : CommonNavigationContentFragment() {
         }
     }
 
-    override fun getDataList(): ArrayList<CardBaseModule> {
+    override fun getDataList(processLast: Boolean): ArrayList<CardBaseModule> {
         return ArrayList<CardBaseModule>().apply {
             add(
                 SettingsItem.getAboutAPP(UpdateInfoLiveData.value) {
@@ -61,10 +61,11 @@ class AAFNavigationContentFragment : CommonNavigationContentFragment() {
             add(SettingsItem.getFeedbackURL())
             add(getFeedbackItem(activity))
             add(SettingsItem.getShareAPP(true))
-            addAll(super.getDataList())
+            addAll(super.getDataList(false))
+            add(SettingsItem.getClearCache(activity!!))
             add(SettingsItem.getZixie())
         }.apply {
-            processLastItemDriver()
+            processLastItemDriver(processLast)
         }
     }
 }

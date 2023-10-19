@@ -18,13 +18,17 @@ object AAFLoggerFile {
     const val MODULE_INPUT = "input"
 
     fun logUpdate(msg: String) {
-        log(MODULE_UPDATE, msg)
+        logFile(MODULE_UPDATE, msg)
     }
 
 
 
     fun log(module: String, msg: String) {
         LoggerFile.log(LoggerFile.getZixieFileLogPathByModule(module), msg)
+    }
+
+    fun logFile(module: String, msg: String) {
+        LoggerFile.logFile(LoggerFile.getZixieFileLogPathByModule(module), msg)
     }
 
     fun openLog(module: String) {

@@ -1,20 +1,24 @@
 package com.bihe0832.android.app.router
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.text.TextUtils
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.privacy.AgreementPrivacy
 import com.bihe0832.android.framework.router.RouterAction
 import com.bihe0832.android.framework.router.RouterAction.SCHEME
 import com.bihe0832.android.framework.router.RouterConstants
 import com.bihe0832.android.framework.router.RouterInterrupt
+import com.bihe0832.android.lib.lifecycle.AAFActivityLifecycleChangedListener
+import com.bihe0832.android.lib.lifecycle.ActivityObserver
 import com.bihe0832.android.lib.lifecycle.ApplicationObserver
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.request.URLUtils
+import com.bihe0832.android.lib.router.RouterMappingManager
 import com.bihe0832.android.lib.router.Routers
 import com.bihe0832.android.lib.utils.intent.IntentUtils
-
 
 /**
  * Created by zixie on 2017/6/27.
@@ -22,38 +26,49 @@ import com.bihe0832.android.lib.utils.intent.IntentUtils
  */
 object RouterHelper {
 
-    //需要拦截
+    // 需要拦截
     private val needCheckInterceptHostList by lazy {
         getNeedCheckInterceptHostList()
     }
 
-    //需要登录
+    // 需要登录
     private val needLoginInterceptHostList by lazy {
         getNeedLoginInterceptHostList()
     }
 
-    //不需要检查，直接跳过的路由
+    // 不需要检查，直接跳过的路由
     private val skipListHostList by lazy {
         getSkipListHostList()
     }
 
-    //一些特殊场景，需要直接跳过的URL（完整URL）
+    // 一些特殊场景，需要直接跳过的URL（完整URL）
     private val tempSkipRouterList = mutableListOf<String>()
 
     fun initRouter() {
-        //应用前后台检测
+        // 应用前后台检测
         ApplicationObserver.addStatusChangeListener(object : ApplicationObserver.APPStatusChangeListener {
             override fun onForeground() {
                 ZLog.d("onForeground")
             }
 
             override fun onBackground() {
-
             }
         })
 
+        ActivityObserver.setActivityLifecycleChangedListener(object : AAFActivityLifecycleChangedListener() {
 
-        //路由拦截初始化
+            override fun onActivityResumed(activity: Activity) {
+                if (!ZixieContext.isOfficial()) {
+                    RouterMappingManager.getInstance().getRouterHost(activity::class.java).let {
+                        if (!TextUtils.isEmpty(it)) {
+                            ZLog.d("Router", "Activity ：${activity.javaClass} 对应 Router 为：" + it)
+                        }
+                    }
+                }
+            }
+        })
+
+        // 路由拦截初始化
         RouterInterrupt.init(object : RouterInterrupt.RouterProcess {
 
             override fun needLogin(uri: Uri, source: String): Boolean {
@@ -64,7 +79,7 @@ object RouterHelper {
                 return if (skipListHostList.contains(uri.host)) {
                     false
                 } else {
-                    //需要被拦截
+                    // 需要被拦截
                     needCheckInterceptHostList.contains(uri.host) || !AgreementPrivacy.hasAgreedPrivacy()
                 }
             }
@@ -84,9 +99,18 @@ object RouterHelper {
                     if (Routers.ROUTERS_VALUE_PARSE_SOURCE.equals(source, ignoreCase = true)) {
                         goSplash(null)
                     } else {
-                        val resolveActivityPackage = Intent.parseUri(uri.toString(), Intent.URI_INTENT_SCHEME).resolveActivity(it.packageManager).packageName
-                        if (!resolveActivityPackage.equals(it.packageName, ignoreCase = true)) {
-                            IntentUtils.jumpToOtherApp(uri.toString(), context)
+                        try {
+                            val resolveActivityPackage =
+                                Intent.parseUri(uri.toString(), Intent.URI_INTENT_SCHEME).apply {
+                                    addCategory(Intent.CATEGORY_BROWSABLE)
+                                    setComponent(null)
+                                    setSelector(null)
+                                }.resolveActivity(it.packageManager).packageName
+                            if (!resolveActivityPackage.equals(it.packageName, ignoreCase = true)) {
+                                IntentUtils.jumpToOtherApp(uri.toString(), context)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     }
                 }

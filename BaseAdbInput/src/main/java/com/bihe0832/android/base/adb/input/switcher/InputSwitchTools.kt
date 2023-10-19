@@ -16,7 +16,7 @@ import com.bihe0832.android.framework.R
 import com.bihe0832.android.lib.notification.NotifyManager
 import com.bihe0832.android.lib.permission.ui.PermissionDialog
 import com.bihe0832.android.lib.thread.ThreadManager
-import com.bihe0832.android.lib.ui.dialog.OnDialogListener
+import com.bihe0832.android.lib.ui.dialog.callback.OnDialogListener
 import com.bihe0832.android.lib.utils.intent.IntentUtils
 
 /**
@@ -44,7 +44,6 @@ object InputSwitchTools {
 
     fun isSelected(context: Context?): Boolean {
         return Settings.Secure.getString(context?.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD).equals(getIMEName(context))
-
     }
 
     fun closeNotify(context: Context?) {
@@ -89,21 +88,26 @@ object InputSwitchTools {
             showInputSwitchNotify(activity)
         } else {
             PermissionDialog(activity).let {
-                it.show("切换输入法", "通知", true, object : OnDialogListener {
-                    override fun onPositiveClick() {
-                        IntentUtils.startAppSettings(activity, Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                        it.dismiss()
-                    }
+                it.show(
+                    "切换输入法",
+                    "通知",
+                    true,
+                    object : OnDialogListener {
+                        override fun onPositiveClick() {
+                            IntentUtils.startAppSettings(activity, Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                            it.dismiss()
+                        }
 
-                    override fun onNegativeClick() {
-                        showInputSwitchNotify(activity)
-                        it.dismiss()
-                    }
+                        override fun onNegativeClick() {
+                            showInputSwitchNotify(activity)
+                            it.dismiss()
+                        }
 
-                    override fun onCancel() {
-                        it.dismiss()
-                    }
-                })
+                        override fun onCancel() {
+                            it.dismiss()
+                        }
+                    },
+                )
             }
         }
     }

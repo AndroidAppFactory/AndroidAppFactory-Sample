@@ -46,7 +46,7 @@ object UpdateManager {
     private fun fetchUpdate(activity: Activity, successAction: (info: UpdateDataFromCloud) -> Unit, failedAction: () -> Unit) {
         object : HttpBasicRequest() {
             override fun getUrl(): String {
-                return AAFNetWorkApi.getCommonURL(ThemeResourcesManager.getString(R.string.update_url) ?: "", "")
+                return AAFNetWorkApi.getCommonURL(ThemeResourcesManager.getString(R.string.update_url), "")
             }
 
             override fun getResponseHandler(): HttpResponseHandler {
@@ -70,19 +70,19 @@ object UpdateManager {
 
                             var updateInfo = JsonHelper.fromJson(updateString, UpdateDataFromCloud::class.java)
                             if (null == updateInfo) {
-                                ZLog.d("$TAG:updateInfo null:")
+                                ZLog.d("${TAG}:updateInfo null:")
                                 failedAction()
                             } else {
                                 updateInfo.setUpdateType()
-                                ZLog.d("$TAG:fetchUpdate: $statusCode $updateString updateType:${updateInfo.updateType}")
+                                ZLog.d("${TAG}:fetchUpdate: $statusCode $updateString updateType:${updateInfo.updateType}")
                                 successAction(updateInfo)
                             }
                         } catch (e: Exception) {
-                            ZLog.d("$TAG:fetchUpdate:" + e.message)
+                            ZLog.d("${TAG}:fetchUpdate:" + e.message)
                             failedAction()
                         }
                     } else {
-                        ZLog.d("$TAG:fetchUpdate: $statusCode $updateString")
+                        ZLog.d("${TAG}:fetchUpdate: $statusCode $updateString")
                         failedAction()
                     }
                 }
