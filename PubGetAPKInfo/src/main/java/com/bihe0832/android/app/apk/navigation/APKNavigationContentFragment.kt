@@ -5,16 +5,16 @@ import android.view.View
 import com.bihe0832.android.app.constants.ConfigConstants
 import com.bihe0832.android.app.message.AAFMessageManager
 import com.bihe0832.android.app.router.RouterConstants
-import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.ui.navigation.AAFNavigationContentFragment
 import com.bihe0832.android.common.about.R
+import com.bihe0832.android.common.permission.settings.PermissionItem
 import com.bihe0832.android.common.settings.SettingsItem
 import com.bihe0832.android.common.settings.card.SettingsData
 import com.bihe0832.android.framework.router.RouterAction
 import com.bihe0832.android.framework.update.UpdateInfoLiveData
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.config.Config
-import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
+import com.bihe0832.android.lib.ui.dialog.tools.DialogUtils
 
 /**
  *
@@ -25,21 +25,30 @@ import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
  */
 open class APKNavigationContentFragment : AAFNavigationContentFragment() {
 
-
-    override fun getDataList(): ArrayList<CardBaseModule> {
+    override fun getDataList(processLast: Boolean): ArrayList<CardBaseModule> {
         return ArrayList<CardBaseModule>().apply {
-            add(SettingsItem.getAboutAPP(UpdateInfoLiveData.value) {
-                RouterAction.openPageByRouter(RouterConstants.MODULE_NAME_BASE_ABOUT)
-            })
-
-            add(SettingsItem.getMessage(AAFMessageManager.getUnreadNum()) {
-                RouterAction.openPageByRouter(RouterConstants.MODULE_NAME_MESSAGE)
-            })
+            add(
+                SettingsItem.getAboutAPP(UpdateInfoLiveData.value) {
+                    RouterAction.openPageByRouter(RouterConstants.MODULE_NAME_BASE_ABOUT)
+                },
+            )
+            if (AAFMessageManager.getUnreadNum() > 0) {
+                add(
+                    SettingsItem.getMessage(AAFMessageManager.getUnreadNum()) {
+                        RouterAction.openPageByRouter(RouterConstants.MODULE_NAME_MESSAGE)
+                    },
+                )
+            } else {
+                add(
+                    SettingsItem.getMessage(-1) {
+                        RouterAction.openPageByRouter(RouterConstants.MODULE_NAME_MESSAGE)
+                    },
+                )
+            }
             add(getChangeSignatureType())
-            add(SettingsItem.getPermission(APKPermissionFragment::class.java))
-            addAll(getBaseDataList())
+            addAll(getBaseDataList(processLast))
         }.apply {
-            processLastItemDriver()
+            processLastItemDriver(processLast)
         }
     }
 
@@ -59,6 +68,4 @@ open class APKNavigationContentFragment : AAFNavigationContentFragment() {
             }
         }
     }
-
-
 }

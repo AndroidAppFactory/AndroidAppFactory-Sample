@@ -53,10 +53,18 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
         app_update?.text = "最后更新：${DateUtil.getDateEN(data.app_update_time)}"
         app_md5?.text = TextFactoryUtils.getSpannedTextByHtml("<B> APK MD5</B>：${data.app_md5}")
         if (data.signature_value.isNullOrBlank()) {
-            data.signature_value = APKUtils.getSigMessageDigestByPkgName(context, data.signature_type, data.app_package, true).uppercase(Locale.getDefault())
+            data.signature_value =
+                APKUtils.getSigMessageDigestByPkgName(context, data.signature_type, data.app_package, true)
+                    .uppercase(Locale.getDefault())
         }
 
-        signature_value?.text = TextFactoryUtils.getSpannedTextByHtml("<B> 签名 ${data.signature_type}</B>：${data.signature_value}")
+        if (data.androidPublicKey.isNullOrBlank()) {
+            data.androidPublicKey = APKUtils.getSigPublicKey(context, data.app_package).uppercase(Locale.getDefault())
+            data.windowsPublicKey = APKUtils.transAndroidPublicKeyToWindows(data.androidPublicKey).uppercase(Locale.getDefault())
+        }
+
+        signature_value?.text =
+            TextFactoryUtils.getSpannedTextByHtml("<B> 签名 ${data.signature_type}</B>：${data.signature_value}")
     }
 
 }

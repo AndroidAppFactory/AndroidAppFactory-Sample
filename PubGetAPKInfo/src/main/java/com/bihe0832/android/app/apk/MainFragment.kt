@@ -20,12 +20,12 @@ import com.bihe0832.android.lib.install.InstallUtils
 import com.bihe0832.android.lib.lifecycle.INSTALL_TYPE_NOT_FIRST
 import com.bihe0832.android.lib.theme.ThemeResourcesManager
 import com.bihe0832.android.lib.thread.ThreadManager
-import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
-import com.bihe0832.android.lib.ui.dialog.input.InputDialogCompletedCallback
+import com.bihe0832.android.lib.ui.dialog.callback.DialogCompletedStringCallback
+import com.bihe0832.android.lib.ui.dialog.tools.DialogUtils
 import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.encrypt.MD5
 import java.io.File
-import java.util.*
+import java.util.Locale
 
 class MainFragment : CommonListFragment() {
     var hasShowTips = false
@@ -52,7 +52,6 @@ class MainFragment : CommonListFragment() {
         override fun canRefresh(): Boolean {
             return true
         }
-
     }
 
     override fun initView(view: View) {
@@ -100,19 +99,25 @@ class MainFragment : CommonListFragment() {
                         }
                     }
                     R.id.app_icon -> {
-                        DialogUtils.showInputDialog(activity!!, "签名信息获取算法", "在下方输入框输入算法名称后，点击「确认」即可设定并计算签名信息", defaultSignatureType, object : InputDialogCompletedCallback {
-                            override fun onInputCompleted(p0: String?) {
-                                p0?.let {
-                                    defaultSignatureType = it
-                                    temp.signature_type = it
-                                    temp.signature_value = ""
-                                    view.post {
-                                        mAdapter.notifyDataSetChanged()
+                        DialogUtils.showInputDialog(
+                            activity!!,
+                            "签名信息获取算法",
+                            "在下方输入框输入算法名称后，点击「确认」即可设定并计算签名信息",
+                            defaultSignatureType,
+                            object :
+                                DialogCompletedStringCallback {
+                                override fun onResult(p0: String?) {
+                                    p0?.let {
+                                        defaultSignatureType = it
+                                        temp.signature_type = it
+                                        temp.signature_value = ""
+                                        view.post {
+                                            mAdapter.notifyDataSetChanged()
+                                        }
                                     }
                                 }
-                            }
-
-                        })
+                            },
+                        )
                     }
                 }
             }
@@ -143,7 +148,6 @@ class MainFragment : CommonListFragment() {
                         return@setOnItemChildLongClickListener true
                     }
                 }
-
             }
             setOnItemLongClickListener { adapter, view, position ->
                 var temp = adapter.data[position] as APPItemData
@@ -152,7 +156,6 @@ class MainFragment : CommonListFragment() {
             }
         }
     }
-
 
     private fun showTips() {
         if (ZixieContext.isFirstStart() > INSTALL_TYPE_NOT_FIRST) {
@@ -164,42 +167,59 @@ class MainFragment : CommonListFragment() {
     }
 
     private fun getTipsContent(color: String): String {
-        return "1. <b><font color='$color'>点击</font>应用信息</b>，可以计算APK的MD5<BR>2. <b><font color='$color'>长按</font>应用信息</b>，可以复制到剪切板或对外分享<BR>3. <b><font color='$color'>点击</font>应用图标</b>，可以调整应用签名计算算法<BR>" + if (ZixieContext.isOfficial()) {
-            ""
-        } else {
-            "4. <b><font color='$color'>长按</font>应用图标</b>，可以将安装包分享给好友"
-        }
+        return "1. <b><font color='$color'>点击</font>应用信息</b>，可以计算APK的MD5<BR>" +
+            "2. <b><font color='$color'>长按</font>应用信息</b>，可以复制到剪切板或对外分享<BR>" +
+            "3. <b><font color='$color'>点击</font>应用图标</b>，可以调整应用签名计算算法" + if (ZixieContext.isOfficial()) {
+                ""
+            } else {
+                "<BR>4. <b><font color='$color'>长按</font>应用图标</b>，可以将安装包分享给好友"
+            }
     }
 
     private fun getTempData(): List<CardBaseModule> {
         return mutableListOf<CardBaseModule>().apply {
-            add(TipsData().apply {
-                this.mContentText = "<big><b>使用说明：</b></big><BR>" + getTipsContent("#182B37")
-
-            })
+            add(
+                TipsData().apply {
+                    this.mContentText = "<big><b>使用说明：</b></big><BR>" + getTipsContent("#182B37")
+                },
+            )
             var appList = context?.packageManager?.getInstalledApplications(PackageManager.GET_SIGNATURES)
-                    ?: emptyList()
+                ?: emptyList()
 
-            appList.filter { (it.flags and ApplicationInfo.FLAG_SYSTEM == 0) && !it.packageName.equals(context?.packageName) }.map {
-                APKUtils.getInstalledPackage(context, it.packageName)
-            }.sortedByDescending { it.lastUpdateTime }.forEach { info ->
-                try {
-                    var packageInfo = APKUtils.getInstalledPackage(context, info.packageName)
-                    add(APPItemData().apply {
-                        this.app_icon = packageInfo?.applicationInfo?.loadIcon(context!!.packageManager)
-                        this.app_name = packageInfo?.applicationInfo?.loadLabel(context!!.packageManager)?.toString()
-                                ?: ""
-                        this.app_version = packageInfo.versionName + "." + packageInfo.versionCode
-                        this.app_package = info.packageName
-                        this.app_install_time = packageInfo.firstInstallTime
-                        this.app_update_time = packageInfo.lastUpdateTime
-                        this.signature_type = Config.readConfig(ConfigConstants.APK.KEY_SIGNATURE_TYPE, ConfigConstants.APK.VALUE_DEFAULT_SIGNATURE_TYPE)
-                        this.signature_value = APKUtils.getSigMessageDigestByPkgName(context, signature_type, app_package, false).uppercase(Locale.getDefault())
-                    })
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            appList.filter { (it.flags and ApplicationInfo.FLAG_SYSTEM == 0) && !it.packageName.equals(context?.packageName) }
+                .map {
+                    APKUtils.getInstalledPackage(context, it.packageName)
+                }.sortedByDescending { it.lastUpdateTime }.forEach { info ->
+                    try {
+                        var packageInfo = APKUtils.getInstalledPackage(context, info.packageName)
+                        add(
+                            APPItemData().apply {
+                                this.app_icon = packageInfo?.applicationInfo?.loadIcon(context!!.packageManager)
+                                this.app_name =
+                                    packageInfo?.applicationInfo?.loadLabel(context!!.packageManager)?.toString()
+                                        ?: ""
+                                this.app_version = packageInfo.versionName + "." + packageInfo.versionCode
+                                this.app_package = info.packageName
+                                this.app_install_time = packageInfo.firstInstallTime
+                                this.app_update_time = packageInfo.lastUpdateTime
+                                this.signature_type = Config.readConfig(
+                                    ConfigConstants.APK.KEY_SIGNATURE_TYPE,
+                                    ConfigConstants.APK.VALUE_DEFAULT_SIGNATURE_TYPE,
+                                )
+                                this.signature_value =
+                                    APKUtils.getSigMessageDigestByPkgName(
+                                        context,
+                                        signature_type,
+                                        app_package,
+                                        false,
+                                    )
+                                        .uppercase(Locale.getDefault())
+                            },
+                        )
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
-            }
         }
     }
 }
