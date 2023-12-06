@@ -6,6 +6,7 @@ import com.bihe0832.android.app.message.AAFMessageManager
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.common.main.CommonNavigationContentFragment
 import com.bihe0832.android.common.settings.SettingsItem
+import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.router.RouterAction
 import com.bihe0832.android.framework.update.UpdateInfoLiveData
 import com.bihe0832.android.lib.adapter.CardBaseModule
@@ -66,7 +67,9 @@ open class AAFNavigationContentFragment : CommonNavigationContentFragment() {
             add(SettingsItem.getVersionList())
             add(SettingsItem.getClearCache(activity!!))
             add(SettingsItem.getZixie())
-            add(SettingsItem.getDebug())
+            if (!ZixieContext.isOfficial()) {
+                add(SettingsItem.getDebug())
+            }
         }.apply {
             processLastItemDriver(processLast)
         }
