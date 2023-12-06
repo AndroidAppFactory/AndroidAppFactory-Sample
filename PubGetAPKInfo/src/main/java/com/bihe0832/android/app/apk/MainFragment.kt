@@ -169,11 +169,8 @@ class MainFragment : CommonListFragment() {
     private fun getTipsContent(color: String): String {
         return "1. <b><font color='$color'>点击</font>应用信息</b>，可以计算APK的MD5<BR>" +
             "2. <b><font color='$color'>长按</font>应用信息</b>，可以复制到剪切板或对外分享<BR>" +
-            "3. <b><font color='$color'>点击</font>应用图标</b>，可以调整应用签名计算算法" + if (ZixieContext.isOfficial()) {
-                ""
-            } else {
-                "<BR>4. <b><font color='$color'>长按</font>应用图标</b>，可以将安装包分享给好友"
-            }
+            "3. <b><font color='$color'>点击</font>应用图标</b>，可以调整应用签名计算算法<BR>" +
+            "4. <b><font color='$color'>长按</font>应用图标</b>，可以将安装包分享给好友"
     }
 
     private fun getTempData(): List<CardBaseModule> {
