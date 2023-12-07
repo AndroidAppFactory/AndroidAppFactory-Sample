@@ -8,34 +8,30 @@
         android:background="@color/bihe0832_common_toast_background_color"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:id="@+id/app_layout"
-        android:paddingRight="16dp"
-        android:paddingBottom="8dp">
+        android:padding="8dp"
+        android:id="@+id/app_layout">
 
     <ImageView
             android:id="@+id/app_icon"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            app:layout_constraintBottom_toTopOf="@+id/uninstall"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/settings"
+            app:layout_constraintStart_toStartOf="@+id/settings"
+            app:layout_constraintEnd_toEndOf="@+id/settings"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@mipmap/icon" />
 
     <TextView
-            android:id="@+id/uninstall"
+            android:id="@+id/settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:text="卸载"
+            android:text="应用设置"
+            android:gravity="center"
             android:background="@drawable/card_apk_corner"
             android:textSize="10dp"
             android:textStyle="bold"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/app_icon"
-            app:layout_constraintEnd_toEndOf="@+id/app_icon"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_icon" />
 
     <TextView
@@ -47,7 +43,7 @@
             android:singleLine="true"
             android:textSize="12dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/app_icon"
+            app:layout_constraintStart_toEndOf="@+id/settings"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="王者荣耀" />
 
@@ -81,7 +77,7 @@
             tools:text="包名：com.bihe0832.aaa" />
 
     <TextView
-            android:id="@+id/local_path"
+            android:id="@+id/app_install"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -103,7 +99,7 @@
             android:textSize="10dp"
             app:layout_constraintEnd_toEndOf="@+id/app_version"
             app:layout_constraintStart_toStartOf="@+id/title_info"
-            app:layout_constraintTop_toBottomOf="@+id/local_path"
+            app:layout_constraintTop_toBottomOf="@+id/app_install"
             tools:text="最后更新：2020年9月15日" />
 
     <TextView

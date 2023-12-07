@@ -16,7 +16,6 @@ import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.config.Config
 import com.bihe0832.android.lib.debug.DebugTools
 import com.bihe0832.android.lib.file.FileUtils
-import com.bihe0832.android.lib.install.InstallUtils
 import com.bihe0832.android.lib.lifecycle.INSTALL_TYPE_NOT_FIRST
 import com.bihe0832.android.lib.theme.ThemeResourcesManager
 import com.bihe0832.android.lib.thread.ThreadManager
@@ -24,6 +23,7 @@ import com.bihe0832.android.lib.ui.dialog.callback.DialogCompletedStringCallback
 import com.bihe0832.android.lib.ui.dialog.tools.DialogUtils
 import com.bihe0832.android.lib.utils.apk.APKUtils
 import com.bihe0832.android.lib.utils.encrypt.MD5
+import com.bihe0832.android.lib.utils.intent.IntentUtils
 import java.io.File
 import java.util.Locale
 
@@ -74,50 +74,53 @@ class MainFragment : CommonListFragment() {
     private fun initAdapter() {
         mAdapter.apply {
             setOnItemChildClickListener { adapter, view, position ->
-                var temp = adapter.data[position] as APPItemData
-                when (view.id) {
-                    R.id.app_layout -> {
-                        if (temp.app_md5.isNullOrEmpty()) {
-                            ThreadManager.getInstance().start {
-                                try {
-                                    context?.packageManager?.getApplicationInfo(temp.app_package, PackageManager.GET_SIGNATURES)?.let {
-                                        temp.app_md5 = MD5.getFileMD5(it.sourceDir)
-                                        view.post {
-                                            mAdapter.notifyDataSetChanged()
+                var temp = adapter.data[position] as? APPItemData
+                temp?.let {
+                    when (view.id) {
+                        R.id.settings -> {
+                            IntentUtils.startAppSettings(context?.applicationContext, temp.app_package, true)
+                        }
+                        
+                        R.id.app_layout -> {
+                            if (temp.app_md5.isNullOrEmpty()) {
+                                ThreadManager.getInstance().start {
+                                    try {
+                                        context?.packageManager?.getApplicationInfo(
+                                            temp.app_package,
+                                            PackageManager.GET_SIGNATURES,
+                                        )?.let {
+                                            temp.app_md5 = MD5.getFileMD5(it.sourceDir)
+                                            view.post {
+                                                mAdapter.notifyDataSetChanged()
+                                            }
                                         }
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
                                     }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
                                 }
                             }
                         }
-                    }
-                    R.id.uninstall -> {
-                        InstallUtils.uninstallAPP(context?.applicationContext, temp.app_package)
-                        view.post {
-                            mAdapter.notifyDataSetChanged()
-                        }
-                    }
-                    R.id.app_icon -> {
-                        DialogUtils.showInputDialog(
-                            activity!!,
-                            "签名信息获取算法",
-                            "在下方输入框输入算法名称后，点击「确认」即可设定并计算签名信息",
-                            defaultSignatureType,
-                            object :
-                                DialogCompletedStringCallback {
-                                override fun onResult(p0: String?) {
-                                    p0?.let {
-                                        defaultSignatureType = it
-                                        temp.signature_type = it
-                                        temp.signature_value = ""
-                                        view.post {
-                                            mAdapter.notifyDataSetChanged()
+
+                        R.id.app_icon -> {
+                            DialogUtils.showInputDialog(
+                                activity!!,
+                                "签名信息获取算法",
+                                "在下方输入框输入算法名称后，点击「确认」即可设定并计算签名信息",
+                                defaultSignatureType,
+                                object : DialogCompletedStringCallback {
+                                    override fun onResult(p0: String?) {
+                                        p0?.let {
+                                            defaultSignatureType = it
+                                            temp.signature_type = it
+                                            temp.signature_value = ""
+                                            view.post {
+                                                mAdapter.notifyDataSetChanged()
+                                            }
                                         }
                                     }
-                                }
-                            },
-                        )
+                                },
+                            )
+                        }
                     }
                 }
             }
@@ -125,19 +128,14 @@ class MainFragment : CommonListFragment() {
                 var temp = adapter.data[position] as APPItemData
                 when (view.id) {
                     R.id.app_icon -> {
-                        if (ZixieContext.isOfficial()) {
-                            var temp = adapter.data[position] as APPItemData
-                            DebugTools.showInfo(context, temp.app_name + "基础信息", temp.toString(), "分享")
-                        } else {
-                            APKUtils.getAPKPath(view.context, temp.app_package).let {
-                                if (FileUtils.checkFileExist(it)) {
-                                    if (File(it).length() > FileUtils.SPACE_MB * 100) {
-                                        ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_big)!!)
-                                    }
-                                    AAFFileTools.sendFile(it)
-                                } else {
-                                    ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_faild)!!)
+                        APKUtils.getAPKPath(view.context, temp.app_package).let {
+                            if (FileUtils.checkFileExist(it)) {
+                                if (File(it).length() > FileUtils.SPACE_MB * 100) {
+                                    ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_big)!!)
                                 }
+                                AAFFileTools.sendFile(it)
+                            } else {
+                                ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_faild)!!)
                             }
                         }
                         return@setOnItemChildLongClickListener true

@@ -34,7 +34,7 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
         app_name = getView(R.id.title_info)
         app_version = getView(R.id.app_version)
         app_package = getView(R.id.download_url)
-        app_install = getView(R.id.local_path)
+        app_install = getView(R.id.app_install)
         app_update = getView(R.id.app_update)
         app_md5 = getView(R.id.app_md5)
         signature_value = getView(R.id.signature_value)
@@ -43,7 +43,7 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
     override fun initData(item: CardBaseModule) {
         val data = item as APPItemData
         addOnClickListener(R.id.app_layout)
-        addOnClickListener(R.id.uninstall)
+        addOnClickListener(R.id.settings)
         addOnClickListener(R.id.app_icon)
         addOnLongClickListener(R.id.app_icon)
         app_icon?.setImageDrawable(data.app_icon)
