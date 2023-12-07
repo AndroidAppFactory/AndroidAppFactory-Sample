@@ -43,6 +43,6 @@ class APPItemData : CardBaseModule() {
             "签名 算法：$signature_type\n" +
             "签名 值：\n$signature_value\n" +
             "签名 公钥：\n$androidPublicKey\n" +
-            "签名 公钥（Windows 格式）：\n$windowsPublicKey\n"
+            "签名 公钥（二进制 Windows 格式）：\n$windowsPublicKey\n"
     }
 }

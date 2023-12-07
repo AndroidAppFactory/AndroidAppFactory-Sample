@@ -9,8 +9,9 @@ import com.bihe0832.android.lib.adapter.CardBaseHolder
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.utils.apk.APKUtils
+import com.bihe0832.android.lib.utils.encrypt.RSAUtils
 import com.bihe0832.android.lib.utils.time.DateUtil
-import java.util.*
+import java.util.Locale
 
 /**
  * @author zixie code@bihe0832.com
@@ -59,12 +60,14 @@ class APPItemHolder(itemView: View?, context: Context?) : CardBaseHolder(itemVie
         }
 
         if (data.androidPublicKey.isNullOrBlank()) {
-            data.androidPublicKey = APKUtils.getSigPublicKey(context, data.app_package).uppercase(Locale.getDefault())
-            data.windowsPublicKey = APKUtils.transAndroidPublicKeyToWindows(data.androidPublicKey).uppercase(Locale.getDefault())
+            APKUtils.getSigPublicKey(context, data.app_package)?.let { key ->
+                data.androidPublicKey = RSAUtils.getPublicKeyPemString(key)
+                data.windowsPublicKey = RSAUtils.transPublicKeyByteStringToWindows(RSAUtils.getPublicKeyByteString(key))
+                    .uppercase(Locale.getDefault())
+            }
         }
 
         signature_value?.text =
             TextFactoryUtils.getSpannedTextByHtml("<B> 签名 ${data.signature_type}</B>：${data.signature_value}")
     }
-
 }
