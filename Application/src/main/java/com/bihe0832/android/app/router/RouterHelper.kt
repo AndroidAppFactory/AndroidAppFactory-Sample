@@ -107,7 +107,7 @@ object RouterHelper {
                                     setSelector(null)
                                 }.resolveActivity(it.packageManager).packageName
                             if (!resolveActivityPackage.equals(it.packageName, ignoreCase = true)) {
-                                IntentUtils.jumpToOtherApp(uri.toString(), context)
+                                IntentUtils.jumpToOtherApp(context,uri.toString() )
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()

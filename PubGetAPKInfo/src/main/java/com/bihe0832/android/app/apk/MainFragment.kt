@@ -12,6 +12,7 @@ import com.bihe0832.android.common.list.CommonListLiveData
 import com.bihe0832.android.common.list.swiperefresh.CommonListFragment
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.framework.file.AAFFileTools
+import com.bihe0832.android.framework.file.AAFFileWrapper
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.config.Config
 import com.bihe0832.android.lib.debug.DebugTools
@@ -78,9 +79,9 @@ class MainFragment : CommonListFragment() {
                 temp?.let {
                     when (view.id) {
                         R.id.settings -> {
-                            IntentUtils.startAppSettings(context?.applicationContext, temp.app_package, true)
+                            IntentUtils.startAppSettings(context?.applicationContext, temp.app_package, "", true)
                         }
-                        
+
                         R.id.app_layout -> {
                             if (temp.app_md5.isNullOrEmpty()) {
                                 ThreadManager.getInstance().start {
@@ -134,6 +135,10 @@ class MainFragment : CommonListFragment() {
                                     ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_big)!!)
                                 }
                                 AAFFileTools.sendFile(it)
+                                FileUtils.copyFile(
+                                    File(it),
+                                    File(AAFFileWrapper.getTempFolder(), FileUtils.getFileName(it)),
+                                )
                             } else {
                                 ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_faild)!!)
                             }
@@ -148,9 +153,11 @@ class MainFragment : CommonListFragment() {
                 }
             }
             setOnItemLongClickListener { adapter, view, position ->
-                var temp = adapter.data[position] as APPItemData
-                DebugTools.showInfo(context, temp.app_name + "基础信息", temp.toString(), "分享")
-                return@setOnItemLongClickListener true
+                (adapter.data[position] as? APPItemData)?.let {
+                    DebugTools.showInfo(context, it.app_name + "基础信息", it.toString(), "分享")
+                    return@setOnItemLongClickListener true
+                }
+                return@setOnItemLongClickListener false
             }
         }
     }
