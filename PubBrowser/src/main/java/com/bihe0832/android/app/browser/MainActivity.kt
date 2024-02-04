@@ -5,7 +5,7 @@ import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
 import com.bihe0832.android.app.update.UpdateManager
 import com.bihe0832.android.common.webview.WebPageActivity
-import com.bihe0832.android.common.webview.base.BaseWebviewFragment
+import com.bihe0832.android.common.webview.tbsimpl.TBSWebViewFragment
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.router.annotation.Module
 import java.util.*
@@ -18,7 +18,7 @@ class MainActivity : WebPageActivity() {
         UpdateManager.checkUpdateAndShowDialog(this, false, ZixieContext.isOfficial())
     }
 
-    override fun getWebViewFragment(): BaseWebviewFragment? {
+    override fun getWebViewFragment(): TBSWebViewFragment? {
         return BrowserFragment.newInstance(url)
     }
 

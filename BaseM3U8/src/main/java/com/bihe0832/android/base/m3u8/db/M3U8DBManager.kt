@@ -1,4 +1,4 @@
-package com.bihe0832.android.base.m3u8.db;
+package com.bihe0832.android.base.m3u8.db
 
 import android.content.Context
 import com.bihe0832.android.base.m3u8.bean.M3U8Info
@@ -12,13 +12,11 @@ import com.bihe0832.android.base.m3u8.bean.M3U8Info
  */
 object M3U8DBManager {
 
-    private var mApplicationContext: Context? = null
     private var commonDBHelperInstance: M3U8InfoDBHelper? = null
 
     fun init(context: Context) {
-        mApplicationContext = context
-        if(null == commonDBHelperInstance){
-            commonDBHelperInstance = M3U8InfoDBHelper(mApplicationContext)
+        if (null == commonDBHelperInstance) {
+            commonDBHelperInstance = M3U8InfoDBHelper(context)
         }
     }
 

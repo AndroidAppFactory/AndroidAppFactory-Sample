@@ -25,8 +25,8 @@ import com.bihe0832.android.lib.request.URLUtils
 import com.bihe0832.android.lib.router.annotation.Module
 import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.thread.ThreadManager
-import com.bihe0832.android.lib.ui.dialog.OnDialogListener
-import com.bihe0832.android.lib.ui.dialog.impl.DialogUtils
+import com.bihe0832.android.lib.ui.dialog.callback.OnDialogListener
+import com.bihe0832.android.lib.ui.dialog.tools.DialogUtils
 import kotlinx.android.synthetic.main.m3u8_activity_download.*
 import java.io.File
 import java.io.InputStream
@@ -37,27 +37,29 @@ class M3u8DownloadActivity : BaseActivity() {
 
     private var m3u8Info: M3U8Info = M3U8Info()
 
-    private val mM3U8DownloadImpl = M3U8DownloadImpl(this, object : M3U8Listener {
-        override fun onFail(errorCode: Int, msg: String) {
-
-            ThreadManager.getInstance().runOnUIThread {
-                showResult("<b>下载异常</b>（$errorCode）：$msg <BR> 请检查BaseURL是否正确")
+    private val mM3U8DownloadImpl = M3U8DownloadImpl(
+        this,
+        object : M3U8Listener {
+            override fun onFail(errorCode: Int, msg: String) {
+                ThreadManager.getInstance().runOnUIThread {
+                    showResult("<b>下载异常</b>（$errorCode）：$msg <BR> 请检查BaseURL是否正确")
+                }
             }
-        }
 
-        override fun onComplete() {
-
-        }
-
-        override fun onProcess(finished: Int, total: Int) {
-            ThreadManager.getInstance().runOnUIThread {
-                showResult("<b>分片下载</b>中，共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
+            override fun onComplete() {
             }
-        }
-    })
+
+            override fun onProcess(finished: Int, total: Int) {
+                ThreadManager.getInstance().runOnUIThread {
+                    showResult("<b>分片下载</b>中，共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
+                }
+            }
+        },
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        M3U8ModuleManager.init(this)
         setContentView(R.layout.m3u8_activity_download)
         initToolbar(R.id.common_toolbar, "M3U8视频下载器", true)
         initPermission()
@@ -67,25 +69,31 @@ class M3u8DownloadActivity : BaseActivity() {
         initGuide()
     }
 
-    fun close(){
-       super.finish()
+    fun close() {
+        super.finish()
     }
+
     override fun finish() {
         // 存在内存泄露，后续将下载抽离后解决
-        DialogUtils.showConfirmDialog(this, "资源下载中，退出时是否继续下载？",  false, object : OnDialogListener {
-            override fun onPositiveClick() {
-                close()
-            }
+        DialogUtils.showConfirmDialog(
+            this,
+            "资源下载中，退出时是否继续下载？",
+            false,
+            object : OnDialogListener {
+                override fun onPositiveClick() {
+                    close()
+                }
 
-            override fun onNegativeClick() {
-                mM3U8DownloadImpl.cancelDownload()
-                close()
-            }
+                override fun onNegativeClick() {
+                    mM3U8DownloadImpl.cancelDownload()
+                    close()
+                }
 
-            override fun onCancel() {
-                close()
-            }
-        })
+                override fun onCancel() {
+                    close()
+                }
+            },
+        )
     }
 
     override fun onResume() {
@@ -94,14 +102,17 @@ class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun initPermission() {
-        PermissionManager.addPermissionGroupDesc(HashMap<String, String>().apply {
-            put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "读取和保存到存储卡")
-        })
+        PermissionManager.addPermissionGroupDesc(
+            HashMap<String, String>().apply {
+                put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "读取和保存到存储卡")
+            },
+        )
 
-        PermissionManager.addPermissionGroupScene(HashMap<String, String>().apply {
-            put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "保存视频")
-        })
-
+        PermissionManager.addPermissionGroupScene(
+            HashMap<String, String>().apply {
+                put(Manifest.permission.WRITE_EXTERNAL_STORAGE, "保存视频")
+            },
+        )
     }
 
     private fun initM3u8URL() {
@@ -119,7 +130,6 @@ class M3u8DownloadActivity : BaseActivity() {
             }
         }
 
-
         baseURL.apply {
             val baseurl = if (intentData.containsKey(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL)) {
                 URLDecoder.decode(intentData.getString(RouterConstants.INTENT_EXTRA_KEY_M3U8_BASE_URL))
@@ -133,7 +143,6 @@ class M3u8DownloadActivity : BaseActivity() {
                 selectAll()
             }
         }
-
     }
 
     private fun updateBaseURL() {
@@ -147,6 +156,7 @@ class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun updateM3U8Info() {
+        ZLog.d("updateM3U8Info")
         getLocalIndexFile().let { localIndexFinalPath ->
             if (FileUtils.checkFileExist(localIndexFinalPath)) {
                 ThreadManager.getInstance().runOnUIThread {
@@ -163,7 +173,6 @@ class M3u8DownloadActivity : BaseActivity() {
                 showResult("<b>解析异常</b>：$localIndexFinalPath  不存在，请重新解析")
             }
         }
-
     }
 
     private fun initGuide() {
@@ -190,7 +199,6 @@ class M3u8DownloadActivity : BaseActivity() {
     }
 
     private fun initActionView() {
-
         baseURL.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 updateBaseURL()
@@ -202,37 +210,54 @@ class M3u8DownloadActivity : BaseActivity() {
                 var finalPath = getLocalIndexFile()
 
                 showResult("<b><font color='#8e44ad'>开始下载</font></b>：${getM3U8URL()} 到 $finalPath")
-                DownloadFile.download(this, getM3U8URL(), finalPath, true, object : SimpleDownloadListener() {
+                DownloadFile.download(
+                    this,
+                    getM3U8URL(),
+                    finalPath,
+                    true,
+                    object : SimpleDownloadListener() {
 
-                    override fun onComplete(filePath: String, item: DownloadItem): String {
-                        try {
-                            val inputStream: InputStream = File(filePath).inputStream()
-                            inputStream.bufferedReader().useLines { lines ->
-                                lines.forEach {
-                                    var line = it
-                                    if (line.contains("m3u8")) {
-                                        showResult("<b>下载失败，M3U8地址已发生变化，请再次点击<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${M3U8Tools.getIndexContent(filePath)}")
-                                        urlText.setText(M3U8TSInfo.getFullUrl(getBaseURL(), line))
-                                    } else {
-                                        showResult("<b>下载成功，点击 <font color='#8e44ad'>解析M3U8</font></b> 开始解析 <BR> $filePath<BR>：${M3U8Tools.getIndexContent(finalPath)} ")
+                        override fun onComplete(filePath: String, item: DownloadItem): String {
+                            try {
+                                val inputStream: InputStream = File(filePath).inputStream()
+                                inputStream.bufferedReader().useLines { lines ->
+                                    lines.forEach {
+                                        var line = it
+                                        if (line.contains("m3u8")) {
+                                            showResult(
+                                                "<b>下载失败，M3U8地址已发生变化，请再次点击<font color='#8e44ad'>下载M3U8</font></b>，更新M3U3URL。<BR>原M3U8内容为：<BR>${
+                                                    M3U8Tools.getIndexContent(
+                                                        filePath,
+                                                    )
+                                                }",
+                                            )
+                                            urlText.setText(M3U8TSInfo.getFullUrl(getBaseURL(), line))
+                                        } else {
+                                            showResult(
+                                                "<b>下载成功，点击 <font color='#8e44ad'>解析M3U8</font></b> 开始解析 <BR> $filePath<BR>：${
+                                                    M3U8Tools.getIndexContent(
+                                                        finalPath,
+                                                    )
+                                                } ",
+                                            )
+                                        }
                                     }
                                 }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
                             }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+                            return filePath
                         }
-                        return filePath
-                    }
 
-                    override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
-                        showResult("<b>下载失败</b>（$errorCode）：$msg")
-                    }
+                        override fun onFail(errorCode: Int, msg: String, item: DownloadItem) {
+                            showResult("<b>下载失败</b>（$errorCode）：$msg")
+                        }
 
-                    override fun onProgress(item: DownloadItem) {
-                        ZLog.d(item.toString())
-                    }
-
-                })
+                        override fun onProgress(item: DownloadItem) {
+                            ZLog.d(item.toString())
+                        }
+                    },
+                )
             } else {
                 showResult("请先输入需要下载的视频地址")
             }
@@ -249,19 +274,23 @@ class M3u8DownloadActivity : BaseActivity() {
         downloadPart.setOnClickListener {
             File(M3U8ModuleManager.getDownloadPath(getM3U8URL())).let { folder ->
                 if (folder.isDirectory && folder.listFiles().size > 3) {
-                    DialogUtils.showConfirmDialog(this, "当前已存在部分下载内容,是否删除最近下载的部分确保内容完整？", false, object : OnDialogListener {
-                        override fun onPositiveClick() {
-                            downloadM3u8(true)
-                        }
+                    DialogUtils.showConfirmDialog(
+                        this,
+                        "当前已存在部分下载内容,是否删除最近下载的部分确保内容完整？",
+                        false,
+                        object : OnDialogListener {
+                            override fun onPositiveClick() {
+                                downloadM3u8(true)
+                            }
 
-                        override fun onNegativeClick() {
-                            downloadM3u8(false)
-                        }
+                            override fun onNegativeClick() {
+                                downloadM3u8(false)
+                            }
 
-                        override fun onCancel() {
-
-                        }
-                    })
+                            override fun onCancel() {
+                            }
+                        },
+                    )
                 } else {
                     downloadM3u8(false)
                 }
@@ -272,33 +301,35 @@ class M3u8DownloadActivity : BaseActivity() {
             mM3U8DownloadImpl.cancelDownload()
             showResult("分片下载已暂停，开始合并，合并结束以后，阔以点击下载分片继续下载！")
             mergePart.isEnabled = false
-            M3U8Tools.mergeM3U8(M3U8ModuleManager.getDownloadPath(getM3U8URL()), M3U8ModuleManager.getFinalVideoPath(getM3U8URL()), object : M3U8Listener {
-                override fun onFail(errorCode: Int, msg: String) {
-
-                    ThreadManager.getInstance().runOnUIThread {
-                        mergePart.isEnabled = true
-                    }
-                }
-
-                override fun onComplete() {
-                    ThreadManager.getInstance().runOnUIThread {
-                        val path = M3U8ModuleManager.getFinalVideoPath(getM3U8URL())
-                        if (!TextUtils.isEmpty(path)) {
-                            showResult("<b>视频合并已经完成</b>，文件大小：${FileUtils.getFileLength(File(path).length())},保存地址为：${path}")
-                        } else {
-                            showResult("<b>合并失败</b>")
+            M3U8Tools.mergeM3U8(
+                M3U8ModuleManager.getDownloadPath(getM3U8URL()),
+                M3U8ModuleManager.getFinalVideoPath(getM3U8URL()),
+                object : M3U8Listener {
+                    override fun onFail(errorCode: Int, msg: String) {
+                        ThreadManager.getInstance().runOnUIThread {
+                            mergePart.isEnabled = true
                         }
-                        mergePart.isEnabled = true
                     }
-                }
 
-                override fun onProcess(finished: Int, total: Int) {
-                    ThreadManager.getInstance().runOnUIThread {
-                        showResult("分片合并中，共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
+                    override fun onComplete() {
+                        ThreadManager.getInstance().runOnUIThread {
+                            val path = M3U8ModuleManager.getFinalVideoPath(getM3U8URL())
+                            if (!TextUtils.isEmpty(path)) {
+                                showResult("<b>视频合并已经完成</b>，文件大小：${FileUtils.getFileLength(File(path).length())},保存地址为：$path")
+                            } else {
+                                showResult("<b>合并失败</b>")
+                            }
+                            mergePart.isEnabled = true
+                        }
                     }
-                }
-            })
 
+                    override fun onProcess(finished: Int, total: Int) {
+                        ThreadManager.getInstance().runOnUIThread {
+                            showResult("分片合并中，共 <b><font color='#8e44ad'>$total</font></b> 分片，当前已完成：<b><font color='#8e44ad'>$finished</font></b> 分片")
+                        }
+                    }
+                },
+            )
         }
 
         openVideo.setOnClickListener {
@@ -320,19 +351,16 @@ class M3u8DownloadActivity : BaseActivity() {
         addToPhoto.setOnClickListener {
             var file = File(M3U8ModuleManager.getFinalVideoPath(getM3U8URL()))
             if (file.exists()) {
-                Media.addVideoToPhotos(this, file.absolutePath)
+                Media.addToPhotos(this, file.absolutePath)
             } else {
                 showResult("视频文件不存在！")
             }
         }
     }
 
-
     fun downloadM3u8(needDeleteOld: Boolean) {
         showResult("开始下载分片！")
         updateM3U8Info()
         mM3U8DownloadImpl.startDownload(m3u8Info, needDeleteOld)
     }
-
-
 }

@@ -2,7 +2,8 @@ package com.bihe0832.android.app.browser
 
 import android.os.Bundle
 import android.view.View
-import com.bihe0832.android.app.message.addMessageAction
+import com.bihe0832.android.app.message.addMessageIconActionAndShowFace
+import com.bihe0832.android.app.message.checkMsgAndShowFace
 import com.bihe0832.android.app.router.RouterConstants.MODULE_NAME_BROWSER_LIST
 import com.bihe0832.android.base.card.tips.TipsData
 import com.bihe0832.android.common.list.CardItemForCommonList
@@ -30,9 +31,8 @@ open class BrowserListActivity : CommonListActivity() {
             }
             openMain(result)
         }
-
-        addMessageAction(findViewById(R.id.message), findViewById(R.id.message_unread))
-
+        addMessageIconActionAndShowFace(findViewById(R.id.message), findViewById(R.id.message_unread), true)
+        checkMsgAndShowFace()
     }
 
     open fun getDataList(): ArrayList<CardBaseModule> {
@@ -41,13 +41,15 @@ open class BrowserListActivity : CommonListActivity() {
             if (it.isNotEmpty()) {
                 data.add(TipsData("点击下方列表<b>信息</b>即可进入对应页面"))
                 it.forEach { dataInfo ->
-                    data.add(TipsData().apply {
-                        this.mContentText = dataInfo.value
-                        this.mListener = View.OnClickListener {
-                            new_url.setText(dataInfo.value)
-                            CommonDBManager.deleteData(dataInfo.key)
-                        }
-                    })
+                    data.add(
+                        TipsData().apply {
+                            this.mContentText = dataInfo.value
+                            this.mListener = View.OnClickListener {
+                                new_url.setText(dataInfo.value)
+                                CommonDBManager.deleteData(dataInfo.key)
+                            }
+                        },
+                    )
                 }
             }
         }

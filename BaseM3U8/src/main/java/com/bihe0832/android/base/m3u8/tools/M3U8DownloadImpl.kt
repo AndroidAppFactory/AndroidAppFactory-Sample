@@ -191,7 +191,6 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
                         startNew(0)
                     }
                 }
-
             }
         }, 1)
     }
@@ -199,7 +198,7 @@ open class M3U8DownloadImpl(private val context: Context, private val mM3U8Liste
     fun cancelDownload() {
         hasStop = true
         DownloadTools.removeGlobalDownloadListener(mDownloadListener)
-        DownloadUtils.pauseAll()
+        DownloadUtils.pauseAll(false)
     }
 
     fun isDownloading(m3U8URL: String): Boolean {

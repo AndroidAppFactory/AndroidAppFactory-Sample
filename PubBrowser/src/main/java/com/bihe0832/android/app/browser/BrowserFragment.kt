@@ -1,14 +1,14 @@
 package com.bihe0832.android.app.browser
 
 import android.os.Bundle
-import com.bihe0832.android.common.webview.base.BaseWebviewFragment
-import com.bihe0832.android.common.webview.log.MyBaseJsBridgeProxy
+import com.bihe0832.android.common.webview.tbsimpl.TBSJsBridgeProxy
+import com.bihe0832.android.common.webview.tbsimpl.TBSWebViewFragment
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.request.URLUtils
 import com.bihe0832.android.lib.sqlite.impl.CommonDBManager.saveData
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.ui.dialog.CommonDialog
-import com.bihe0832.android.lib.ui.dialog.OnDialogListener
+import com.bihe0832.android.lib.ui.dialog.callback.OnDialogListener
 import com.bihe0832.android.lib.utils.intent.IntentUtils
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse
@@ -20,7 +20,7 @@ import com.tencent.smtt.sdk.WebViewClient
  * Created on 2019-07-26.
  * Description: Description
  */
-class BrowserFragment : BaseWebviewFragment() {
+class BrowserFragment : TBSWebViewFragment() {
 
     private var mDialog: CommonDialog? = null
 
@@ -40,7 +40,7 @@ class BrowserFragment : BaseWebviewFragment() {
         return MySpecialWebView(jsBridgeProxy)
     }
 
-    private inner class MySpecialWebView(jsBridge: MyBaseJsBridgeProxy?) : MyWebViewClient(jsBridge) {
+    private inner class MySpecialWebView(jsBridge: TBSJsBridgeProxy?) : MyWebViewClient() {
         override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
             ZLog.d("WebPageFragment -> :shouldInterceptRequest url:$url")
             saveURL(url)
@@ -77,7 +77,7 @@ class BrowserFragment : BaseWebviewFragment() {
                 override fun onPositiveClick() {
                     dismiss()
                     saveData(url, mIntentUrl)
-                    IntentUtils.jumpToOtherApp("zm3u8://m3u8?url=" + URLUtils.encode(url), context)
+                    IntentUtils.jumpToOtherApp(context, "zm3u8://m3u8?url=" + URLUtils.encode(url))
                 }
 
                 override fun onNegativeClick() {
@@ -88,7 +88,6 @@ class BrowserFragment : BaseWebviewFragment() {
                     dismiss()
                 }
             }
-
         }?.let { dialog ->
             ThreadManager.getInstance().runOnUIThread {
                 dialog.show()
@@ -101,8 +100,8 @@ class BrowserFragment : BaseWebviewFragment() {
         mDialog?.dismiss()
     }
 
-    override fun getJsBridgeProxy(): MyBaseJsBridgeProxy {
-        return MyBaseJsBridgeProxy(mWebView, activity)
+    override fun getJsBridgeProxy(): TBSJsBridgeProxy {
+        return TBSJsBridgeProxy(activity, mWebView)
     }
 
     override fun actionBeforeLoadURL(url: String) {
