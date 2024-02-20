@@ -39,7 +39,7 @@ ext.moduleInfo = [
     ],
     "Application"     : [
         "apidependenciesList"    : [
-            "com.bihe0832.android:common-wrapper:${project.aaf_version}",
+            "com.bihe0832.android:common-wrapper-min:${project.aaf_version}",
             "com.bihe0832.android:common-wrapper-tbs:${project.aaf_tbs_version}",
             "com.bihe0832.android:lib-wrapper-screen:${project.aaf_screen_version}",
             "androidx.work:work-runtime:2.7.1"

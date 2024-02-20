@@ -135,10 +135,6 @@ class MainFragment : CommonListFragment() {
                                     ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_big)!!)
                                 }
                                 AAFFileTools.sendFile(it)
-                                FileUtils.copyFile(
-                                    File(it),
-                                    File(AAFFileWrapper.getTempFolder(), FileUtils.getFileName(it)),
-                                )
                             } else {
                                 ZixieContext.showToast(ThemeResourcesManager.getString(com.bihe0832.android.common.share.R.string.com_bihe0832_share_app_faild)!!)
                             }
