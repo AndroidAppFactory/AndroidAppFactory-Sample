@@ -10,40 +10,62 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="com.bihe0832.android.app.Application"
-        tools:replace="android:name">
+            android:name="com.bihe0832.android.app.Application"
+            tools:replace="android:name">
 
         <activity
-            android:name="com.bihe0832.android.app.message.AAFMessageActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:theme="@style/AAF.ActivityTheme" />
+                android:name="com.bihe0832.android.app.message.AAFMessageActivity"
+                android:configChanges="orientation|screenSize|keyboardHidden"
+                android:screenOrientation="portrait"
+                android:theme="@style/AAF.ActivityTheme" />
 
         <activity
-            android:name="com.bihe0832.android.app.about.AboutActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:theme="@style/AAF.ActivityTheme" />
+                android:name="com.bihe0832.android.app.about.AboutActivity"
+                android:configChanges="orientation|screenSize|keyboardHidden"
+                android:screenOrientation="portrait"
+                android:theme="@style/AAF.ActivityTheme" />
+
         <!--        <activity-->
-        <!--                android:name="com.bihe0832.android.common.webview.WebPageActivity"-->
-        <!--                android:configChanges="orientation|screenSize|keyboardHidden"-->
-        <!--                android:theme="@style/activityTheme"-->
+        <!--                android:name="com.bihe0832.android.common.tbswebview.WebPageActivity"-->
+        <!--                android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize"-->
+        <!--                android:exported="true"-->
         <!--                android:hardwareAccelerated="true"-->
-        <!--                android:launchMode="singleInstance"-->
-        <!--                android:process=":web"-->
-        <!--                android:screenOrientation="portrait">-->
+        <!--                android:process="@string/com_bihe0832_web_process_name"-->
+        <!--                android:screenOrientation="portrait"-->
+        <!--                android:theme="@style/AAF.ActivityTheme"-->
+        <!--                android:windowSoftInputMode="adjustPan|stateHidden">-->
 
         <!--            <intent-filter>-->
         <!--                <action android:name="android.intent.action.VIEW" />-->
 
-        <!--                <category android:name="android.intent.category.DEFAULT" />-->
         <!--                <category android:name="android.intent.category.BROWSABLE" />-->
+        <!--                <category android:name="android.intent.category.DEFAULT" />-->
 
-        <!--                <data android:scheme="http" />-->
         <!--                <data android:scheme="https" />-->
+        <!--                <data android:scheme="http" />-->
         <!--            </intent-filter>-->
+
         <!--        </activity>-->
 
+        <activity
+                android:name="com.bihe0832.android.common.webview.WebPageActivity"
+                android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize"
+                android:exported="true"
+                android:hardwareAccelerated="true"
+                android:process="@string/com_bihe0832_web_process_name"
+                android:screenOrientation="portrait"
+                android:theme="@style/AAF.ActivityTheme"
+                android:windowSoftInputMode="adjustPan|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
