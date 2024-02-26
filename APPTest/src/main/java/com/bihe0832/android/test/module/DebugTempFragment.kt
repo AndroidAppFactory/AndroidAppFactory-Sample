@@ -3,6 +3,7 @@ package com.bihe0832.android.test.module
 import android.view.View
 import com.bihe0832.android.app.router.RouterConstants
 import com.bihe0832.android.app.router.RouterHelper
+import com.bihe0832.android.base.debug.webview.DebugM3U8Fragment
 import com.bihe0832.android.base.debug.webview.DebugWebviewActivity
 import com.bihe0832.android.common.debug.base.BaseDebugListFragment
 import com.bihe0832.android.common.debug.item.DebugItemData
@@ -25,6 +26,14 @@ class DebugTempFragment : BaseDebugListFragment() {
             add(DebugItemData("WebView 调试", View.OnClickListener {
                 startActivityWithException(DebugWebviewActivity::class.java)
             }))
+            add(
+                DebugItemData(
+                    "M3U8 调试",
+                    View.OnClickListener {
+                        startDebugActivity(DebugM3U8Fragment::class.java)
+                    },
+                ),
+            )
         }
     }
 
