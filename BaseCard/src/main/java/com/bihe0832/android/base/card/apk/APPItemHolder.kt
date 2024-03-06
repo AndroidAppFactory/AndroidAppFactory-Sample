@@ -9,7 +9,7 @@ import com.bihe0832.android.lib.adapter.CardBaseHolder
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.utils.apk.APKUtils
-import com.bihe0832.android.lib.utils.encrypt.RSAUtils
+import com.bihe0832.android.lib.utils.encrypt.rsa.RSAUtils
 import com.bihe0832.android.lib.utils.time.DateUtil
 import java.util.Locale
 

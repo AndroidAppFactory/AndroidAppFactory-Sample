@@ -5,7 +5,7 @@ import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils
 import com.bihe0832.android.lib.file.FileUtils
-import com.bihe0832.android.lib.utils.encrypt.MD5
+import com.bihe0832.android.lib.utils.encrypt.messagedigest.MD5
 import java.io.File
 
 /**

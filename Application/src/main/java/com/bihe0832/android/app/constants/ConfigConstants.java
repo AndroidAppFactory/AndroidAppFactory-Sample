@@ -1,6 +1,6 @@
 package com.bihe0832.android.app.constants;
 
-import com.bihe0832.android.lib.utils.encrypt.MD5;
+import com.bihe0832.android.lib.utils.encrypt.messagedigest.MD5;
 
 /**
  * @author hardyshi code@bihe0832.com

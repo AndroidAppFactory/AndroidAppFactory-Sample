@@ -9,7 +9,7 @@ import com.bihe0832.android.lib.file.FileUtils
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.text.TextFactoryUtils
 import com.bihe0832.android.lib.thread.ThreadManager
-import com.bihe0832.android.lib.utils.encrypt.AESUtils
+import com.bihe0832.android.lib.utils.encrypt.aes.AESUtils
 import java.io.*
 
 /**
