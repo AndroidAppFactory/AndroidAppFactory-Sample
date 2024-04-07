@@ -10,8 +10,8 @@ import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.bean.M3U8TSInfo
 import com.bihe0832.android.framework.ZixieContext
 import com.bihe0832.android.lib.download.DownloadItem
-import com.bihe0832.android.lib.download.core.list.DownloadingList
-import com.bihe0832.android.lib.download.dabase.DownloadInfoDBManager
+import com.bihe0832.android.lib.download.core.DownloadingList
+import com.bihe0832.android.lib.download.core.dabase.DownloadInfoDBManager
 import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.DownloadTools
 import com.bihe0832.android.lib.download.wrapper.DownloadUtils

@@ -52,9 +52,9 @@ ext {
     //使用kotlin版本
     kotlin_version = '1.7.10'
 
-    aaf_version = '6.9.7'
-    aaf_test_version = '6.9.7'
-    aaf_screen_version = '6.9.4'
-    aaf_tbs_version = '6.9.7'
+    aaf_version = '6.9.13'
+    aaf_test_version = '6.9.13'
+    aaf_screen_version = '6.9.12'
+    aaf_tbs_version = '6.9.13'
 
 }

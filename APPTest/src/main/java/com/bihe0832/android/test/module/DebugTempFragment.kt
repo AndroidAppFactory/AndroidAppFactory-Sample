@@ -8,8 +8,6 @@ import com.bihe0832.android.base.debug.webview.DebugWebviewActivity
 import com.bihe0832.android.common.debug.base.BaseDebugListFragment
 import com.bihe0832.android.common.debug.item.DebugItemData
 import com.bihe0832.android.lib.adapter.CardBaseModule
-import com.bihe0832.android.lib.download.core.list.DownloadingList
-import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.sqlite.impl.CommonDBManager
 import com.bihe0832.android.lib.utils.intent.IntentUtils
 
