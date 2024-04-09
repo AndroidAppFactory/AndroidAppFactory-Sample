@@ -9,7 +9,7 @@ import com.bihe0832.android.base.adb.input.ZixieIME;
 import com.bihe0832.android.base.adb.input.keyboard.InputManager;
 
 /**
- * @author hardyshi code@bihe0832.com
+ * @author zixie code@bihe0832.com
  * Created on 2023/3/14.
  * Description: Description
  */

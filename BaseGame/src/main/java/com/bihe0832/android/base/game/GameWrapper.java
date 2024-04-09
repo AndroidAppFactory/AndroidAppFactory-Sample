@@ -5,7 +5,7 @@ import android.content.Context;
 import com.bihe0832.android.framework.ui.main.CommonRootActivity;
 
 /**
- * @author hardyshi code@bihe0832.com
+ * @author zixie code@bihe0832.com
  * Created on 2023/4/7.
  * Description: Description
  */
