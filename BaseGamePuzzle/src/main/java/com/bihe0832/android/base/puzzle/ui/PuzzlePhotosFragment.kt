@@ -16,7 +16,7 @@ import com.bihe0832.android.lib.download.wrapper.DownloadFile
 import com.bihe0832.android.lib.download.wrapper.SimpleDownloadListener
 import com.bihe0832.android.lib.file.provider.ZixieFileProvider
 import com.bihe0832.android.lib.log.ZLog
-import com.bihe0832.android.lib.media.image.BitmapUtil
+import com.bihe0832.android.lib.media.image.bitmap.BitmapUtil
 import com.bihe0832.android.lib.request.URLUtils
 import com.bihe0832.android.lib.thread.ThreadManager
 import com.bihe0832.android.lib.ui.dialog.callback.OnDialogListener
@@ -50,11 +50,18 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
                     mCropUri = activity?.getAutoChangedCropUri()
                     activity?.cropPhoto(mTakePhotoUri, mCropUri, 1, 1)
                 }
+
                 ZixieActivityRequestCode.CHOOSE_PHOTO -> {
                     mCropUri = activity?.getAutoChangedCropUri()
                     val cacheFile = ZixieFileProvider.uriToFile(context, data?.data as Uri)
-                    activity?.cropPhoto(ZixieFileProvider.getZixieFileProvider(ZixieContext.applicationContext, cacheFile), mCropUri, 1, 1)
+                    activity?.cropPhoto(
+                        ZixieFileProvider.getZixieFileProvider(
+                            ZixieContext.applicationContext,
+                            cacheFile
+                        ), mCropUri, 1, 1
+                    )
                 }
+
                 ZixieActivityRequestCode.CROP_PHOTO -> {
                     var filePath = ZixieFileProvider.uriToFile(
                         activity,
@@ -98,6 +105,7 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
             forceDownloadNew = false,
             useMobile = true,
             forceDownload = true,
+            needRecord = false,
             listener = object : OnDialogListener {
                 override fun onPositiveClick() {
                     ZixieContext.showToastJustAPPFront("图片加载已切换到后台")
@@ -131,7 +139,7 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
                 override fun onProgress(item: DownloadItem) {
                     ZLog.d("onProgress: $item")
                 }
-            },
+            }
         )
     }
 

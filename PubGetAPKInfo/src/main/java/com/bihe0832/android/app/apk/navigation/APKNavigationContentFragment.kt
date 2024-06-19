@@ -9,7 +9,7 @@ import com.bihe0832.android.app.ui.navigation.AAFNavigationContentFragment
 import com.bihe0832.android.common.about.R
 import com.bihe0832.android.common.permission.settings.PermissionItem
 import com.bihe0832.android.common.settings.SettingsItem
-import com.bihe0832.android.common.settings.card.SettingsData
+import com.bihe0832.android.common.settings.card.SettingsDataGo
 import com.bihe0832.android.framework.router.RouterAction
 import com.bihe0832.android.framework.update.UpdateInfoLiveData
 import com.bihe0832.android.lib.adapter.CardBaseModule
@@ -52,9 +52,9 @@ open class APKNavigationContentFragment : AAFNavigationContentFragment() {
         }
     }
 
-    fun getChangeSignatureType(): SettingsData {
+    fun getChangeSignatureType(): SettingsDataGo {
         val title = "设置默认签名算法"
-        return SettingsData(title).apply {
+        return SettingsDataGo(title).apply {
             mItemIconRes = R.drawable.icon_android
             mHeaderTextBold = true
             mShowDriver = true
