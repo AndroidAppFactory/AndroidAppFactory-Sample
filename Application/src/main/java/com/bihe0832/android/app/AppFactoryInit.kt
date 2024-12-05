@@ -16,7 +16,7 @@ import com.bihe0832.android.framework.ZixieCoreInit
 import com.bihe0832.android.framework.privacy.AgreementPrivacy
 import com.bihe0832.android.lib.adapter.CardInfoHelper
 import com.bihe0832.android.lib.device.shake.ShakeManager
-import com.bihe0832.android.lib.download.wrapper.DownloadUtils
+import com.bihe0832.android.lib.download.wrapper.DownloadFileUtils
 import com.bihe0832.android.lib.log.ZLog
 import com.bihe0832.android.lib.theme.ThemeManager
 import com.bihe0832.android.lib.thread.ThreadManager
@@ -64,7 +64,7 @@ object AppFactoryInit {
             RouterHelper.initRouter()
             AAFPermissionManager.initPermission()
             ThreadManager.getInstance().start {
-                DownloadUtils.init(ctx, 10, ZixieContext.isDebug())
+                DownloadFileUtils.init(ctx, 10, ZixieContext.isDebug())
             }
             AAFMessageManager.initModule(application)
             ZLog.d("Application process $processName initCore ManufacturerUtil:" + ManufacturerUtil.MODEL)
@@ -74,7 +74,10 @@ object AppFactoryInit {
     /**
      * 如果使用系统原生内核，直接删除
      */
-    private fun initWebview(application: android.app.Application, processInfo: ActivityManager.RunningAppProcessInfo) {
+    private fun initWebview(
+        application: android.app.Application,
+        processInfo: ActivityManager.RunningAppProcessInfo
+    ) {
         if (processInfo.processName.equals(application.packageName, ignoreCase = true)) {
             ThreadManager.getInstance().start({
                 ZLog.e("Application process initCore web start")
@@ -88,8 +91,14 @@ object AppFactoryInit {
                             TbsPrivacyAccess.ConfigurablePrivacy.MODEL.name,
                             ManufacturerUtil.MODEL,
                         )
-                        putString(TbsPrivacyAccess.ConfigurablePrivacy.ANDROID_ID.name, ZixieContext.deviceId)
-                        putString(TbsPrivacyAccess.ConfigurablePrivacy.SERIAL.name, ZixieContext.deviceId)
+                        putString(
+                            TbsPrivacyAccess.ConfigurablePrivacy.ANDROID_ID.name,
+                            ZixieContext.deviceId
+                        )
+                        putString(
+                            TbsPrivacyAccess.ConfigurablePrivacy.SERIAL.name,
+                            ZixieContext.deviceId
+                        )
                     },
                     false,
                 )
@@ -122,12 +131,7 @@ object AppFactoryInit {
                     initCore(application, processName)
                     if (processName.equals(application.packageName, ignoreCase = true)) {
                         initExtra(application)
-                    } else if (processName.equals(
-                            application.packageName + application.applicationContext.getString(R.string.com_bihe0832_lock_screen_process_name),
-                            ignoreCase = true,
-                        )
-                    ) {
-                        WidgetUpdateManager.initModuleWithOtherProcess(application.applicationContext)
+                        WidgetUpdateManager.initModuleWithMainProcess(application.applicationContext)
                     }
                     initWebview(application, it)
                 }

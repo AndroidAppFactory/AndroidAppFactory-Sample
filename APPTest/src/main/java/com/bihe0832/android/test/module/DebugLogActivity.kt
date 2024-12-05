@@ -22,10 +22,7 @@ class DebugLogActivity : DebugLogActivity() {
     override fun getTempData(): List<CardBaseModule> {
         return mutableListOf<CardBaseModule>().apply {
             add(SectionDataHeader("通用日志工具"))
-            add(DebugItemData("选择并查看单个日志") {
-                isView = true
-                FileSelectTools.openFileSelect(this@DebugLogActivity, ZixieContext.getLogFolder())
-            })
+            add(getOpenLogItem())
 //            add(DebugItemData("上传日志") { })
             add(SectionDataHeader("基础通用日志"))
             add(SectionDataContent("路由跳转", RouterInterrupt.getRouterLogPath()))

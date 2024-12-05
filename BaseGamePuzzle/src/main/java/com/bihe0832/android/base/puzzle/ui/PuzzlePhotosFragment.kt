@@ -100,7 +100,7 @@ class PuzzlePhotosFragment : PhotosSelectFragment() {
             "图片加载",
             "正在加载网络图片，加载结束将直接进入游戏",
             url,
-            "", false, "", "",
+            emptyMap(), "", false, "", "",
             canCancel = true,
             forceDownloadNew = false,
             useMobile = true,

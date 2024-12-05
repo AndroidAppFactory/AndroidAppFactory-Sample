@@ -5,6 +5,7 @@ import com.bihe0832.android.base.m3u8.bean.M3U8Info
 import com.bihe0832.android.base.m3u8.db.M3U8DBManager
 import com.bihe0832.android.common.debug.base.BaseDebugListFragment
 import com.bihe0832.android.common.debug.item.DebugItemData
+import com.bihe0832.android.common.debug.item.getDebugItem
 import com.bihe0832.android.lib.adapter.CardBaseModule
 import com.bihe0832.android.lib.gson.JsonHelper
 import com.bihe0832.android.lib.log.ZLog
@@ -21,8 +22,8 @@ class DebugM3U8Fragment : BaseDebugListFragment() {
 
     override fun getDataList(): ArrayList<CardBaseModule> {
         return ArrayList<CardBaseModule>().apply {
-            add(DebugItemData("批量导出下载记录") { export() })
-            add(DebugItemData("批量新增下载地址") { add() })
+            add(getDebugItem("批量导出下载记录") { export() })
+            add(getDebugItem("批量新增下载地址") { add() })
 
         }
     }
