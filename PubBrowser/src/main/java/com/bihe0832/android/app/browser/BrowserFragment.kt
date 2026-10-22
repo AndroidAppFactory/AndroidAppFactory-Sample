@@ -43,24 +43,24 @@ class BrowserFragment : TBSWebViewFragment() {
     private inner class MySpecialWebView(jsBridge: TBSJsBridgeProxy?) : MyWebViewClient() {
         override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
             ZLog.d("WebPageFragment -> :shouldInterceptRequest url:$url")
-            saveURL(url)
+            saveURL(view.title?.toString().orEmpty(), url)
             return super.shouldInterceptRequest(view, url)
         }
 
         override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
             ZLog.d("WebPageFragment -> :shouldInterceptRequest url:" + request.url.toString())
-            saveURL(request.url.toString())
+            saveURL(view.title?.toString().orEmpty(), request.url.toString())
             return super.shouldInterceptRequest(view, request)
         }
 
-        private fun saveURL(url: String) {
+        private fun saveURL(title: String, url: String) {
             if (url.endsWith(".m3u8")) {
-                showDownload(url)
+                showDownload(title, url)
             }
         }
     }
 
-    fun showDownload(url: String) {
+    fun showDownload(title: String, url: String) {
         if (null == mDialog) {
             ThreadManager.getInstance().runOnUIThread {
                 mDialog = CommonDialog(activity)
@@ -69,7 +69,7 @@ class BrowserFragment : TBSWebViewFragment() {
 
         mDialog?.apply {
             title = "发现新资源"
-            setHtmlContent("发现新资源，是否前往下载？")
+            setHtmlContent("发现新资源：$title，是否前往下载？")
             negative = "再想想"
             positive = "去下载"
             shouldCanceled = true
@@ -77,7 +77,7 @@ class BrowserFragment : TBSWebViewFragment() {
                 override fun onPositiveClick() {
                     dismiss()
                     saveData(url, mIntentUrl)
-                    IntentUtils.jumpToOtherApp(context, "zm3u8://m3u8?url=" + URLUtils.encode(url))
+                    IntentUtils.jumpToOtherApp(context, "zm3u8://m3u8?url=" + URLUtils.encode(url) + "&title=" + URLUtils.encode(title))
                 }
 
                 override fun onNegativeClick() {
